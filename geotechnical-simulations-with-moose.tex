@@ -1,0 +1,94 @@
+\documentclass[12pt,a4paper]{report}
+    % General document formatting
+    \usepackage[margin=0.7in]{geometry}
+    \usepackage[parfill]{parskip}
+    \usepackage[utf8]{inputenc}
+    \usepackage[]{mdframed}
+    \usepackage{tikz}
+    \usetikzlibrary{shapes.geometric, arrows, arrows.meta, chains, positioning}
+    \usepackage{graphicx}
+    \usepackage[edges]{forest}
+    \usetikzlibrary{decorations.pathreplacing}
+    
+    % Related to math
+    \usepackage{amsmath,amssymb,amsfonts,amsthm}
+
+    % make links clickable
+    \usepackage{hyperref}
+    \hypersetup{
+        colorlinks    = true,    % Colours links instead of ugly boxes
+        urlcolor      = blue,    % Colour for external hyperlinks
+        linkcolor     = black,   % Colour of internal links
+        bookmarksopen = true
+        %citecolor     = red      % Colour of citations
+    }
+    \usepackage[nameinlink,noabbrev]{cleveref}
+
+    % Other packages
+    \usepackage[inline]{enumitem}
+    \usepackage{soul}   %for highlighting text
+    % \usepackage{layouts}
+    \usepackage{fontawesome5}
+
+    \usepackage{filemod}
+    
+    \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm,
+    minimum height=1cm, text centered, draw=black]
+    \tikzstyle{process} = [rectangle, minimum width=3cm,
+    minimum height=1cm, text centered, draw=black]
+    \tikzstyle{decision} = [diamond, minimum width=3cm,
+    minimum height=1cm, text centered, draw=black]
+    \tikzstyle{arrow} = [thick, ->, >=stealth]
+
+
+\title{Geotechnical Simulations with Moose}
+
+\author{Jörg Meier}
+
+\date{08.10.2024}
+
+\begin{document}
+
+%\maketitle
+\input{src/title.tex}
+
+\tableofcontents
+
+\chapter{Introduction}
+\label{chap:introduction}
+\input{src/chapters/introduction.tex}
+
+\chapter{Geometry}
+\label{chap:geometry}
+\input{src/chapters/geometry.tex}
+
+\chapter{Model Elements}
+\label{chap:elements}
+\input{src/chapters/elements.tex}
+
+\chapter{Material Models}
+\label{chap:materials}
+\input{src/chapters/materials.tex}
+
+\chapter{General Model Setup}
+\label{chap:setup}
+\input{src/chapters/setup.tex}
+
+\chapter{Initial Conditions}
+\label{chap:initial}
+\input{src/chapters/initial-conditions.tex}
+
+\chapter{Construction Stages}
+\label{chap:stages}
+\input{src/chapters/stages.tex}
+
+\chapter{Postprocessing}
+\label{chap:postprocessing}
+\input{src/chapters/postprocessing.tex}
+
+% \appendix
+% \chapter{Quick-Start}
+% \label{app:quickblender}
+% \input{Appendices/quickblender.tex}
+
+\end{document}
