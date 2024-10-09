@@ -1,39 +1,61 @@
 \section{General Considerations}
 \label{geometry-general}
 
-When modelling geotechnical problems, it is often desirable to
-make a meaningful geometric abstraction to avoid time-consuming
-modelling, but also to avoid inaccuracies due to oversimplification.
-However, experience shows that the effort involved in creating such
-a model geometry should not be underestimated and that the models
-consist of a large number of individual parts and components.
-Some of these objects have trivial shapes (e.g. rectangular surfaces
-for a sheet pile wall segment), others can have non-trivial curvilinear
-boundaries (e.g. geological bodies).
-All of these objects must be shaped to fit each other (without gaps or
-overlaps) and together form the FE model.
+When modelling geotechnical problems, it is often desirable to make a
+meaningful geometric abstraction to avoid time-consuming modelling, but also to
+avoid inaccuracies due to oversimplification. However, experience shows that
+the effort involved in creating such a model geometry should not be
+underestimated and that the models consist of a large number of individual
+parts and components - often called ‘geometrical objects’. Some of these
+objects have trivial shapes (e.g. rectangular surfaces for a sheet pile wall
+segment), others can have non-trivial curvilinear boundaries (e.g. geological
+bodies). All of these objects must be shaped to fit each other (without gaps or
+overlaps) and together form the FE model. Usually, geotechnical models are
+managed (e.g materials, staging, etc) on the level of these objects.
 
-As the shape of these individual parts and components directly influences
-the shape of the FE elements they are build of, further prerequisites must
-be considered during geometrisation: For instance, as few ‘unfavourably
-shaped’ (e.g. too acute-angled) FE elements as possible should result in
-order to avoid numerical instabilities or load increments that are too
-small. A common reason for acute-angled elements and large numbers of
-elements are corner or end points that are close together and unfavourable
-intersections of the objects. Another requirement for geometrisation
-is that the number of FE elements should remain within a range that
-enables acceptable calculation times.
+\section{‘Subdomains’ resp. ‘Blocks’}
+\label{geometry-blocks-and-subdomains}
 
-Although Moose's ‘Mesh System’ provides a variety of tools for generating
-FE meshes on the basis of input file commands, the creation of geometrically
+Geometrically, a Moose model consists of one or more ‘subdomains’. Due to the
+use of \href{https://libmesh.github.io/}{libmesh} by Moose, the term ‘block’ is
+also used as a synonym for ‘subdomain’ in many places. Element types and Moose
+objects such as materials, kernels, etc. are assigned to these subdomains in
+turn. Furthermore, each FE element belongs to exactly one subdomain.
+
+It is therefore necessary to create at least one subdomain for each element
+type and each material. To simplify the handling of construction stages, it has
+also proved useful to further subdivide element sets into individual subdomains
+so they match the ‘geometrical objects’ mentioned before so they can to be used
+independently during the simulation (e.g. deactivated or activated at different
+times). This document follows this approach that Moose models are managed on
+the basis of subdomains/blocks.
+
+As the shape of these individual parts and components directly influences the
+shape of the FE elements they are build of, further prerequisites must be
+considered during geometrisation: For instance, as few ‘unfavourably shaped’
+(e.g. too acute-angled) FE elements as possible should result in order to avoid
+numerical instabilities or load increments that are too small. A common reason
+for acute-angled elements and large numbers of elements are corner or end
+points that are close together and unfavourable intersections of the objects.
+Another requirement for geometrisation is that the number of FE elements should
+remain within a range that enables acceptable calculation times.
+
+\section{Getting the mesh into Moose}
+\label{geometry-getting-the-mesh-into-moose}
+
+Although Moose's ‘Mesh System’ provides a variety of tools for generating FE
+meshes on the basis of input file commands, the creation of geometrically
 complex models with these commands is often confusing and error-prone.
 % https://mooseframework.inl.gov/syntax/Mesh/index.html
 
-The mesh is therefore often created outside of the Mosse (e.g. using
-\href{https://blender.org}{Blender}), saved as MSH-file and then imported
-using the \codeword{FileMeshGenerator}.
-The code required for this import in a Moose input file is shown in
-listing \ref{FileMeshGenerator}.
+Therefore, the mesh including all subdomains and FE-elements is prepared
+outside of Moose and imported using the \codeword{FileMeshGenerator}. The
+\href{https://gmsh.info/doc/texinfo/gmsh.html#MSH-file-format}{MSH file format}
+has proven itself in this context. One possible workflow is to create the
+geometry of the subdomains in \href{https://blender.org}{Blender}, then
+generate the mesh using \href{https://gmsh.info/}{gmsdh} and save it as an MSH
+file. See listing \ref{FileMeshGenerator} for the code required in a Moose
+input file for the import of an MSH file.
 % \href{https://mooseframework.inl.gov/source/meshgenerators/FileMeshGenerator.html}{FileMeshGenerator}
 
 \begin{lstlisting}[caption={Read mesh from a file},label={FileMeshGenerator}]
@@ -46,4 +68,5 @@ listing \ref{FileMeshGenerator}.
 []
 \end{lstlisting}
 
-(to be written)
+\todoinline{LowerDimensionalBlocks in MSH-files }
+

@@ -9,7 +9,7 @@
     \usepackage{graphicx}
     \usepackage[edges]{forest}
     \usetikzlibrary{decorations.pathreplacing}
-    
+
     % Related to math
     \usepackage{amsmath,amssymb,amsfonts,amsthm}
 
@@ -54,13 +54,33 @@
         breakatwhitespace=true,
         tabsize=3
     }
- 
+
+    % todo
+    \setlength {\marginparwidth }{2cm}
+    \usepackage{xargs}                      % Use more than one optional parameter in a new commands
+    \usepackage[dvipsnames]{xcolor}  % Coloured text etc.
+    \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+    \newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+    \newcommandx{\change}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+    \newcommandx{\info}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
+    \newcommandx{\improvement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
+    \newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
+    \newcommandx{\todoinline}[2][1=]{
+        {\hbadness=10000 \hfuzz=\maxdimen{\todo[inline,linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}}
+        % \errmessage{#2}
+        % \GenericError{9}{#2}{0}{1}
+        % \GenericInfo{9}{#2}
+        % \PackageWarning{ToDo}{#2}
+        % \typeout{Package ToDo Warning: #2}\typeout{}
+        % \typeout{Package ToDo Info: #2}\typeout{}
+    }
+
     \NewDocumentCommand{\codeword}{v}{%
         \texttt{\textcolor{blue}{#1}}%
     }
 
     \usepackage{filemod}
-    
+
     \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm,
     minimum height=1cm, text centered, draw=black]
     \tikzstyle{process} = [rectangle, minimum width=3cm,
