@@ -3,26 +3,110 @@ structures, loads etc. can be modelled.
 
 (to be written)
 
-\section{Volumes}
+\section{Overview}
 
-\section{FixedEndSprings}
+\begin{table}
+    \begin{tabularx}{\textwidth}{@{}lXl@{}}
+        \hline
+        Entity
+         &
+        Options for Modelling
+         &
+        Reference
+        \\
+
+        \hline
+        soil volume
+         &
+        \bulleted{cluster of volume elements}
+         &
+        \autoref{chap:entities-volume}
+        \\
+
+        \hline
+        excavation pit wall
+         &
+        \bulleted{shell elements}
+         &
+        \autoref{chap:entities-shell}
+        \\
+
+         &
+        \bulleted{cluster of volume elements in case of a 'thick' wall (e.g. slurry wall, bored pile wall)}
+         &
+        \autoref{chap:entities-volume}
+        \\
+
+        \hline
+        pile
+         &
+        \bulleted{embedded beams}
+         &
+        \autoref{chap:entities-embedded-beams}
+        \\
+
+         &
+        \bulleted{cluster of volume elements in case of a pile with large diameter (e.g. bored pile)}
+         &
+        \autoref{chap:entities-volume}
+        \\
+
+        \hline
+        prop
+         &
+        \bulleted{spring between nodes}
+         &
+        \autoref{chap:entities-springs}
+        \\
+
+         &
+        \bulleted{fixed end spring}
+         &
+        \autoref{chap:entities-fixed-end-springs}
+        \\
+
+         &
+        \bulleted{beam}
+
+         &
+        \autoref{chap:entities-beams}
+        \\
+
+        \hline
+    \end{tabularx}
+    \caption{Selected geotechnical entities and their respective modelling}
+    \label{tab:myfirsttable}
+\end{table}
+
+\section{Entities}
+% \label{chap:entities}
+
+\subsection{Volumes}
+\label{chap:entities-volume}
+
+\subsection{FixedEndSprings}
+\label{chap:entities-fixed-end-springs}
 
 https://mooseframework.inl.gov/source/nodalkernels/CoupledForceNodalKernel.html
 
 https://onlinelibrary.wiley.com/doi/pdf/10.1002/pamm.202200045
 
-\section{Springs between nodes (NodeToNodeAnchors)}
+\subsection{Springs between nodes (NodeToNodeAnchors)}
+\label{chap:entities-springs}
 
 https://mooseframework.inl.gov/mastodon/source/materials/LinearSpring.html
 
-\section{Beams (line element)}
+\subsection{Beams (line element)}
+\label{chap:entities-beams}
 
-\section{EmbeddedBeams (line element)}
+\subsection{EmbeddedBeams (line element)}
+\label{chap:entities-embedded-beams}
 
-\section{Plates (surface element)}
+\subsection{Shell (surface element)}
+\label{chap:entities-shell}
 
-\section{Interfaces (surface element)}
+\subsection{Interfaces (surface element)}
 
-\section{Contact}
+\subsection{Contact}
 
-\section{Pore Pressure Boundaries}
+\subsection{Pore Pressure Boundaries}
