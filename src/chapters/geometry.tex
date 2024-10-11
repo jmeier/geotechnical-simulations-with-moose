@@ -58,7 +58,7 @@ file. See listing \autoref{geometry-FileMeshGenerator} for the code required in
 a Moose input file for the import of an MSH file.
 % \href{https://mooseframework.inl.gov/source/meshgenerators/FileMeshGenerator.html}{FileMeshGenerator}
 
-\begin{lstlisting}[caption={Read mesh from a file},label={geometry-FileMeshGenerator}]
+\begin{lstlisting}[language=perl, caption={Read mesh from a file},label={geometry-FileMeshGenerator}]
 [Mesh]
     [file]
         type = FileMeshGenerator
@@ -152,3 +152,36 @@ cloning the following Moose code-plugins as a ‘contrib’:
     \item [beams:] \href{https://github.com/Kavan-Khaledi/moose-codeplugin-beam}{github.com/Kavan-Khaledi/moose-codeplugin-beam}
     \item [shells:] \href{https://github.com/Kavan-Khaledi/moose-codeplugin-shell}{github.com/Kavan-Khaledi/moose-codeplugin-shell}
 \end{description}
+
+\section{Groups of geometrical objects}
+\label{geometry-groups}
+
+Moose does not explicity support groups geometrical objects but allows to
+create variables in the input file holding names of several objects on one hand
+and to use these variables directly for block-restriction (e.g. assignment of
+materials).
+
+Due to the fact that Moose throws an error if unused variables are found in the
+input file, but the user may want to define groups even if they are not
+(currently) used, it has proven useful to add 'fake users' using a
+ParsedFunction as shown in \autoref{geometry-moose-variable-groups}.
+
+% HTML VRML bash hansl Python GAP Awk make Gnuplot Perl PHP SPARQL ksh
+\begin{lstlisting}[language=Perl, caption={Moose input file fragment: variable holding several block names and fake-user},label={geometry-moose-variable-groups}]
+[Mesh]
+    # Variable holding names of all blocks with volumes
+    Volumes = 'Base Column Suzanne'
+[]
+
+[Functions]
+    # Fake user for the variable above
+    [FakeUser_Volumes]
+        type = ParsedFunction
+        expression = 'a'
+        symbol_names = 'a'
+        symbol_values = '1'
+        control_tags = ${Mesh/Volumes}
+    []
+[]
+\end{lstlisting}
+
