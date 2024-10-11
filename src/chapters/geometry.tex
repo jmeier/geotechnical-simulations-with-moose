@@ -54,11 +54,11 @@ outside of Moose and imported using the \codeword{FileMeshGenerator}. The
 has proven itself in this context. One possible workflow is to create the
 geometry of the subdomains in \href{https://blender.org}{Blender}, then
 generate the mesh using \href{https://gmsh.info/}{gmsdh} and save it as an MSH
-file. See listing \ref{FileMeshGenerator} for the code required in a Moose
-input file for the import of an MSH file.
+file. See listing \autoref{geometry-FileMeshGenerator} for the code required in
+a Moose input file for the import of an MSH file.
 % \href{https://mooseframework.inl.gov/source/meshgenerators/FileMeshGenerator.html}{FileMeshGenerator}
 
-\begin{lstlisting}[caption={Read mesh from a file},label={FileMeshGenerator}]
+\begin{lstlisting}[caption={Read mesh from a file},label={geometry-FileMeshGenerator}]
 [Mesh]
     [file]
         type = FileMeshGenerator
@@ -68,5 +68,87 @@ input file for the import of an MSH file.
 []
 \end{lstlisting}
 
-\todoinline{LowerDimensionalBlocks in MSH-files }
+\section{Lower dimensional blocks in MSH files}
+\label{geometry-MSH}
 
+A notable quirk of the MSH file format when used with Moose is the definition
+of lower dimensional blocks. The term ‘lower dimensional blocks’ is used here
+to describe subdomains with FE elements with a lower dimensionality (e.g.
+shells and beams in a model with 3D solid elements). The MSH file format makes
+no internal distinction as to whether blocks with lower dimensional elements
+are to be interpreted as a sideset or as a ‘real’ element block. To introduce
+this distiction Moose recognizes the \codeword{lower_dimensional_block}
+codeword (although this codeword is not an official part of the MSH file
+format). If this codeword is found in the line of an entry in the
+\codeword{$PhysicalNames}, Moose assumes that this block does not represent a
+sideset, but contains lower dimensional elements. As shown in
+\autoref{geometry-MSH-LowerDimBlock} the codeword may be just appended at the
+end of the line (without beeing part of the name of the physical name) or even
+be pat of the physical name itself.
+
+\begin{lstlisting}[caption={Fragment of an MSH file containing ‘lower dimensional blocks’},label={geometry-MSH-LowerDimBlock}]
+$MeshFormat
+4.1 0 8
+$EndMeshFormat
+$PhysicalNames
+(*@{\raisebox{-1pt}[0pt][0pt]{$\vdots$}}@*)
+0 1 "PointA"                                         (*@{$\leftarrow$ sideset (node)}@*)
+1 2 "topleftedge"                                    (*@{$\leftarrow$ sideset (line)}@*)
+1 3 "lineSignPole000" lower_dimensional_block        (*@{$\leftarrow$ block with beam-elements}@*)
+1 4 "lineSignPole001_lower_dimensional_block"        (*@{$\leftarrow$ block with beam-elements}@*)
+2 5 "BoundaryZMin"                                   (*@{$\leftarrow$ sideset (surface)}@*)
+2 6 "Sign" lower_dimensional_block                   (*@{$\leftarrow$ block with shell-elements}@*)
+(*@{\raisebox{-1pt}[0pt][0pt]{$\vdots$}}@*)
+\end{lstlisting}
+
+\section{Choice of element types}
+\label{geometry-element-types}
+
+For obvious reasons, the element types of the individual subdomains must be
+compatible with each other (e.g. the number and distribution of nodes must
+match, etc). Given the often complex geometry of geotechnical models (see
+\autoref{geometry-general}), elements with triangular faces are often
+preferred. In this case, volume elements are correspondingly tetrahedral (TET)
+and surface elements are triangular (TRI). However, since linear TET and TRI
+elements (TET4 and TRI3) have very poor numerical properties (e.g.
+unrealistically high stiffness, locking), ‘quadratic’ elements (TET10 and TRI6)
+must be used. This leads to the commonly used compatible element types for
+tetrahedral/triangular discretisation show in
+\autoref{tab:geometry-TET-TRI-elements}.
+
+\begin{table}
+    \begin{tabularx}{\textwidth}{@{}lXl@{}}
+        \hline
+        Subdomain type
+                             &
+        Element type
+                             &
+        Comments
+        \\
+
+        \hline
+        volume
+                             &
+        TET10
+                             &
+        tetrahedral element with 10 nodes and 4 integration points
+        \\
+
+        surface (e.g. shell) & TRI6  & triangular element with 6 nodes \\
+
+        line (e.g. beam)     & EDGE3 & line element with 3 nodes       \\
+
+        \hline
+    \end{tabularx}
+    \caption{Commonly used compatible element types for tetrahedral/triangular discretisation}
+    \label{tab:geometry-TET-TRI-elements}
+\end{table}
+
+Currently, Moose has full support for TET10 elements, but not for EDGE3 and
+TET6 elements. EDGE3 and TRI6 elements can currenty be used in a Moose-app by
+cloning the following Moose code-plugins as a ‘contrib’:
+
+\begin{description}[font=$\bullet$~\normalfont]
+    \item [beams:] \href{https://github.com/Kavan-Khaledi/moose-codeplugin-beam}{github.com/Kavan-Khaledi/moose-codeplugin-beam}
+    \item [shells:] \href{https://github.com/Kavan-Khaledi/moose-codeplugin-shell}{github.com/Kavan-Khaledi/moose-codeplugin-shell}
+\end{description}
