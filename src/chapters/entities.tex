@@ -1,9 +1,10 @@
-This chapter collects information on how different types of geometric entities,
-structures, loads etc. can be modelled.
-
-(to be written)
-
 \section{Overview}
+\label{chap:entities-overview}
+
+This chapter collects information on how different types of geometric entities,
+structures, loads etc. can be modelled. \autoref{tab:entities-overview}
+contains a list of common geotechnical components and associated options that
+can be used for modelling them.
 
 \begin{table}
     \begin{tabularx}{\textwidth}{@{}lXl@{}}
@@ -20,7 +21,7 @@ structures, loads etc. can be modelled.
          &
         \bulleted{cluster of volume elements}
          &
-        \autoref{chap:entities-volume}
+        \shortautoref{chap:entities-volume}
         \\
 
         \hline
@@ -28,27 +29,50 @@ structures, loads etc. can be modelled.
          &
         \bulleted{shell elements}
          &
-        \autoref{chap:entities-shell}
+        \shortautoref{chap:entities-shell}
         \\
 
          &
         \bulleted{cluster of volume elements in case of a 'thick' wall (e.g. slurry wall, bored pile wall)}
          &
-        \autoref{chap:entities-volume}
+        \shortautoref{chap:entities-volume}
         \\
 
         \hline
-        pile
+        concrete volume
+
+         &
+        \bulleted{cluster of volume elements}
+         &
+        \shortautoref{chap:entities-volume}
+        \\
+
+         &
+        \bulleted{shell elements in case of a 'thin' walls}
+         &
+        \shortautoref{chap:entities-shell}
+        \\
+
+        \hline
+        sprayed concrete
+         &
+        \bulleted{shell elements}
+         &
+        \shortautoref{chap:entities-shell}
+        \\
+
+        \hline
+        pile, soil nail
          &
         \bulleted{cluster of volume elements in case of a pile with large diameter (e.g. bored pile)}
          &
-        \autoref{chap:entities-volume}
+        \shortautoref{chap:entities-volume}
         \\
 
         %  &
         % \bulleted{embedded beams}
         %  &
-        % \autoref{chap:entities-embedded-beams}
+        % \shortautoref{chap:entities-embedded-beams}
         % \\
 
         \hline
@@ -56,26 +80,35 @@ structures, loads etc. can be modelled.
          &
         \bulleted{spring between nodes}
          &
-        \autoref{chap:entities-springs}
+        \shortautoref{chap:entities-springs}
         \\
 
          &
         \bulleted{fixed end spring}
          &
-        \autoref{chap:entities-fixed-end-springs}
+        \shortautoref{chap:entities-fixed-end-springs}
         \\
 
          &
         \bulleted{beam}
 
          &
-        \autoref{chap:entities-beams}
+        \shortautoref{chap:entities-beams}
         \\
 
         \hline
+        ground anchor
+         &
+        \bulleted{spring between nodes + (embedded) beam}
+         &
+        \shortautoref{chap:entities-springs}
+        \\
+
+        \hline
+
     \end{tabularx}
     \caption{Selected geotechnical entities and their respective modelling}
-    \label{tab:myfirsttable}
+    \label{tab:entities-overview}
 \end{table}
 
 \section{Entities}

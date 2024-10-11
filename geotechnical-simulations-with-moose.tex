@@ -28,6 +28,14 @@
     }
     \usepackage[nameinlink,noabbrev]{cleveref}
 
+    \newcommand*{\shortautoref}[1]{%
+        \begingroup
+        \def\sectionautorefname{sec.}%
+        \def\subsectionautorefname{sec.}%
+        \autoref{#1}%
+        \endgroup
+    }
+
     % Other packages
     \usepackage[inline]{enumitem}
     \usepackage{soul}   %for highlighting text
