@@ -105,7 +105,6 @@ can be used for modelling them.
         \\
 
         \hline
-
     \end{tabularx}
     \caption{Selected geotechnical entities and their respective modelling}
     \label{tab:entities-overview}
@@ -117,20 +116,45 @@ can be used for modelling them.
 \subsection{Volumes}
 \label{chap:entities-volume}
 
+To model a volume, such as a soil volume, concrete volume, etc., the following
+is required:
+
+\begin{description}[font=$\bullet$~\normalfont]
+    \item [subdomain:] A subdomain of FE-elements of an appropriate element type (e.g. TET10).
+    \item [materials:] Assignment of Moose materials defining the constitutive behaviour.
+\end{description}
+
 \subsection{FixedEndSprings}
 \label{chap:entities-fixed-end-springs}
 
-https://mooseframework.inl.gov/source/nodalkernels/CoupledForceNodalKernel.html
+Fixed end springs are currently not directly supported by Moose. As a
+workaround one can define a spring between nodes
+(\autoref{chap:entities-springs}) and fix the other node.
 
+https://mooseframework.inl.gov/source/nodalkernels/CoupledForceNodalKernel.html
 https://onlinelibrary.wiley.com/doi/pdf/10.1002/pamm.202200045
 
 \subsection{Springs between nodes (NodeToNodeAnchors)}
 \label{chap:entities-springs}
 
-https://mooseframework.inl.gov/mastodon/source/materials/LinearSpring.html
+% Springs between nodes are directly supported by Moose. 
+(to be written)
+
+mastodon:
+\href{https://mooseframework.inl.gov/mastodon/source/materials/LinearSpring.html}{LinearSpring}
 
 \subsection{Beams (line element)}
 \label{chap:entities-beams}
+
+To model beams, the following is required:
+
+\begin{description}[font=$\bullet$~\normalfont]
+    \item [subdomain:] A subdomain of FE-elements of an appropriate element type (e.g. EDGE3).
+    \item [materials:] Assignment of Moose materials defining the constitutive behaviour of the beam.
+\end{description}
+
+Currently, Moose has no support for appropriate beam elements and materials for EDGE3. In your MooseApp, the beam material for EDGE may be included as an ‘contrib’ by cloning into
+\href{https://github.com/Kavan-Khaledi/moose-codeplugin-beam}{github.com/Kavan-Khaledi/moose-codeplugin-beam}
 
 % \subsection{EmbeddedBeams (line element)}
 % \label{chap:entities-embedded-beams}
@@ -138,8 +162,24 @@ https://mooseframework.inl.gov/mastodon/source/materials/LinearSpring.html
 \subsection{Shell (surface element)}
 \label{chap:entities-shell}
 
+To model shells (or "plates"), the following is required:
+
+\begin{description}[font=$\bullet$~\normalfont]
+    \item [subdomain:] A subdomain of FE-elements of an appropriate element type (e.g. TRI6).
+    \item [materials:] Assignment of Moose materials defining the constitutive behaviour of the shell.
+\end{description}
+
+Currently, Moose has no support for appropriate shell elements and materials for TRI6. In your MooseApp, the shell material for TRI6 may be included as an ‘contrib’ by cloning into
+\href{https://github.com/Kavan-Khaledi/moose-codeplugin-shell}{github.com/Kavan-Khaledi/moose-codeplugin-shell}
+
 \subsection{Interfaces (surface element)}
+
+(to be written)
 
 \subsection{Contact}
 
+(to be written)
+
 \subsection{Pore Pressure Boundaries}
+
+(to be written)
