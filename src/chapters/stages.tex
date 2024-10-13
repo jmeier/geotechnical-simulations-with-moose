@@ -1,10 +1,58 @@
+\section{General comments on construction stages}
+\label{chap:stages-general}
+
+The type of geotechnical simulation primarily discussed in this document aims
+to model a construction process. Accordingly, such a simulation must reproduce
+the various stages of construction over time. Since this document assumes that
+Moose models are organised on the basis of subdomains
+(\autoref{geometry-blocks-and-subdomains}), the state changes also refer
+primarily to adjustments that affect entire subdomains.
+
+The most common state changes in this context are:
+
+\begin{itemize}
+    \item Activating subdomains (e.g. installation of sheet piles is usually modelled by
+          activating the corresponding subdomain)
+    \item Deactivating subdomains (e.g. excavation of a soil volume is usually modelled
+          by deactivating the corresponding subdomain)
+    \item Replacing subdomains (e.g. installation of a slurry wall modelled via volume
+          elements leads to the need to replace the soil volume with the volume
+          representing the slurry wall)
+    \item Adjusting external loads (e.g. loads are used to model various influences. As
+          these influences change over time, the corresponding loads have to be adjusted)
+    \item Adjusting prestress (e.g. for props and stand anchors the prestress is to be
+          adjusted)
+\end{itemize}
+
+As a consequence of the Moose input file concept, these status adjustments must
+be triggered at various points in an input file if Moose is used ‘out of the
+box’. To provide a more centralised way of defining construction stages, the
+\codeword{[Stages]} MooseApp code plugin linked below can be used:
+
+\href{https://github.com/jmeier/moose-codeplugin-stages}{github.com/jmeier/moose-codeplugin-stages}
+
+This document primarily describes the procedure for defining construction
+stages with the \codeword{[Stages]} code plugin where applicable. The procedure
+without this plugin is only mentioned in selected places.
+
+\section{Activating and deactivating subdomains}
+\label{chap:stages-subdomain-activation-deactivation}
+
+ToDo: Ramp up / ramp down material properties
+
 (to be written)
 
-\begin{verbatim}
+\section{Replacing subdomains}
+\label{chap:stages-subdomain-replacement}
 
-- Construction Stages
-a. Activating and Deactivating Elements
-b. Replacing Elements
-c. Adjusting Prestress
+(to be written)
 
-\end{verbatim}
+\section{Adjusting external loads}
+\label{chap:stages-loads}
+
+(to be written)
+
+\section{Adjusting prestress}
+\label{chap:stages-prestress}
+
+(to be written)
