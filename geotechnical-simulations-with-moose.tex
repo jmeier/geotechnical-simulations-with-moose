@@ -9,7 +9,11 @@
     \usepackage{graphicx}
     \usepackage[edges]{forest}
     \usetikzlibrary{decorations.pathreplacing}
-    
+
+    % tables
+    \usepackage{tabularx,array,booktabs}
+    \newcolumntype{Y}{>{\centering\arraybackslash}X} % for centering tables in tabularx
+
     % Related to math
     \usepackage{amsmath,amssymb,amsfonts,amsthm}
 
@@ -24,14 +28,75 @@
     }
     \usepackage[nameinlink,noabbrev]{cleveref}
 
+    \newcommand*{\shortautoref}[1]{%
+        \begingroup
+        \def\sectionautorefname{sec.}%
+        \def\subsectionautorefname{sec.}%
+        \autoref{#1}%
+        \endgroup
+    }
+
     % Other packages
     \usepackage[inline]{enumitem}
     \usepackage{soul}   %for highlighting text
     % \usepackage{layouts}
     \usepackage{fontawesome5}
 
+    % code listings
+    \usepackage{listings}
+    \usepackage{color}
+
+    \definecolor{dkgreen}{rgb}{0,0.6,0}
+    \definecolor{gray}{rgb}{0.5,0.5,0.5}
+    \definecolor{mauve}{rgb}{0.58,0,0.82}
+
+    \lstset{frame=tb,
+        language=Python,
+        aboveskip=3mm,
+        belowskip=3mm,
+        showstringspaces=false,
+        columns=flexible,
+        basicstyle={\small\ttfamily},
+        numbers=none,
+        numberstyle=\tiny\color{gray},
+        keywordstyle=\color{blue},
+        commentstyle=\color{dkgreen},
+        stringstyle=\color{mauve},
+        breaklines=true,
+        breakatwhitespace=true,
+        tabsize=3
+    }
+
+    % todo
+    \setlength {\marginparwidth }{2cm}
+    \usepackage{xargs}                      % Use more than one optional parameter in a new commands
+    \usepackage[dvipsnames]{xcolor}  % Coloured text etc.
+    \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+    \newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+    \newcommandx{\change}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+    \newcommandx{\info}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
+    \newcommandx{\improvement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
+    \newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
+    \newcommandx{\todoinline}[2][1=]{
+        {\hbadness=10000 \hfuzz=\maxdimen{\todo[inline,linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}}
+        % \errmessage{#2}
+        % \GenericError{9}{#2}{0}{1}
+        % \GenericInfo{9}{#2}
+        % \PackageWarning{ToDo}{#2}
+        % \typeout{Package ToDo Warning: #2}\typeout{}
+        % \typeout{Package ToDo Info: #2}\typeout{}
+    }
+
+    \NewDocumentCommand{\codeword}{v}{%
+        \texttt{\textcolor{blue}{#1}}%
+    }
+
+    \newcommandx{\bulleted}[1]{%
+        \begin{itemize}[wide=0pt, leftmargin=*, noitemsep, topsep=0pt, label=\textbullet, before=\vspace{-\dimexpr\baselineskip - 6pt}, after=\vspace*{-\dimexpr\baselineskip}]\item #1 \end{itemize}%
+    }
+
     \usepackage{filemod}
-    
+
     \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm,
     minimum height=1cm, text centered, draw=black]
     \tikzstyle{process} = [rectangle, minimum width=3cm,
@@ -49,6 +114,8 @@
 
 \begin{document}
 
+\lstset{language=[Sharp]C,,basicstyle=\footnotesize\ttfamily,showspaces=false,showtabs=false,,breaklines=true,showstringspaces=false,breakatwhitespace=true, escapeinside={(*@}{@*)}}
+
 %\maketitle
 \input{src/title.tex}
 
@@ -62,13 +129,9 @@
 \label{chap:geometry}
 \input{src/chapters/geometry.tex}
 
-\chapter{Model Elements}
-\label{chap:elements}
-\input{src/chapters/elements.tex}
-
-\chapter{Material Models}
-\label{chap:materials}
-\input{src/chapters/materials.tex}
+\chapter{Modelling of geometric entities, structures, loads, etc.}
+\label{chap:entities}
+\input{src/chapters/entities.tex}
 
 \chapter{General Model Setup}
 \label{chap:setup}
@@ -81,6 +144,10 @@
 \chapter{Construction Stages}
 \label{chap:stages}
 \input{src/chapters/stages.tex}
+
+\chapter{Material Models for Soil and Rock}
+\label{chap:materials}
+\input{src/chapters/materials.tex}
 
 \chapter{Postprocessing}
 \label{chap:postprocessing}

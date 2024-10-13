@@ -1,0 +1,185 @@
+\section{Overview}
+\label{chap:entities-overview}
+
+This chapter collects information on how different types of geometric entities,
+structures, loads etc. can be modelled. \autoref{tab:entities-overview}
+contains a list of common geotechnical components and associated options that
+can be used for modelling them.
+
+\begin{table}
+    \begin{tabularx}{\textwidth}{@{}lXl@{}}
+        \hline
+        Entity
+         &
+        Options for Modelling
+         &
+        Reference
+        \\
+
+        \hline
+        soil volume
+         &
+        \bulleted{cluster of volume elements}
+         &
+        \shortautoref{chap:entities-volume}
+        \\
+
+        \hline
+        excavation pit wall
+         &
+        \bulleted{shell elements}
+         &
+        \shortautoref{chap:entities-shell}
+        \\
+
+         &
+        \bulleted{cluster of volume elements in case of a 'thick' wall (e.g. slurry wall, bored pile wall)}
+         &
+        \shortautoref{chap:entities-volume}
+        \\
+
+        \hline
+        concrete volume
+
+         &
+        \bulleted{cluster of volume elements}
+         &
+        \shortautoref{chap:entities-volume}
+        \\
+
+         &
+        \bulleted{shell elements in case of a 'thin' walls}
+         &
+        \shortautoref{chap:entities-shell}
+        \\
+
+        \hline
+        sprayed concrete
+         &
+        \bulleted{shell elements}
+         &
+        \shortautoref{chap:entities-shell}
+        \\
+
+        \hline
+        pile, soil nail
+         &
+        \bulleted{cluster of volume elements in case of a pile with large diameter (e.g. bored pile)}
+         &
+        \shortautoref{chap:entities-volume}
+        \\
+
+        %  &
+        % \bulleted{embedded beams}
+        %  &
+        % \shortautoref{chap:entities-embedded-beams}
+        % \\
+
+        \hline
+        prop
+         &
+        \bulleted{spring between nodes}
+         &
+        \shortautoref{chap:entities-springs}
+        \\
+
+         &
+        \bulleted{fixed end spring}
+         &
+        \shortautoref{chap:entities-fixed-end-springs}
+        \\
+
+         &
+        \bulleted{beam}
+
+         &
+        \shortautoref{chap:entities-beams}
+        \\
+
+        \hline
+        ground anchor
+         &
+        \bulleted{spring between nodes + (embedded) beam}
+         &
+        \shortautoref{chap:entities-springs}
+        \\
+
+        \hline
+    \end{tabularx}
+    \caption{Selected geotechnical entities and their respective modelling}
+    \label{tab:entities-overview}
+\end{table}
+
+\section{Entities}
+% \label{chap:entities}
+
+\subsection{Volumes}
+\label{chap:entities-volume}
+
+To model a volume, such as a soil volume, concrete volume, etc., the following
+is required:
+
+\begin{description}[font=$\bullet$~\normalfont]
+    \item [subdomain:] A subdomain of FE-elements of an appropriate element type (e.g. TET10).
+    \item [materials:] Assignment of Moose materials defining the constitutive behaviour.
+\end{description}
+
+\subsection{FixedEndSprings}
+\label{chap:entities-fixed-end-springs}
+
+Fixed end springs are currently not directly supported by Moose. As a
+workaround one can define a spring between nodes
+(\autoref{chap:entities-springs}) and fix the other node.
+
+https://mooseframework.inl.gov/source/nodalkernels/CoupledForceNodalKernel.html
+https://onlinelibrary.wiley.com/doi/pdf/10.1002/pamm.202200045
+
+\subsection{Springs between nodes (NodeToNodeAnchors)}
+\label{chap:entities-springs}
+
+% Springs between nodes are directly supported by Moose. 
+(to be written)
+
+mastodon:
+\href{https://mooseframework.inl.gov/mastodon/source/materials/LinearSpring.html}{LinearSpring}
+
+\subsection{Beams (line element)}
+\label{chap:entities-beams}
+
+To model beams, the following is required:
+
+\begin{description}[font=$\bullet$~\normalfont]
+    \item [subdomain:] A subdomain of FE-elements of an appropriate element type (e.g. EDGE3).
+    \item [materials:] Assignment of Moose materials defining the constitutive behaviour of the beam.
+\end{description}
+
+Currently, Moose has no support for appropriate beam elements and materials for EDGE3. In your MooseApp, the beam material for EDGE may be included as an ‘contrib’ by cloning into
+\href{https://github.com/Kavan-Khaledi/moose-codeplugin-beam}{github.com/Kavan-Khaledi/moose-codeplugin-beam}
+
+% \subsection{EmbeddedBeams (line element)}
+% \label{chap:entities-embedded-beams}
+
+\subsection{Shell (surface element)}
+\label{chap:entities-shell}
+
+To model shells (or "plates"), the following is required:
+
+\begin{description}[font=$\bullet$~\normalfont]
+    \item [subdomain:] A subdomain of FE-elements of an appropriate element type (e.g. TRI6).
+    \item [materials:] Assignment of Moose materials defining the constitutive behaviour of the shell.
+\end{description}
+
+Currently, Moose has no support for appropriate shell elements and materials for TRI6. In your MooseApp, the shell material for TRI6 may be included as an ‘contrib’ by cloning into
+\href{https://github.com/Kavan-Khaledi/moose-codeplugin-shell}{github.com/Kavan-Khaledi/moose-codeplugin-shell}
+
+\subsection{Interfaces (surface element)}
+
+(to be written)
+
+\subsection{Contact}
+
+(to be written)
+
+\subsection{Pore Pressure Boundaries}
+
+(to be written)
