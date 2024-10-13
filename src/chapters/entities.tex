@@ -131,8 +131,9 @@ Fixed end springs are currently not directly supported by Moose. As a
 workaround one can define a spring between nodes
 (\autoref{chap:entities-springs}) and fix the other node.
 
-https://mooseframework.inl.gov/source/nodalkernels/CoupledForceNodalKernel.html
-https://onlinelibrary.wiley.com/doi/pdf/10.1002/pamm.202200045
+\href{https://mooseframework.inl.gov/source/nodalkernels/CoupledForceNodalKernel.html}{CoupledForceNodalKernel}
+
+\href{https://onlinelibrary.wiley.com/doi/pdf/10.1002/pamm.202200045}{pamm.202200045}
 
 \subsection{Springs between nodes (NodeToNodeAnchors)}
 \label{chap:entities-springs}
@@ -153,7 +154,9 @@ To model beams, the following is required:
     \item [materials:] Assignment of Moose materials defining the constitutive behaviour of the beam.
 \end{description}
 
-Currently, Moose has no support for appropriate beam elements and materials for EDGE3. In your MooseApp, the beam material for EDGE may be included as an ‘contrib’ by cloning into
+Currently, Moose has no support for appropriate beam elements and materials for
+EDGE3. In your MooseApp, the beam material for EDGE may be included as an
+‘contrib’ by cloning into
 \href{https://github.com/Kavan-Khaledi/moose-codeplugin-beam}{github.com/Kavan-Khaledi/moose-codeplugin-beam}
 
 % \subsection{EmbeddedBeams (line element)}
@@ -169,7 +172,9 @@ To model shells (or "plates"), the following is required:
     \item [materials:] Assignment of Moose materials defining the constitutive behaviour of the shell.
 \end{description}
 
-Currently, Moose has no support for appropriate shell elements and materials for TRI6. In your MooseApp, the shell material for TRI6 may be included as an ‘contrib’ by cloning into
+Currently, Moose has no support for appropriate shell elements and materials
+for TRI6. In your MooseApp, the shell material for TRI6 may be included as an
+‘contrib’ by cloning into
 \href{https://github.com/Kavan-Khaledi/moose-codeplugin-shell}{github.com/Kavan-Khaledi/moose-codeplugin-shell}
 
 \subsection{Interfaces (surface element)}

@@ -26,3 +26,31 @@ but is not suitable for productive models, as this call may not be not
 documented and may not be reproducible:
 
 \codeword{./moose-opt -i input1.i -i input2.i -i input3.i}
+
+\section{Physical units}
+\label{chap:patterns-physical units}
+
+(to be written)
+
+\begin{lstlisting}[language=perl, caption={Physical units in inut files},label={patterns-physical-units}]
+    E = ${units 1000E3 kN/m^2 -> MN/m^2}
+
+    # variable holding the pyhsical unit for lengths
+    modelunit_length = 'm'
+    
+    # Umrechnung von 10 mm in die Modelleinheit (m)
+    a = ${units 10 mm -> ${modelunit_length}}
+
+
+    # model units
+    modelunit_length = 'm'
+    modelunit_time   = 's'
+    modelunit_mass = 'kg' # Mg = tons; Gg = kilotons
+
+    # derived units (this may be moved into a !include)
+    modelunit_force  = ${raw ${modelunit_mass} * ${modelunit_length} / ${modelunit_time} ^ 2}
+    modelunit_pressure = ${raw ${modelunit_force} / ${modelunit_length} ^ 2}
+    modelunit_acceleration = ${raw ${modelunit_length} / ${modelunit_time} ^ 2}
+    modelunit_density = ${raw ${modelunit_mass} / ${modelunit_length} ^ 3}
+
+\end{lstlisting}
