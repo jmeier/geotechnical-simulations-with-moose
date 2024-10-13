@@ -1,7 +1,34 @@
-(to be written)
+\section{Strain calculation}
+\label{chap:setup-strain}
 
-Calculation type:
+In the
+\href{https://mooseframework.inl.gov/modules/solid_mechanics/}{'solid\_mechanics'}
+module, Moose supports three different types of
+\href{https://mooseframework.inl.gov/modules/solid_mechanics/Strains.html}{strain}
+calculation:
 \begin{itemize}
-  \item {Incremental Small Strains \href{https://mooseframework.inl.gov/modules/solid_mechanics/Strains.html}{Strains.html} }
-  \item {Stress \href{https://mooseframework.inl.gov/modules/solid_mechanics/Stresses.html}{Stresses.html}}
+  \item {Small Linearized Total Strain}
+  \item {Incremental Small Strains}
+  \item {Finite Large Strains}
 \end{itemize}
+
+\begin{lstlisting}[language=perl, caption={Setting up incremental small strains within the Physics/SolidMechanics block},label={setup-incremental-small-strains}]
+[Physics]
+  [SolidMechanics]
+    [QuasiStatic]
+      [./all]
+        strain = SMALL
+        incremental = true
+        (*@{\raisebox{-1pt}[0pt][0pt]{$\vdots$}}@*)
+      []
+    []
+  []
+[]
+\end{lstlisting}
+
+\section{Stress calculation}
+\label{chap:setup-stress}
+
+\href{https://mooseframework.inl.gov/modules/solid_mechanics/Stresses.html}{Stresses.html}
+
+(to be written)
