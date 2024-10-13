@@ -1,8 +1,28 @@
+\section{Initial conditions for Moose objects}
+\label{chap:IC-moose-objects}
+
+For definition of the initial (starting) conditions for the variables a Moose
+simulation the \href{https://mooseframework.inl.gov/syntax/ICs}{ICs system} is
+to be used.
+
 (to be written)
 
-\begin{verbatim}
-    
-    - Initial Stress State
+\section{Initial stress state}
+\label{chap:IC-stress-state}
 
-\end{verbatim}
+The initial (starting) stress state of geotechnical simulations are often
+non-trivial. The reason for this is that the initial state to be modelled is a
+section of the geosphere with its often millions of years old history. In
+addition, the ground surface is often non-horizontal, which is why the stress
+trajectories near the surface are aligned accordingly. Furthermore, the initial
+stress state is often anisotropic with a specific orientation.
+
+\begin{itemize}
+    \item Align the model to the orientation of the initial stresses
+    \item Fix the model boundaries (usually all boundaries are only fixed in the
+          direction of the normal and the lower boundary can also be fixed horizontally).
+    \item Use an appropriate EigenstrainFromStress
+\end{itemize}
+
+(to be written)
 
