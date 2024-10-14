@@ -46,7 +46,7 @@ To consider gravity, the following aspects must be included in the model:
           (\autoref{initial-conditions-density}).
 \end{itemize}
 
-\begin{lstlisting}[language=perl, caption={Gravity kernel in a Moose inut file},label={initial-conditions-gravity}]
+\begin{lstlisting}[language=perl, float, caption={Gravity kernel in a Moose inut file},label={initial-conditions-gravity}]
 [Kernels]
     [gravity]
         type = Gravity
@@ -57,7 +57,7 @@ To consider gravity, the following aspects must be included in the model:
 []
 \end{lstlisting}
 
-\begin{lstlisting}[language=perl, caption={Assignment of a density to subdomain ‘block1’},label={initial-conditions-density}]
+\begin{lstlisting}[language=perl, float, caption={Assignment of a density to subdomain ‘block1’},label={initial-conditions-density}]
 [Materials]
     [undrained_density]
       type = GenericConstantMaterial
@@ -90,19 +90,24 @@ $h=0$ and $K_0$ to the earth pressure coefficient. This earth pressure
 coefficient is usually estimated as a function of the angle of internal
 friction $\varphi$ (simplified equation according to Jaky).
 
-\begin{lstlisting}[language=perl, caption={Definition of a geostatic stress state using ‘ComputeEigenstrainFromInitialStress’ },label={initial-conditions-ComputeEigenstrainFromInitialStress}]
+\autoref{initial-conditions-ComputeEigenstrainFromInitialStress} shows the
+definition of a geostatic initial stress state using two functions
+\codeword{ini_xx_yy} and \codeword{ini_zz} and their subsequent use in a
+\codeword{ComputeEigenstrainFromInitialStress}.
+
+\begin{lstlisting}[language=perl, float, caption={Definition of a geostatic initial stress state using ‘ComputeEigenstrainFromInitialStress’ },label={initial-conditions-ComputeEigenstrainFromInitialStress}]
 [Functions]
     [ini_xx_yy]
       type = ParsedFunction
-      vars = 'sig_top   y_top   rho      g    k0 '
+      vars = 'sig_top   z_top   rho      g    k0 '
       vals = '-1.5      0       0.0025   10   0.3'
-      value = '(sig_top - rho * g * (y_top - y)) * k0'
+      value = '(sig_top - rho * g * (z_top - z)) * k0'
     []
     [ini_zz]
       type = ParsedFunction
-      vars = 'sig_top   y_top   rho      g'
+      vars = 'sig_top   z_top   rho      g'
       vals = '-1.5      0       0.0025   10'
-      value = '(sig_top - rho * g * (y_top - y))'
+      value = '(sig_top - rho * g * (z_top - z))'
     []
 []
   
