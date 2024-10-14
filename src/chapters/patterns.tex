@@ -80,14 +80,26 @@ input file, Moose will issue an error. This can be avoided by adding fake-users
 to the variables.
 
 \begin{lstlisting}[language=perl, caption={Set of consistent physical units in a Moose inut file},label={patterns-physical-unit-set}]
-    # model units
-    modelunit_length = 'm'
-    modelunit_time   = 's'
-    modelunit_mass = 'kg' # Mg = tons; Gg = kilotons
+# model units
+modelunit_length = 'm'
+modelunit_time   = 's'
+modelunit_mass = 'kg' # Mg = tons; Gg = kilotons
 
-    # derived units (this may be moved into a !include)
-    modelunit_force  = ${raw ${modelunit_mass} * ${modelunit_length} / ${modelunit_time} ^ 2}
-    modelunit_pressure = ${raw ${modelunit_force} / ${modelunit_length} ^ 2}
-    modelunit_acceleration = ${raw ${modelunit_length} / ${modelunit_time} ^ 2}
-    modelunit_density = ${raw ${modelunit_mass} / ${modelunit_length} ^ 3}
+# derived units (this may be moved into a !include)
+modelunit_force  = ${raw ${modelunit_mass} * ${modelunit_length} / ${modelunit_time} ^ 2}
+modelunit_pressure = ${raw ${modelunit_force} / ${modelunit_length} ^ 2}
+modelunit_acceleration = ${raw ${modelunit_length} / ${modelunit_time} ^ 2}
+modelunit_density = ${raw ${modelunit_mass} / ${modelunit_length} ^ 3}
+
+# Fake userss for the variables above
+[Functions]
+    [FakeUser_modelunit_force]
+        type = ParsedFunction
+        expression = 'a'
+        symbol_names = 'a'
+        symbol_values = '1'
+        control_tags = ${modelunit_force}
+    []
+    (*@{\raisebox{-1pt}[0pt][0pt]{$\vdots$}}@*)
+[]
 \end{lstlisting}
