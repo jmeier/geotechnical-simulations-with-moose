@@ -1,5 +1,5 @@
 \section{Strain calculation}
-\label{chap:setup-strain}
+\label{chap:model-configuration-strain}
 
 In the
 \href{https://mooseframework.inl.gov/modules/solid_mechanics/}{'solid\_mechanics'}
@@ -27,8 +27,14 @@ calculation:
 \end{lstlisting}
 
 \section{Stress calculation}
-\label{chap:setup-stress}
+\label{chap:model-configuration-stress}
 
 \href{https://mooseframework.inl.gov/modules/solid_mechanics/Stresses.html}{Stresses.html}
+
+The stress calculation chosen by the user must be compatible with the strain
+calculation (\autoref{chap:model-configuration-strain}).
+
+ComputeFiniteStrainElasticStress for incremental and finite strain
+formulations.
 
 (to be written)
