@@ -58,7 +58,7 @@ file. See listing \autoref{geometry-FileMeshGenerator} for the code required in
 a Moose input file for the import of an MSH file.
 % \href{https://mooseframework.inl.gov/source/meshgenerators/FileMeshGenerator.html}{FileMeshGenerator}
 
-\begin{lstlisting}[language=perl, caption={Read mesh from a file},label={geometry-FileMeshGenerator}]
+\begin{lstlisting}[language=perl, float, caption={Read mesh from a file},label={geometry-FileMeshGenerator}]
 [Mesh]
     [file]
         type = FileMeshGenerator
@@ -86,7 +86,7 @@ sideset, but contains lower dimensional elements. As shown in
 end of the line (without beeing part of the name of the physical name) or even
 be pat of the physical name itself.
 
-\begin{lstlisting}[caption={Fragment of an MSH file containing ‘lower dimensional blocks’},label={geometry-MSH-LowerDimBlock}]
+\begin{lstlisting}[float, caption={Fragment of an MSH file containing ‘lower dimensional blocks’},label={geometry-MSH-LowerDimBlock}]
 $MeshFormat
 4.1 0 8
 $EndMeshFormat
@@ -167,7 +167,7 @@ input file, but the user may want to define groups even if they are not
 ParsedFunction as shown in \autoref{geometry-moose-variable-groups}.
 
 % HTML VRML bash hansl Python GAP Awk make Gnuplot Perl PHP SPARQL ksh
-\begin{lstlisting}[language=Perl, caption={Moose input file fragment: variable holding several block names and fake-user},label={geometry-moose-variable-groups}]
+\begin{lstlisting}[language=Perl, float, caption={Moose input file fragment: variable holding several block names and fake-user},label={geometry-moose-variable-groups}]
 [Mesh]
     # Variable holding names of all blocks with volumes
     Volumes = 'Base Column Suzanne'
