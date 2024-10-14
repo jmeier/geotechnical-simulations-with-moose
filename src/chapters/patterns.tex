@@ -30,18 +30,56 @@ documented and may not be reproducible:
 \section{Physical units}
 \label{chap:patterns-physical-units}
 
-(to be written)
+In Moose, all numerical values must be entered in a system of units which is
+consistent in itself - but which is selected by the user. Without additional
+options, the user must enter a number in the input file without a unit being
+explicitly labelled.
 
-\begin{lstlisting}[language=perl, caption={Physical units in inut files},label={patterns-physical-units}]
-    E = ${units 1000E3 kN/m^2 -> MN/m^2}
+In addition, Moose - like other FE programmes - calculates internally with a
+finite precision. To avoid rounding errors and inaccuracies in the numerical
+calculation, it is therefore important that the numerical values entered are
+not too large. With a careful choice of the system of physical units, the user
+can avoid such numerical problems.
 
-    # variable holding the pyhsical unit for lengths
-    modelunit_length = 'm'
-    
-    # Umrechnung von 10 mm in die Modelleinheit (m)
-    a = ${units 10 mm -> ${modelunit_length}}
+From the user's point of view, the challenge is to enter the numerical values
+in the ‘correct’ system of physical units everywhere in the input file. This
+conversion and the non-trivial verifiability is a source of error that should
+not be underestimated, particularly in the case of physical units with a time
+reference. Experience shows, that this is a frequent source of problems!
 
+To mitigate this source of error, Moose offers the
+‘\href{https://mooseframework.inl.gov/source/utils/Units.html}{MooseUnits}’
+unitily. In the input file this utility allows to convert the unit ‘on the
+fly’. The input file fragment shown in
+\autoref{patterns-physical-units-example1} converts \SI{1000e3}{\kN\per\m^2}
+into \SI{}{\MN\per\m^2} and assigns the result to the variable \codeword{E}.
 
+\begin{lstlisting}[language=perl, caption={Converting \SI{1000e3}{\kN\per\m^2} into
+    \SI{}{\MN\per\m^2}},label={patterns-physical-units-example1}]
+E = ${units 1000E3 kN/m^2 -> MN/m^2}
+\end{lstlisting}
+
+In connection with variables holding the desired physical units for the model
+this utility can be used to enforce a consistent system of physical units in
+the input file and the user can simultaneously use the physical units of his
+source data (for better verifiability).
+\autoref{patterns-physical-units-example2} shows the use of a variable used to
+hold the desired model unit for lengths.
+
+\begin{lstlisting}[language=perl, caption={Using a variable to hold the physical unit for lengths},label={patterns-physical-units-example2}]
+# variable holding the pyhsical unit for lengths
+modelunit_length = 'm'
+
+# conversion of 10 mm into the desired model unit (m)
+a = ${units 10 mm -> ${modelunit_length}}
+\end{lstlisting}
+
+A full set of pysical units can be setup as shown in
+\autoref{patterns-physical-unit-set}. If not all variables are used in the
+input file, Moose will issue an error. This can be avoided by adding fake-users
+to the variables.
+
+\begin{lstlisting}[language=perl, caption={Set of consistent physical units in a Moose inut file},label={patterns-physical-unit-set}]
     # model units
     modelunit_length = 'm'
     modelunit_time   = 's'
@@ -52,5 +90,4 @@ documented and may not be reproducible:
     modelunit_pressure = ${raw ${modelunit_force} / ${modelunit_length} ^ 2}
     modelunit_acceleration = ${raw ${modelunit_length} / ${modelunit_time} ^ 2}
     modelunit_density = ${raw ${modelunit_mass} / ${modelunit_length} ^ 3}
-
 \end{lstlisting}
