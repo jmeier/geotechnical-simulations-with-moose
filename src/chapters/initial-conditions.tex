@@ -7,22 +7,122 @@ to be used.
 
 (to be written)
 
-\section{Initial stress state}
+\section{Gravitation and initial stress state}
 \label{chap:IC-stress-state}
 
-The initial (starting) stress state of geotechnical simulations are often
-non-trivial. The reason for this is that the initial state to be modelled is a
-section of the geosphere with its often millions of years old history. In
-addition, the ground surface is often non-horizontal, which is why the stress
-trajectories near the surface are aligned accordingly. Furthermore, the initial
-stress state is often anisotropic with a specific orientation.
+The initial stress state of geotechnical simulations is often non-trivial. This
+is because the section of geosphere to be modelled often has a history of
+millions of years under different loading conditions, including gravity and
+tectonical processes. In addition, the Earth's surface is often non-horizontal,
+so that stress trajectories near the surface are oriented accordingly.
+Furthermore, the initial stress state may be anisotropic with a specific
+orientation. Gravity and the initial stress state are normally taken into
+account by means of:
 
 \begin{itemize}
-    \item Align the model to the orientation of the initial stresses
-    \item Fix the model boundaries (usually all boundaries are only fixed in the
-          direction of the normal and the lower boundary can also be fixed horizontally).
-    \item Use an appropriate EigenstrainFromStress
+    \item Definition of appropriate displacement boundary conditions for the model (see
+          \autoref{chap:model-configuration-boundary-fixities}).
+    \item Activation of gravitational body force (see
+          \autoref{chap:IC-stress-state-gravity}).
+    \item Definition of eigenstrains from the inital stress field (e.g. using
+          \href{https://mooseframework.inl.gov/source/materials/ComputeEigenstrainFromInitialStress.html}{ComputeEigenstrainFromInitialStress},
+          see \autoref{chap:IC-stress-state-simple} and
+          \autoref{chap:IC-stress-state-anisotropic}).
 \end{itemize}
 
-(to be written)
+\subsection{Gravity}
+\label{chap:IC-stress-state-gravity}
 
+To consider gravity, the following aspects must be included in the model:
+\begin{itemize}
+    \item When compiling the MooseApp: As the effect of gravity is taken into account in
+          interaction with the material density, the Moose module \codeword{MISC} must be
+          active in addition to the Moose module \codeword{SOLID_MECHANICS}.
+    \item Gravity must be activated in the input file. This is done by adding a special
+          kernel of the type \codeword{Gravity} as shown in
+          \autoref{initial-conditions-gravity}. The direction and strength of the
+          gravitational field is to be defined here.
+    \item The materials must be assigned a material density
+          (\autoref{initial-conditions-density}).
+\end{itemize}
+
+\begin{lstlisting}[language=perl, caption={Gravity kernel in a Moose inut file},label={initial-conditions-gravity}]
+[Kernels]
+    [gravity]
+        type = Gravity
+        use_displaced_mesh = false
+        variable = disp_z
+        value = -9.81
+    []
+[]
+\end{lstlisting}
+
+\begin{lstlisting}[language=perl, caption={Assignment of a density to subdomain ‘block1’},label={initial-conditions-density}]
+[Materials]
+    [undrained_density]
+      type = GenericConstantMaterial
+      block = 'Block1'
+      prop_names = density
+      prop_values = 0.0025
+    []
+[]
+\end{lstlisting}
+
+{\hfuzz=20pt
+\subsection{Initial stress state using ComputeEigenstrainFromInitialStress}
+}
+\label{chap:IC-stress-state-simple}
+
+This initial stress state corresponds to the ‘geostatic stress state’ in the
+uninfluenced homogeneous half-space (or a section thereof) under the effect of
+gravity, which can be represented analytically in a stress point as follows:
+
+\begin{equation}
+    \sigma_{ini,vert}=\sigma_{ini,vert,h=0}+\gamma h
+\end{equation}
+\begin{equation}
+    \sigma_{ini,horiz}=\sigma_{ini,vert} K_0 \quad \text{with } \quad K_0 = 1-\sin\varphi
+\end{equation}
+
+In these equations, $\gamma=\rho g$ corresponds to the weight of the soil, $h$
+to the overburden height, $\sigma_{ini,vert,h=0}$ to the vertical stress at
+$h=0$ and $K_0$ to the earth pressure coefficient. This earth pressure
+coefficient is usually estimated as a function of the angle of internal
+friction $\varphi$ (simplified equation according to Jaky).
+
+\begin{lstlisting}[language=perl, caption={Definition of a geostatic stress state using ‘ComputeEigenstrainFromInitialStress’ },label={initial-conditions-ComputeEigenstrainFromInitialStress}]
+[Functions]
+    [ini_xx_yy]
+      type = ParsedFunction
+      vars = 'sig_top   y_top   rho      g    k0 '
+      vals = '-1.5      0       0.0025   10   0.3'
+      value = '(sig_top - rho * g * (y_top - y)) * k0'
+    []
+    [ini_zz]
+      type = ParsedFunction
+      vars = 'sig_top   y_top   rho      g'
+      vals = '-1.5      0       0.0025   10'
+      value = '(sig_top - rho * g * (y_top - y))'
+    []
+[]
+  
+[Materials]
+    [strain]
+      type = ComputeIncrementalSmallStrain
+      volumetric_locking_correction=false
+      eigenstrain_names = ini_stress
+    []
+    [ini_stress]
+      type = ComputeEigenstrainFromInitialStress
+      eigenstrain_name = ini_stress
+      initial_stress = 'ini_xx_yy 0 0   0 ini_xx_yy 0   0 0 ini_zz'
+    []
+[]
+\end{lstlisting}
+
+\subsection{Initial stress state for anisotropic stresses}
+\label{chap:IC-stress-state-anisotropic}
+
+Align the model to the orientation of the initial stresses
+
+(to be written)
