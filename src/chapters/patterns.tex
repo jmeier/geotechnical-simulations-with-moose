@@ -103,3 +103,17 @@ modelunit_density = ${raw ${modelunit_mass} / ${modelunit_length} ^ 3}
     (*@{\raisebox{-1pt}[0pt][0pt]{$\vdots$}}@*)
 []
 \end{lstlisting}
+
+\section{Moose code plugins}
+\label{chap:patterns-code-plugins}
+
+If MooseApps are extended with new MooseObjects that should be shared with
+other users, e.g. in workgroups, the need arises to be able to transfer this
+functionality to other MooseApps as a plug-in. Preferably without having to
+manually copy and adapt many code files. Furthermore, it is often good if there
+is independent source code management or versioning. The idea is to realise
+such code plugins for MooseApps as git submodules.
+
+To address this need and provide versioning via a git submodule, Moose code
+plugins to be found in the following link can be used:
+\href{https://github.com/jmeier/mooseapp-code-plugin}{github.com/jmeier/mooseapp-code-plugin}
