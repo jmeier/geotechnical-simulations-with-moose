@@ -97,8 +97,13 @@
         \texttt{\textcolor{blue}{#1}}%
     }
 
+    % Bulleted command: insert a sing bulleted item without any margins
     \newcommandx{\bulleted}[1]{%
-        \begin{itemize}[wide=0pt, leftmargin=*, noitemsep, topsep=0pt, label=\textbullet, before=\vspace{-\dimexpr\baselineskip - 6pt}, after=\vspace*{-\dimexpr\baselineskip}]\item #1 \end{itemize}%
+        \begin{minipage}[t]{\linewidth}
+            \begin{itemize}[nosep, leftmargin=1em, labelwidth=*,align=left]
+                \item #1
+            \end{itemize}
+        \end{minipage}
     }
 
     \usepackage{filemod}
