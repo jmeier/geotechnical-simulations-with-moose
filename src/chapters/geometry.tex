@@ -76,15 +76,15 @@ of lower dimensional blocks. The term ‘lower dimensional blocks’ is used her
 to describe subdomains with FE elements with a lower dimensionality (e.g.
 shells and beams in a model with 3D solid elements). The MSH file format makes
 no internal distinction as to whether blocks with lower dimensional elements
-are to be interpreted as a sideset or as a ‘real’ element block. To introduce
-this distiction Moose recognizes the \codeword{lower_dimensional_block}
-codeword (although this codeword is not an official part of the MSH file
+are to be interpreted as a side-set or as a ‘real’ element block. To introduce
+this distinction, Moose recognises the codeword \codeword{lower_dimensional_block}
+(although this codeword is not an official part of the MSH file
 format). If this codeword is found in the line of an entry in the
 \codeword{$PhysicalNames}, Moose assumes that this block does not represent a
 sideset, but contains lower dimensional elements. As shown in
 \autoref{geometry-MSH-LowerDimBlock} the codeword may be just appended at the
 end of the line (without beeing part of the name of the physical name) or even
-be pat of the physical name itself.
+be part of the physical name itself.
 
 \begin{lstlisting}[float, caption={Fragment of an MSH file containing ‘lower dimensional blocks’},label={geometry-MSH-LowerDimBlock}]
 $MeshFormat
@@ -92,11 +92,11 @@ $MeshFormat
 $EndMeshFormat
 $PhysicalNames
 (*@{\raisebox{-1pt}[0pt][0pt]{$\vdots$}}@*)
-0 1 "PointA"                                         (*@{$\leftarrow$ sideset (node)}@*)
-1 2 "topleftedge"                                    (*@{$\leftarrow$ sideset (line)}@*)
+0 1 "PointA"                                         (*@{$\leftarrow$ side-set (node)}@*)
+1 2 "topleftedge"                                    (*@{$\leftarrow$ side-set (line)}@*)
 1 3 "lineSignPole000" lower_dimensional_block        (*@{$\leftarrow$ block with beam-elements}@*)
 1 4 "lineSignPole001_lower_dimensional_block"        (*@{$\leftarrow$ block with beam-elements}@*)
-2 5 "BoundaryZMin"                                   (*@{$\leftarrow$ sideset (surface)}@*)
+2 5 "BoundaryZMin"                                   (*@{$\leftarrow$ side-set (surface)}@*)
 2 6 "Sign" lower_dimensional_block                   (*@{$\leftarrow$ block with shell-elements}@*)
 (*@{\raisebox{-1pt}[0pt][0pt]{$\vdots$}}@*)
 \end{lstlisting}
@@ -145,7 +145,7 @@ tetrahedral/triangular discretisation show in
 \end{table}
 
 Currently, Moose has full support for TET10 elements, but not for EDGE3 and
-TET6 elements. EDGE3 and TRI6 elements can currenty be used in a Moose-app by
+TET6 elements. EDGE3 and TRI6 elements can currently be used in a Moose-app by
 cloning the following Moose code-plugins as a ‘contrib’:
 
 \begin{description}[font=$\bullet$~\normalfont]
@@ -156,7 +156,7 @@ cloning the following Moose code-plugins as a ‘contrib’:
 \section{Groups of geometrical objects}
 \label{geometry-groups}
 
-Moose does not explicity support groups geometrical objects but allows to
+Moose does not explicitly support groups geometrical objects but allows to
 create variables in the input file holding names of several objects on one hand
 and to use these variables directly for block-restriction (e.g. assignment of
 materials).
