@@ -16,19 +16,30 @@ managed (e.g materials, staging, etc) on the level of these objects.
 \section{‘Subdomains’ resp. ‘Blocks’}
 \label{geometry-blocks-and-subdomains}
 
-Geometrically, a Moose model consists of one or more ‘subdomains’. Due to the
-use of \href{https://libmesh.github.io/}{libmesh} by Moose, the term ‘block’ is
-also used as a synonym for ‘subdomain’ in many places. Element types and Moose
-objects such as materials, kernels, etc. are assigned to these subdomains in
-turn. Furthermore, each FE element belongs to exactly one subdomain.
+In Moose, so-called ‘subdomains’ are a central element for the setup and
+management of models. For example, materials are not assigned directly to
+the FE elements, but to a "subdomain". The FE elements in turn are also
+assigned to subdomains, which defines their element type and mechanical
+behaviour among other things. The same applies to kernels, variables and
+many other Moose objects. Therefore, a Moose model consists of at least one
+‘subdomain’. With this concept, a ‘subdomain’ must be understood as a logical,
+rather than a geometric, organisational entity.
 
-It is therefore necessary to create at least one subdomain for each element
-type and each material. To simplify the handling of construction stages, it has
-also proved useful to further subdivide element sets into individual subdomains
-so they match the ‘geometrical objects’ mentioned before so they can to be used
-independently during the simulation (e.g. deactivated or activated at different
-times). This document follows this approach that Moose models are managed on
-the basis of subdomains/blocks.
+Due to the use of \href{https://libmesh.github.io/}{libmesh} by Moose, the term
+‘block’ is used as a synonym for ‘subdomain’ in many places.
+
+Element types and Moose objects such as materials, kernels, etc. are assigned
+to these subdomains. Furthermore, each FE element belongs to exactly one
+subdomain (of course, many FE elements may be assigned to one subdomain). It
+is therefore necessary to create at least one subdomain for each element type
+and each material.
+
+To simplify the handling of construction stages, it has also proved useful to
+further subdivide element sets into individual subdomains so they match the
+‘geometrical objects’ mentioned before so they can to be used independently
+during the simulation (e.g. deactivated or activated at different times).
+This document follows this approach that Moose models are managed on the
+basis of subdomains/blocks.
 
 As the shape of these individual parts and components directly influences the
 shape of the FE elements they are build of, further prerequisites must be
