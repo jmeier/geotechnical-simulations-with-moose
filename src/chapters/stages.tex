@@ -11,11 +11,11 @@ primarily to adjustments that affect entire subdomains.
 The most common state changes in this context are:
 
 \begin{itemize}
-      \item Activating subdomains (e.g. installation of sheet piles is usually modelled by
-            activating the corresponding subdomain)
-      \item Deactivating subdomains (e.g. excavation of a soil volume is usually modelled
-            by deactivating the corresponding subdomain)
-      \item Replacing subdomains (e.g. installation of a slurry wall modelled via volume
+      \item Activating FE-elements (e.g. installation of sheet piles is usually modelled by
+            activating the corresponding set ot FE-elements)
+      \item Deactivating FE-elements (e.g. excavation of a soil volume is usually modelled
+            by deactivating the corresponding set of FE-elements)
+      \item Replacing FE-elements (e.g. installation of a slurry wall modelled via volume
             elements leads to the need to replace the soil volume with the volume
             representing the slurry wall)
       \item Adjusting external loads (e.g. loads are used to model various influences. As
@@ -36,15 +36,23 @@ construction stages, with the use of the \codeword{[Stages]} code plugin where
 applicable. The procedure without this plugin is only mentioned in selected
 places.
 
-\section{Activating and deactivating subdomains}
-\label{chap:stages-subdomain-activation-deactivation}
+\section{Activating and deactivating FE-elements}
+\label{chap:stages-element-activation-deactivation}
+
+As mentioned in \autoref{geometry-blocks-and-subdomains}, Moose models are
+managed by means of subdomains. By assigning FE elements and materials to a
+subdomain, for example, the behaviour of these FE elements is defined.
+
+By concept, the ‘activation’ and ‘deactivation’ of subdomains is not permitted
+in Moose. In Moose, the activation and deactivation of elements is implemented
+in such a way that these elements are assigned from one subdomain to another.
 
 ToDo: Ramp up / ramp down material properties
 
 (to be written)
 
-\section{Replacing subdomains}
-\label{chap:stages-subdomain-replacement}
+\section{Replacing FE-elements}
+\label{chap:stages-element-replacement}
 
 (to be written)
 
