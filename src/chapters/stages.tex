@@ -40,16 +40,31 @@ places.
 \label{chap:stages-element-activation-deactivation}
 
 As mentioned in \autoref{geometry-blocks-and-subdomains}, Moose models are
-managed by means of subdomains. By assigning FE elements and materials to a
-subdomain, for example, the behaviour of these FE elements is defined.
+organized and managed by means of subdomains. By assigning FE elements and
+materials to a subdomain, for example, the behaviour of these FE elements is
+defined. However, Moose does not offer the option of activating or deactivating
+FE elements or subdomains during a simulation run. However, Moose allows FE
+elements to be reassigned from one subdomain to another during a simulation run
+using the
+\href{https://mooseframework.inl.gov/syntax/MeshModifiers/index.html}{MeshModifiers}
+system.
 
-By concept, the ‘activation’ and ‘deactivation’ of subdomains is not permitted
-in Moose. In Moose, the activation and deactivation of elements is implemented
-in such a way that these elements are assigned from one subdomain to another.
+On the other hand, Moose allows for subdomains to exist without kernels,
+variables, materials and other Moose objects, but for FE elements to be present
+in these subdomains. FE-elements in those subdomains ‘without physics’ will
+simply be ignored my Moose.
 
-ToDo: Ramp up / ramp down material properties
+Activation and deactivation of FE elements can thus be modelled by combining
+the option to have subdomains ‘without physics’ and the option to reassign FE
+elements to another subdomain. For deactivation FE elements are moved from a
+subdomain ‘with physics’ to a subdomain ‘without physics’. For activation vice
+versa.
 
-(to be written)
+ToDo:
+\begin{itemize}
+      \item Activation/Deactivation with [Stages]
+      \item Ramp up / ramp down material properties
+\end{itemize}
 
 \section{Replacing FE-elements}
 \label{chap:stages-element-replacement}
