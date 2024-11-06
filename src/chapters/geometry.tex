@@ -16,30 +16,32 @@ managed (e.g materials, staging, etc) on the level of these objects.
 \section{‘Subdomains’ resp. ‘Blocks’}
 \label{geometry-blocks-and-subdomains}
 
-In Moose, so-called ‘subdomains’ are a central element for the setup and
-management of models. For example, materials are not assigned directly to
-the FE elements, but to a "subdomain". The FE elements in turn are also
-assigned to subdomains, which defines their element type and mechanical
-behaviour among other things. The same applies to kernels, variables and
-many other Moose objects. Therefore, a Moose model consists of at least one
-‘subdomain’. With this concept, a ‘subdomain’ must be understood as a logical,
-rather than a geometric, organisational entity.
+In Moose, so-called ‘subdomains’ are one of the central elements for the setup
+and management of models. For example, materials are not assigned directly to
+the FE elements, but to one or several ‘subdomains’. The same applies to
+kernels, variables and many other Moose objects. The FE elements are also
+assigned to subdomains, whereby each FE element can only be associated with one
+subdomain. The entirety of the Moose objects and settings assigned to a
+subdomain thus defines the element type and mechanical behaviour of all FE
+elements within this subdomain. Therefore, a Moose model consists of at least
+one ‘subdomain’. Conversely, it is necessary to create at least one subdomain
+for each element type and physical material.
+
+It is worth mentioning that FE elements that are assigned to a subdomain can,
+but do not have to, be geometrically connected. The bodies built up by the FE
+elements of a subdomain may therefore also have openings or internal cavities
+or form several individual bodies. With this concept, a subdomain must be
+understood as a logical, rather than a geometric, organisational entity.
 
 Due to the use of \href{https://libmesh.github.io/}{libmesh} by Moose, the term
 ‘block’ is used as a synonym for ‘subdomain’ in many places.
 
-Element types and Moose objects such as materials, kernels, etc. are assigned
-to these subdomains. Furthermore, each FE element belongs to exactly one
-subdomain (of course, many FE elements may be assigned to one subdomain). It
-is therefore necessary to create at least one subdomain for each element type
-and each material.
-
 To simplify the handling of construction stages, it has also proved useful to
 further subdivide element sets into individual subdomains so they match the
 ‘geometrical objects’ mentioned before so they can to be used independently
-during the simulation (e.g. deactivated or activated at different times).
-This document follows this approach that Moose models are managed on the
-basis of subdomains/blocks.
+during the simulation (e.g. deactivated or activated at different times). This
+document follows this approach that Moose models are managed on the basis of
+subdomains/blocks.
 
 As the shape of these individual parts and components directly influences the
 shape of the FE elements they are build of, further prerequisites must be
@@ -88,11 +90,11 @@ to describe subdomains with FE elements with a lower dimensionality (e.g.
 shells and beams in a model with 3D solid elements). The MSH file format makes
 no internal distinction as to whether blocks with lower dimensional elements
 are to be interpreted as a side-set or as a ‘real’ element block. To introduce
-this distinction, Moose recognises the codeword \codeword{lower_dimensional_block}
-(although this codeword is not an official part of the MSH file
-format). If this codeword is found in the line of an entry in the
-\codeword{$PhysicalNames}, Moose assumes that this block does not represent a
-sideset, but contains lower dimensional elements. As shown in
+this distinction, Moose recognises the codeword
+\codeword{lower_dimensional_block} (although this codeword is not an official
+part of the MSH file format). If this codeword is found in the line of an entry
+in the \codeword{$PhysicalNames}, Moose assumes that this block does not
+represent a sideset, but contains lower dimensional elements. As shown in
 \autoref{geometry-MSH-LowerDimBlock} the codeword may be just appended at the
 end of the line (without beeing part of the name of the physical name) or even
 be part of the physical name itself.
