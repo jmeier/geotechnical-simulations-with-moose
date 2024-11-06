@@ -28,8 +28,8 @@
         colorlinks    = true,    % Colours links instead of ugly boxes
         urlcolor      = blue,    % Colour for external hyperlinks
         linkcolor     = black,   % Colour of internal links
-        bookmarksopen = true
-        %citecolor     = red      % Colour of citations
+        bookmarksopen = true,
+        citecolor     = black     % Colour of citations
     }
     \usepackage[nameinlink,noabbrev]{cleveref}
 
@@ -123,13 +123,18 @@
 
     \usepackage{siunitx}
 
+
 \title{\varTitle}
 
 \author{\varAuthor}
 
 \date{\varDate}
 
-\date{08.10.2024}
+% References
+\usepackage[square,sort,comma,numbers,sectionbib]{natbib}
+\usepackage{multibib}
+\newcites{Publications}{Publications}
+% \newcites{Standards}{Standards and Recommendations}
 
 \begin{document}
 
@@ -175,6 +180,10 @@
 \chapter{Postprocessing}
 \label{chap:postprocessing}
 \input{src/chapters/postprocessing.tex}
+
+\chapter{References}
+\label{chap:references}
+\input{src/chapters/references.tex}
 
 % \appendix
 % \chapter{Quick-Start}
