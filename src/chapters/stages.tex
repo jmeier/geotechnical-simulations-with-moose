@@ -39,11 +39,19 @@ construction stages, with the use of the \codeword{[Stages]} code plugin where
 applicable. The procedure without this plugin is only mentioned in selected
 places.
 
-\section{Apprupt vs. gradual changes}
+\section{Abrupt versus gradual changes}
 \label{chap:stages-gradual-changes}
 
-For transient simulations, the speed at which changes are applied in the model
-usually matter.
+For transient simulations, the speed at which changes are applied to the model
+is usually important. When elements are deactivated, the self-weight of these
+elements is removed, all loads and stresses transmitted by these elements must
+be redistributed, and so on. If many elements are deactivated, the resulting
+changes in the stress field will be correspondingly large. In a not purely
+linear-elastic model, comprehensive changes can lead to numerical instability,
+resulting in slow or no convergence.
+
+For geotechnical problems, on the other hand, changes in reality are usually
+gradual.
 
 (to be written)
 
