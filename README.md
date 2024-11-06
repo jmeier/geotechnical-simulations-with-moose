@@ -5,12 +5,13 @@
 > Some parts already have text, others exist as bullet 
 > points and the rest are just placeholders. 
 
-The open-source, parallel finite element framework Moose 
+By enabling massively parallel multiphysics simulation the 
+open-source, finite element framework Moose
 ([mooseframework.inl.gov](https://mooseframework.inl.gov)) 
-can also be used to perform geotechnical simulations. This 
-document aims to collect options and techniques that are 
-suitable for creating such geotechnical simulations with 
-Moose. Main focus are quasi-static simulations.
+can also be used for geotechnical design practice. This 
+document aims to collect information and techniques that 
+are suitable for creating such geotechnical simulations 
+with Moose. Main focus are quasi-static simulations.
 
 This whitepaper ([PDF](geotechnical-simulations-with-moose.pdf)) 
 collects information and code for geotechnical simulations with 
