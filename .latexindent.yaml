@@ -1,3 +1,7 @@
+# latexindent must be used with the switches (e.g. add to VSCode settings)
+# -l  ... to allow for local latexindent.yaml-files (like this one)
+# -m  ... to allow modification of line breaks
+
 modifyLineBreaks:
     textWrapOptions:
         columns: 80
