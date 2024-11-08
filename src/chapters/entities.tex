@@ -7,106 +7,106 @@ contains a list of common geotechnical components and associated options that
 can be used for modelling them.
 
 \begin{table}
-    \begin{tabularx}{\textwidth}{@{}lXl@{}}
-        \hline
-        Entity
-         &
-        Options for Modelling
-         &
-        Reference
-        \\
+  \begin{tabularx}{\textwidth}{@{}lXl@{}}
+    \hline
+    Entity
+     &
+    Options for Modelling
+     &
+    Reference
+    \\
 
-        \hline
-        soil volume
-         &
-        \bulleted{cluster of volume elements}
-         &
-        \shortautoref{chap:entities-volume}
-        \\
+    \hline
+    soil volume
+     &
+    \bulleted{cluster of volume elements}
+     &
+    \shortautoref{chap:entities-volume}
+    \\
 
-        \hline
-        excavation pit wall
-         &
-        \bulleted{shell elements}
-         &
-        \shortautoref{chap:entities-shell}
-        \\
+    \hline
+    excavation pit wall
+     &
+    \bulleted{shell elements}
+     &
+    \shortautoref{chap:entities-shell}
+    \\
 
-         &
-        \bulleted{cluster of volume elements in case of a 'thick' wall (e.g. slurry wall, bored pile wall)}
-         &
-        \shortautoref{chap:entities-volume}
-        \\
+     &
+    \bulleted{cluster of volume elements in case of a 'thick' wall (e.g. slurry wall, bored pile wall)}
+     &
+    \shortautoref{chap:entities-volume}
+    \\
 
-        \hline
-        concrete volume
+    \hline
+    concrete volume
 
-         &
-        \bulleted{cluster of volume elements}
-         &
-        \shortautoref{chap:entities-volume}
-        \\
+     &
+    \bulleted{cluster of volume elements}
+     &
+    \shortautoref{chap:entities-volume}
+    \\
 
-         &
-        \bulleted{shell elements in case of a 'thin' walls}
-         &
-        \shortautoref{chap:entities-shell}
-        \\
+     &
+    \bulleted{shell elements in case of a 'thin' walls}
+     &
+    \shortautoref{chap:entities-shell}
+    \\
 
-        \hline
-        sprayed concrete
-         &
-        \bulleted{shell elements}
-         &
-        \shortautoref{chap:entities-shell}
-        \\
+    \hline
+    sprayed concrete
+     &
+    \bulleted{shell elements}
+     &
+    \shortautoref{chap:entities-shell}
+    \\
 
-        \hline
-        pile, soil nail
-         &
-        \bulleted{cluster of volume elements in case of a pile with large diameter (e.g. bored pile)}
-         &
-        \shortautoref{chap:entities-volume}
-        \\
+    \hline
+    pile, soil nail
+     &
+    \bulleted{cluster of volume elements in case of a pile with large diameter (e.g. bored pile)}
+     &
+    \shortautoref{chap:entities-volume}
+    \\
 
-        %  &
-        % \bulleted{embedded beams}
-        %  &
-        % \shortautoref{chap:entities-embedded-beams}
-        % \\
+    %  &
+    % \bulleted{embedded beams}
+    %  &
+    % \shortautoref{chap:entities-embedded-beams}
+    % \\
 
-        \hline
-        prop
-         &
-        \bulleted{spring between nodes}
-         &
-        \shortautoref{chap:entities-springs}
-        \\
+    \hline
+    prop
+     &
+    \bulleted{spring between nodes}
+     &
+    \shortautoref{chap:entities-springs}
+    \\
 
-         &
-        \bulleted{fixed end spring}
-         &
-        \shortautoref{chap:entities-fixed-end-springs}
-        \\
+     &
+    \bulleted{fixed end spring}
+     &
+    \shortautoref{chap:entities-fixed-end-springs}
+    \\
 
-         &
-        \bulleted{beam}
-         &
-        \shortautoref{chap:entities-beams}
-        \\
+     &
+    \bulleted{beam}
+     &
+    \shortautoref{chap:entities-beams}
+    \\
 
-        \hline
-        ground anchor
-         &
-        \bulleted{spring between nodes + (embedded) beam}
-         &
-        \shortautoref{chap:entities-springs}
-        \\
+    \hline
+    ground anchor
+     &
+    \bulleted{spring between nodes + (embedded) beam}
+     &
+    \shortautoref{chap:entities-springs}
+    \\
 
-        \hline
-    \end{tabularx}
-    \caption{Selected geotechnical entities and their respective modelling}
-    \label{tab:entities-overview}
+    \hline
+  \end{tabularx}
+  \caption{Selected geotechnical entities and their respective modelling}
+  \label{tab:entities-overview}
 \end{table}
 
 \section{Entities}
@@ -119,8 +119,8 @@ To model a volume, such as a soil volume, concrete volume, etc., the following
 is required:
 
 \begin{description}[font=$\bullet$~\normalfont]
-    \item [subdomain:] A subdomain of FE-elements of an appropriate element type (e.g. TET10).
-    \item [materials:] Assignment of Moose materials defining the constitutive behaviour.
+  \item [subdomain:] A subdomain of FE-elements of an appropriate element type (e.g. TET10).
+  \item [materials:] Assignment of Moose materials defining the constitutive behaviour.
 \end{description}
 
 \subsection{FixedEndSprings}
@@ -149,8 +149,8 @@ mastodon:
 To model beams, the following is required:
 
 \begin{description}[font=$\bullet$~\normalfont]
-    \item [subdomain:] A subdomain of FE-elements of an appropriate element type (e.g. EDGE3).
-    \item [materials:] Assignment of Moose materials defining the constitutive behaviour of the beam.
+  \item [subdomain:] A subdomain of FE-elements of an appropriate element type (e.g. EDGE3).
+  \item [materials:] Assignment of Moose materials defining the constitutive behaviour of the beam.
 \end{description}
 
 Currently, Moose has no support for appropriate beam elements and materials for
@@ -167,8 +167,8 @@ EDGE3. In your MooseApp, the beam material for EDGE may be included as an
 To model shells (or "plates"), the following is required:
 
 \begin{description}[font=$\bullet$~\normalfont]
-    \item [subdomain:] A subdomain of FE-elements of an appropriate element type (e.g. TRI6).
-    \item [materials:] Assignment of Moose materials defining the constitutive behaviour of the shell.
+  \item [subdomain:] A subdomain of FE-elements of an appropriate element type (e.g. TRI6).
+  \item [materials:] Assignment of Moose materials defining the constitutive behaviour of the shell.
 \end{description}
 
 Currently, Moose has no support for appropriate shell elements and materials
@@ -187,3 +187,79 @@ for TRI6. In your MooseApp, the shell material for TRI6 may be included as an
 \subsection{Pore Pressure Boundaries}
 
 (to be written)
+
+\section{Groundwater}
+\label{chap:entities-groundwater}
+
+Groundwater can affect subsoil and geotechnical structures in many ways. Below
+the water table it is generally assumed that the pore space is completely
+saturated with water. In this fully saturated zone, the pore water pressure
+caused by gravity acts on the grain structure in all directions, creating
+buoyancy and thereby influencing the contact stresses between the grains. If
+the pore water is in motion, for instance as a consequence of an external
+pressure gradient, flow forces will act upon the grain structure. A variety of
+additional effects can be triggered by temperature changes (e.g. freezing),
+quick changes in the external loading including cyclic or dynamic loading, and
+many more.
+
+In partially saturated zones only a part of the pore space is filled with water
+and the rest with gas (usually air). In geotechnics, the effects of the gas is
+often neglected. This region has its own set of effects, including an often
+reduced permeability in relation to the fully saturated zone. The reduced
+permeability can be explained by the fact that the surface tension causes the
+water to retreat into the corners of the grain structure, leaving fewer direct
+connections between individual water droplets and thus fewer pathways for mass
+transport.
+
+The complete absence of the liquid phase (e.g. water) is referred to as a dry
+state. Again, in geotechnics the effects of the gas is often neglected.
+
+For partially and fully saturated conditions, a fraction of the external loads
+on a body of soil is transferred via the grain to grain contacts and the rest
+via the pore pressure. This observation leads to the concept of ‘effective
+stresses’ (e.g. \cite{doi:10.1680/geot.1962.12.2.125},
+\cite{doi:10.1680/sposm.02050.0014}) where the total stress
+$\sigma_\mathrm{tot}$ (often denoted also just by $\sigma$) equals the sum of
+the effective stress $\sigma_\mathrm{eff}$ (often denoted also just by
+$\sigma'$) and the pore water pressure $p_\mathrm{w}$:
+
+\begin{equation}
+  \sigma_\mathrm{tot} = \sigma_\mathrm{eff} + p_\mathrm{w}
+\end{equation}
+or, using the shorter notation:
+\begin{equation}
+  \sigma = \sigma' + p_\mathrm{w}
+\end{equation}
+
+(to be written)
+
+\begin{table}
+  \begin{tabularx}{\textwidth}{@{}lYY@{}}
+    \hline
+    ?
+     &
+    A
+     &
+    B
+    \\
+
+    \hline
+    ?
+     &
+    stationary
+     &
+    transient
+    \\
+
+    ?
+     &
+    not coupled
+     &
+    coupled
+    \\
+
+    \hline
+  \end{tabularx}
+  \caption{???}
+  \label{tab:entities-water-simulation-types}
+\end{table}
