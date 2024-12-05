@@ -82,7 +82,7 @@ to the variables.
 \begin{lstlisting}[language=perl, caption={Set of consistent physical units in a Moose inut file},label={patterns-physical-unit-set}]
 # model units
 modelunit_length = 'm'
-modelunit_time   = 's'
+modelunit_time = 's'    #s = seconds, h = hours, day = days
 modelunit_mass = 'kg' # Mg = tons; Gg = kilotons
 
 # derived units (this may be moved into a !include)
@@ -103,6 +103,53 @@ modelunit_density = ${raw ${modelunit_mass} / ${modelunit_length} ^ 3}
     (*@{\raisebox{-1pt}[0pt][0pt]{$\vdots$}}@*)
 []
 \end{lstlisting}
+
+A selection of model unit combinations can be found in
+\autoref{tab:model-units}.
+
+\begin{table}[htbp]
+    \centering
+    \caption{selection of model unit combinations and derived units}
+    \label{tab:model-units}
+    \begin{tabularx}{\textwidth}{
+            >{\hsize=0.10\hsize\linewidth=\hsize}Y
+            >{\hsize=0.10\hsize\linewidth=\hsize}Y
+            >{\hsize=0.10\hsize\linewidth=\hsize}Y
+            |
+            >{\hsize=0.20\hsize\linewidth=\hsize}Y
+            >{\hsize=0.20\hsize\linewidth=\hsize}Y
+            >{\hsize=0.15\hsize\linewidth=\hsize}Y
+            >{\hsize=0.15\hsize\linewidth=\hsize}Y}
+        \hline
+        Length                                                                             &
+        Time                                                                               &
+        Mass                                                                               &
+        Force                                                                              &
+        Pressure                                                                           &
+        Acceleration                                                                       &
+        Density                                                                              \\
+
+        \hline
+
+        \si[per-mode = symbol]{\metre}                                                     &
+        \si[per-mode = symbol]{\second}                                                    &
+        \si[per-mode = symbol]{\kilogram}                                                  &
+        \si[per-mode = symbol]{\kilogram\cdot\metre\per\second\squared} = \si{\newton}     &
+        \si[per-mode = symbol]{\newton\per\metre\squared} \light{= \si{\pascal}}           &
+        \si[per-mode = symbol]{\metre\per\second\squared}                                  &
+        \si[per-mode = symbol]{\kilogram\per\metre\cubed}                                    \\
+
+        \si[per-mode = symbol]{\metre}                                                     &
+        \si[per-mode = symbol]{\second}                                                    &
+        \si[per-mode = symbol]{\ton}                                                       &
+        \si[per-mode = symbol]{\ton\cdot\metre\per\second\squared} = \si{\kilo\newton}     &
+        \si[per-mode = symbol]{\kilo\newton\per\metre\squared} \light{= \si{\kilo\pascal}} &
+        \si[per-mode = symbol]{\metre\per\second\squared}                                  &
+        \si[per-mode = symbol]{\ton\per\metre\cubed}                                         \\
+
+        \hline
+    \end{tabularx}
+\end{table}
 
 \section{Moose code plugins}
 \label{chap:patterns-code-plugins}
