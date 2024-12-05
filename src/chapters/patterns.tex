@@ -10,7 +10,7 @@ also supports ‘partial input files’, where other input files can be called u
 from a ‘central’ input file. For example, the material parameters or variables
 with groups of geometrical objects could be maintained in a separate file.
 
-The recommented option is to use the \codeword{!include} keyword within the
+The recommended option is to use the \codeword{!include} keyword within the
 input file. This option is shown in \autoref{patterns-include}. Please note,
 that the neither path not filename are allowed to contain a newline character,
 \codeword{#} character, or \codeword{[} character.
@@ -19,7 +19,7 @@ that the neither path not filename are allowed to contain a newline character,
 !include "path/to/file.i"
 \end{lstlisting}
 
-The alternative and not recommented option is to call a Moose app with several
+The alternative and not recommended option is to call a Moose app with several
 input files as arguments. These input files are interpreted by simply
 concatenating them. This functionality was included in Moose for test purposes,
 but is not suitable for productive models, as this call may not be not
@@ -54,7 +54,7 @@ reference. Experience shows, that this is a frequent source of problems!
 
 To mitigate this source of error, Moose offers the
 ‘\href{https://mooseframework.inl.gov/source/utils/Units.html}{MooseUnits}’
-unitily. In the input file this utility allows to convert the unit ‘on the
+utility. In the input file this utility allows to convert the unit ‘on the
 fly’. The input file fragment shown in
 \autoref{patterns-physical-units-example1} converts \SI{1000e3}{\kN\per\m^2}
 into \SI{}{\MN\per\m^2} and assigns the result to the variable \codeword{E}.
@@ -96,7 +96,7 @@ modelunit_pressure = ${raw ${modelunit_force} / ${modelunit_length} ^ 2}
 modelunit_acceleration = ${raw ${modelunit_length} / ${modelunit_time} ^ 2}
 modelunit_density = ${raw ${modelunit_mass} / ${modelunit_length} ^ 3}
 
-# Fake userss for the variables above
+# Fake users for the variables above
 [Functions]
     [FakeUser_modelunit_force]
         type = ParsedFunction
