@@ -1,0 +1,178 @@
+A one-dimensional compression test of a
+$\SI{6}{\metre} \times \SI{6}{\metre} \times \SI{6}{\metre}$ block is to be
+simulated as a variant of an Oedometer test. While the (vertical) sides are
+fixed horizontally and the bottom is fixed vertically, the top surface is
+lowered by $\SI{0.01}{\metre}=\SI{1}{\centi\metre}$. Initially, the block is
+loaded only by gravity. The soil material is assumed to be purely linear
+elastic and fully saturated with water. Material parameters are given in
+\autoref{ex1:material-parameters}. Stiffness of the material had been chosen
+in accordance with Opalinus clay (a sedimentary rock), while permeability
+should been chosen high enough to avoid significant time-dependent effects.
+
+The effective vertical stress $\sigma'_{zz}$ and pore pressure $u$ are to be
+determined as simulation result at the top of the block.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Material parameters}
+    \label{ex1:material-parameters}
+    \begin{tabularx}{\textwidth}{XYY}
+
+        \hline
+
+        Property                                              &
+        Physical unit                                         &
+        Value                                                   \\
+
+        \hline
+
+        soil: Youngs modulus $E$                              &
+        \si[per-mode = symbol]{\giga\newton\per\square\metre} &
+        \SI{18}{}                                               \\
+
+        soil: Poisson's ratio $\nu$                           &
+        -                                                     &
+        \SI{0.25}{}                                             \\
+
+        soil: density $\rho_s$                                &
+        \si[per-mode = symbol]{\kilogram\per\cubic\metre}     &
+        \SI{2500}{}                                             \\
+
+        soil: permeability $k$                                &
+        \si[per-mode = symbol]{\square\metre}                 &
+        (realistic high)                                        \\
+
+        water: bulk modulus $K_w$                             &
+        \si[per-mode = symbol]{\giga\newton\per\square\metre} &
+        \SI{2.2}{}                                              \\
+
+        water: viscosity $\mu_w$                              &
+        \si[per-mode = symbol]{\milli\pascal\cdot\second}     &
+        \SI{0.9}{}                                              \\
+
+        water: density $\rho_w$                               &
+        \si[per-mode = symbol]{\kilogram\per\cubic\metre}     &
+        \SI{998.21}{}                                           \\
+
+        porosity $n$                                          &
+        -                                                     &
+        \SI{0.11}{}                                             \\
+
+        \hline
+    \end{tabularx}
+\end{table}
+
+Hydraulic conductivity, often used in geotechnical practice, can be calculated
+from permeability as follows:
+
+\begin{equation}
+    \begin{split}
+        k_f & = k \frac{\rho_w g}{\mu_w}                                                                                                                                                                            \\
+            & = \SI{1E-7}{\square\metre} \cdot \frac{\SI[per-mode = symbol]{998.21}{\kilogram\per\cubic\metre} \cdot \SI[per-mode = symbol]{9.81}{\metre\per\square\second}}{ \SI{0.9}{\milli\pascal\cdot\second} } \\
+            & = \SI[per-mode = symbol]{1.09}{\metre\per\second}                                                                                                                                                     % = \SI[per-mode = symbol]{94000}{\metre\per\day}
+    \end{split}
+\end{equation}
+
+\section{Analytical solution}
+
+For the one-dimensional deformation conditions and the linear-elastic material
+behaviour defined to this example the definition of the stiffness modulus in
+\autoref{ex1:stiffness-modulus} holds:
+
+\begin{equation}
+    \label{ex1:stiffness-modulus}
+    E_s = \frac{\sigma'_{zz}}{\varepsilon_{zz}} = E \cdot \frac{1 - \nu}{(1 + \nu)(1 - 2 \nu)}
+\end{equation}
+with:
+\begin{description}
+    \item[$E_s$] Stiffness modulus
+    \item[$\sigma'_{zz}$] effective vertical stress
+    \item[$\varepsilon_{zz}$] vertical strain
+    \item[$E$] Young's modulus
+    \item[$\nu$] Poisson's ratio
+\end{description}
+
+Using the values of \autoref{ex1:material-parameters} for the second part of
+\autoref{ex1:stiffness-modulus} leads to:
+\begin{equation}
+    \label{ex1:stiffness-modulus-value}
+    \begin{split}
+        E_s & = E \cdot \frac{1 - \nu}{(1 + \nu)(1 - 2 \nu)}                                                                       \\
+            & = \SI{18}{\si[per-mode = symbol]{\giga\newton\per\square\metre}} \cdot \frac{1 - 0.25}{(1 + 0.25)(1 - 2 \cdot 0.25)} \\
+            & = \SI{21.6}{\si[per-mode = symbol]{\giga\newton\per\square\metre}}
+    \end{split}
+\end{equation}
+
+Rearranging the first part of \autoref{ex1:stiffness-modulus} for
+$\sigma'_{zz}$ allows to estimate the effective stresses at the top of the
+block:
+\begin{equation}
+    \label{ex1:effective_vertical_stress}
+    \begin{split}
+        \sigma'_{zz} & = E_s \cdot \varepsilon_{zz}                                                                                                                                                                               \\
+                     & = \SI{21.6}{\si[per-mode = symbol]{\giga\newton\per\square\metre}} \cdot \frac{ \SI{0.01}{\metre} \cdot \SI{6}{\metre} \cdot \SI{6}{\metre} }{ \SI{6}{\metre} \cdot  \SI{6}{\metre} \cdot  \SI{6}{\metre}} \\
+                     & = \SI{0.036}{\si[per-mode = symbol]{\giga\newton\per\square\metre}} = \SI{3.6E4}{\si[per-mode = symbol]{\kilo\newton\per\square\metre}}
+    \end{split}
+\end{equation}
+
+\vspace{1em}
+
+To estimate the pore-pressure, \autoref{ex1:pore-pressure-parameter} can be used:
+
+\begin{equation}
+    \label{ex1:pore-pressure-parameter}
+    % source: Förster, W. (1996): Mechanische Eigenschaften Lockergesteine. Teubner Verlag. Equation 7.65 on page 142
+    C = \frac{\Delta u}{\Delta \sigma_{zz}} = \frac{1}{1 + n \cdot \frac{m_w}{m_v}}
+\end{equation}
+with:
+\begin{description}
+    \item[$C$] Pore pressure parameter
+    \item[$\Delta u$] pore pressure
+    \item[$\Delta \sigma_{zz}$] difference of total vertical stress, $\Delta \sigma_{zz} = \Delta (\sigma'_{zz} + u)$
+    \item[$n$] Porosity
+    \item[$m_w$] Coefficient of volume compressibility for water, $m_w = 1/K_w \equiv 1/{\SI[per-mode = symbol]{2.2}{\giga\newton\per\square\metre}}$
+    \item[$m_v$] Coefficient of volume compressibility for the solid; here assumed to be linear-elastic and therefore not dependent on the stress and/or initial porosity: $m_v = 1 / E_s$
+\end{description}
+
+\vspace{1em}
+
+leading to:
+
+\begin{equation}
+    % \label{ex1:???}
+    C = \frac{1}{1 + n \cdot \frac{E_s}{K_w}} \approx 0.48\overline{076923}
+\end{equation}
+
+and due to the fact the initial stress state is Zero,
+\autoref{ex1:pore-pressure-parameter} can be rearranged to calculate the pore
+pressure $u$:
+
+\begin{equation}
+    % \label{ex1:???}
+    u = \frac{C \cdot \Delta \sigma_{zz}}{1 - C} = 3.\overline{3}\times\SI{E4}{\si[per-mode = symbol]{\kilo\newton\per\square\metre}}
+\end{equation}
+
+% \begin{equation}
+%     \label{ex1:bulk modulus}
+%     K = \frac{E}{3(1 - 2 \nu)}
+% \end{equation}
+
+\section{Moose}
+
+Moose input file: \fileattachment{\currfiledir/ex1.i}{ex1.i}
+
+$k = \SI[per-mode = symbol]{1E-7}{\square\metre}$
+
+\subsection{NEWTON solver}
+
+(ToDo)
+
+\subsection{PJFNK solver}
+
+\section{Plaxis 3D}
+
+$k_f = \SI[per-mode = symbol]{1}{\metre\per\day}$
+
+Plaxis3D input file: \fileattachment{\currfiledir/ex1.p3dlog}{ex1.p3dlog}
+
+(ToDo)
