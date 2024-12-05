@@ -41,6 +41,11 @@ calculation, it is therefore important that the numerical values entered are
 not too large. With a careful choice of the system of physical units, the user
 can avoid such numerical problems.
 
+It is important to emphasise at this point that, in addition to the various
+material parameters, initial conditions and boundary conditions, the
+convergence criteria are also affected by the choice of physical units (see
+\autoref{chap:patterns-converge-criteria-and-scaling}).
+
 From the user's point of view, the challenge is to enter the numerical values
 in the ‘correct’ system of physical units everywhere in the input file. This
 conversion and the non-trivial verifiability is a source of error that should
@@ -164,3 +169,143 @@ such code plugins for MooseApps as git submodules.
 To address this need and provide versioning via a git submodule, Moose code
 plugins to be found in the following link can be used:
 \href{https://github.com/jmeier/mooseapp-code-plugin}{github.com/jmeier/mooseapp-code-plugin}
+
+\section{Convergence criteria and variable scaling}
+\label{chap:patterns-converge-criteria-and-scaling}
+
+Due to the fact that the finite element method will always provide approximate
+solutions, residuals will remain after each simulation step. To allow Moose to
+recognize converge, suitable convergence criteria (e.g. tolerated residuals)
+must be set. If these convergence criteria are set too small, the moose will
+appear not to converge and will need very small time steps to do anything at
+all. If set too large, Moose may converge to the wrong result.
+
+Closely related to the selection of tolerated residuals is the scaling of
+variables. If only one physical aspect is to be modelled (e.g. mechanics), an
+increased tolerated residual is equal to an downscaling of the corresponding
+model variables. If several pysical aspects are to be modelled (e.g. mechanics
+and flow) variable scaling and adjusting tolerated residuals must be applied in
+combination.
+
+It should also be noted that the convergence criteria (e.g. tolerated residuals
+and variable scaling) must be set in the context of the chosen system of
+physical units (\autoref{chap:patterns-physical-units}).
+
+Large parts of this section is taken from
+\href{https://mooseframework.inl.gov/modules/porous_flow/convergence.html}{mooseframework.inl.gov}.
+
+\subsection{Residuals}
+
+In this subsection data is collected on how to estimate the absolute residuals
+to be tolerated (e.g. \texttt{-nl\_abs\_tol}) for selected physical aspects.
+
+\subsubsection{Fluid}
+
+The residual for the fluid phase should be a measure of what is still
+considered a \emph{steady state} in the pore pressure field. This residual for
+the fluid phase can be estimated using \autoref{patterns:eq:residual-fluid},
+where beside some material constants for the fluid (density $\rho_\mathrm{f}$
+and dynamic viscosity $\mu_\mathrm{f}$) and the porosity $\kappa$, the accepted
+pressure gradient $\epsilon_\mathrm{f}$ (e.g. $\epsilon_\mathrm{f} =
+    \qty[per-mode = symbol]{1}{\newton\per\square\metre\per\metre} $) must be
+definded for a volume of interest $V$. In geotechnics, this volume of interest
+is often only a part of the full mesh.
+
+\begin{equation}
+    \label{patterns:eq:residual-fluid}
+    R_{f} \approx V \cdot \det (\kappa) \cdot \epsilon_\mathrm{f} \cdot \rho_\mathrm{f} / \mu_\mathrm{f}
+\end{equation}
+with:
+\begin{description}
+    \item[$R_\mathrm{f}$] estimate of residual for the fluid
+    \item[$V$] Volume of interest (physical unit: volume, e.g \unit{\cubic\metre})
+    \item[$\kappa$] tensor of permeabilities (physical unit of the tensor items: area, e.g. \unit{\square\metre})
+    \item[$\epsilon_\mathrm{f}$] desired precision (physical unit: pressure per length, e.g. \unit[per-mode = symbol]{\pascal\per\metre} = \unit[per-mode = symbol]{\newton\per(\square\metre\cdot\metre)} )
+    \item[$\rho_\mathrm{f}$] fluid density (physical unit: mass per volume, e.g. \unit[per-mode = symbol]{\kilogram\per\cubic\metre})
+    \item[$\mu_\mathrm{f}$] fluid dynamic viscosity (physical unit: mass per length and time, e.g. \unit[per-mode = symbol]{\kilogram\per({\metre\cdot\second})} = \unit[per-mode = symbol]{\pascal\cdot\second})
+\end{description}
+
+\vspace{1em}
+
+For water ($\rho_\mathrm{f} \approx \qty[per-mode =
+        symbol]{1000}{\kilogram\per\cubic\metre}$, $\mu_\mathrm{f} \approx
+    \qty[per-mode = symbol]{1}{\milli\pascal\per\second}$) this equation simplifies
+to:
+
+\begin{equation}
+    R_{water} \approx V \cdot \det (\kappa) \cdot \epsilon_\mathrm{water} \cdot \SI{E-6}{(\kilogram\cdot\second)\per(\cubic\metre\cdot\pascal)}
+\end{equation}
+
+\subsubsection{Mechanics}
+
+Very similar to the residuals of the other phases, the residual for the solid
+phase should be a measure of what is still considered a \emph{steady state} in
+the stress field. This residual for the solid phase can be estimated using
+\autoref{patterns:eq:residual-solid}, again using a volume of interest $V$ and
+an acceptable residual stress gradient $\epsilon_\mathrm{s}$ (e.g. the error
+accepted in $\nabla \sigma$).
+
+\begin{equation}
+    \label{patterns:eq:residual-solid}
+    R_{s} \approx V \cdot \left|\epsilon_\mathrm{s}\right|
+\end{equation}
+with:
+\begin{description}
+    \item[$R_\mathrm{s}$] estimate of residual for the solid (physical unit: force, e.g. \unit{\newton})
+    \item[$V$] Volume of interest (physical unit: volume, e.g \unit{\cubic\metre})
+    \item[$\epsilon_\mathrm{s}$] desired precision (physical unit: pressure per length, e.g. \unit[per-mode = symbol]{\pascal\per\metre} = \unit[per-mode = symbol]{\newton\per(\square\metre\cdot\metre)} )
+\end{description}
+
+\subsection{Variable scaling}
+
+\texttt{[Executioner]} \texttt{automatic\_scaling = true}
+
+\begin{lstlisting}[language=perl, caption={Variable definition with scaling on porepressure in a Moose inut file},label={patterns-variable-scaling-code}]
+[Variables]
+    [disp_x]
+        family = LAGRANGE
+        order = SECOND
+    []
+    [disp_y]
+        family = LAGRANGE
+        order = SECOND
+    []
+    [disp_z]
+        family = LAGRANGE
+        order = SECOND
+    []
+    [porepressure]
+        family = LAGRANGE
+        order = SECOND
+        scaling = 1E-8
+    []
+[]
+\end{lstlisting}
+
+% https://mooseframework.inl.gov/moose/application_usage/failed_solves.html
+% convergence problems:
+
+% (1) switch to Newton instead of PJFNK
+
+% (2) use the jacobian analyzer to make sure your jacobian is correct
+% for *small* problems, one may add "-snes_test_jacobian" in "petsc_options" of [Preconditioning/SMP]
+
+% (3) add a strong preconditioner like LU
+%   petsc_options_iname = '-pc_type -pc_factor_mat_solver_package'
+%   petsc_options_value = ' lu       mumps'
+
+% (4) check if the problem is singular using SVD
+
+% on tolerances:
+%    https://github.com/idaholab/moose/discussions/27576#discussioncomment-9354227
+%    Hello
+%    
+%    I don't usually say this but your convergence criteria are too tight
+%      nl_abs_tol = 1E-10
+%      l_abs_tol = 1e-15
+%    you can leave the first one if it works, but the second one is too close to 
+%    numerical precision. In fact since the residual is checked by the nonlinear 
+%    solver, you don't need to converge the linear solve anywhere near as tight. 
+%    1e-3 is often enough
+%    
+%    Guillaume
