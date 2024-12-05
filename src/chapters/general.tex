@@ -1,0 +1,18 @@
+\section{Sign convention}
+\label{chap:sign-convention}
+
+% https://github.com/idaholab/moose/discussions/20999
+% https://github.com/idaholab/moose/discussions/29182#discussioncomment-11456527
+
+In the [SolidMechanics] module and the [PorousFlow] module the sign convention
+is as follows:
+
+\begin{itemize}
+      \item Positive strain is extensional, which (usually) results from a positive
+            (tensile) stress.
+      \item Negative strain is compressional, which (usually) results from a negative
+            (compressive) stress.
+      \item Compressive pore-pressures (e.g. below a free water table) have a positive
+            sign.
+      \item Suction is represented by pore-pressures having a negative sign.
+\end{itemize}
