@@ -258,7 +258,22 @@ with:
 
 \subsection{Variable scaling}
 
-\texttt{[Executioner]} \texttt{automatic\_scaling = true}
+To allow efficient nonlinear and linear solves, the Jacobians of the different
+physics of a Moose model should have comparable magnitudes. Ideally, these
+should all be as close to unity as possible. With the possibility of variable
+scaling, Moose offers a tool that allows this to be achieved.
+
+Variable scaling primarily affects the internal calculation processes (e.g.
+Jacobian and residuals). The simulation results, however, are generally not
+scaled, which means that variable scaling does not need to be considered in
+post-processing.
+
+\subsubsection{Manual variable scaling}
+
+When defining the variables, the ‘scaling’ property can be used to specify a
+manual scaling factor for each variable individually.
+\autoref{patterns-variable-scaling-code} shows a snipped of an input file with
+a scaling factor of \qty{1E-8}{} applied to the variable ‘porepressure’.
 
 \begin{lstlisting}[language=perl, caption={Variable definition with scaling on porepressure in a Moose inut file},label={patterns-variable-scaling-code}]
 [Variables]
@@ -281,6 +296,19 @@ with:
     []
 []
 \end{lstlisting}
+
+\subsubsection{Automatic variable scaling}
+
+As alternative to manual variable scaling, Moose offers the functionality of
+automatic variable scaling, calculating the scaling factors automatically and
+overriding any - if present - manually given scaling factors. Automatic scaling
+can be activated by setting \texttt{automatic\_scaling = true} in the
+\texttt{[Executioner]} block. To output the calculated scaling factors, set
+\texttt{verbose = true} in the \texttt{[Executioner]} block.
+
+In the author's experience, at least for hydro-mechanically coupled models,
+automatic scaling often leads to suboptimal convergence compared to manual
+scaling. Therefore, it is recommended to use manual scaling instead.
 
 % https://mooseframework.inl.gov/moose/application_usage/failed_solves.html
 % convergence problems:
