@@ -62,17 +62,6 @@ determined as simulation result at the top of the block.
     \end{tabularx}
 \end{table}
 
-Hydraulic conductivity, often used in geotechnical practice, can be calculated
-from permeability as follows:
-
-\begin{equation}
-    \begin{split}
-        k_f & = k \frac{\rho_w g}{\mu_w}                                                                                                                                                                            \\
-            & = \SI{1E-7}{\square\metre} \cdot \frac{\SI[per-mode = symbol]{998.21}{\kilogram\per\cubic\metre} \cdot \SI[per-mode = symbol]{9.81}{\metre\per\square\second}}{ \SI{0.9}{\milli\pascal\cdot\second} } \\
-            & = \SI[per-mode = symbol]{1.09}{\metre\per\second}                                                                                                                                                     % = \SI[per-mode = symbol]{94000}{\metre\per\day}
-    \end{split}
-\end{equation}
-
 \section{Analytical solution}
 
 For the one-dimensional deformation conditions and the linear-elastic material
@@ -159,20 +148,615 @@ pressure $u$:
 
 \section{Moose}
 
-Moose input file: \fileattachment{\currfiledir/ex1.i}{ex1.i}
+The system of physical units for the Moose model was set to metre
+(\unit{\metre}), seconds (\unit{\second}), and tons (\unit{\ton}).
+Due to this, the physical unit for stress and pore-pressures is
+\unit[per-mode = symbol]{\kilo\newton\per\square\metre}. Because
+of the physical unit of seconds (\unit{\second}) and to keep model
+time to numbers with small magnitude, a high permeability of
+$k = \qty{1E-7}{\square\metre}$ was chosen (comparable with a gravel)
+and model time was set to \qty{10}{\second}.
 
-$k = \SI[per-mode = symbol]{1E-7}{\square\metre}$
+The mesh used for Moose consists of \qty{5184}{} TET10 elements leading to
+\qty{32980}{\DOF}.
 
-\subsection{NEWTON solver}
+The Moose input file for this example is attached to this document by the
+name of ‘ex1.i’. \fileattachment{\currfiledir/ex1.i}{ex1.i}
 
-(ToDo)
+Selected results of this Moose model are summarized in \autoref{ex1:moose-results}.
+Performance data can be found in \autoref{ex1:moose-performance}.
 
-\subsection{PJFNK solver}
+\begin{table}[htbp]
+    \centering
+    \caption{Selected results of the Moose model}
+    \label{ex1:moose-results}
+
+    \begin{tabularx}{0.972\hsize}{
+            >{\hsize=0.6\hsize\linewidth=\hsize}X
+            >{\hsize=0.4\hsize\linewidth=\hsize}X}
+        {\begin{tabularx}{1\linewidth}{
+                     >{\hsize=0.3\hsize\linewidth=\hsize}X
+                     >{\hsize=0.3\hsize\linewidth=\hsize\hspace{-5pt}}Y
+                     >{\hsize=0.3\hsize\linewidth=\hsize\hspace{-5pt}}Y}
+                 \toprule
+                 Model response                                                                        & \multicolumn{2}{c}{Location}                     \\
+                 {}                                                                                    & $z_{max}$                    & $z_{min}$         \\
+                 \midrule
+
+                 \multicolumn{3}{l}{Initial Conditions:}                                                                                                  \\
+                 \hspace{1em} $\sigma'_{zz}$ (\unit[per-mode = symbol]{\kilo\newton\per\square\metre}) & \qty{\pm0.0}{}               & \qty{-90.0}{}     \\
+                 \hspace{1em} $u$            (\unit[per-mode = symbol]{\kilo\newton\per\square\metre}) & \qty{\pm0.0}{}               & \qty{-60.0}{}     \\
+
+                 {}                                                                                    & {}                           & {}                \\
+
+                 \multicolumn{3}{l}{Boundary at $z_{max}$ lowered by \qty{1}{cm} ($t = \qty{11}{\second}$):}                                              \\
+                 \hspace{1em} $\sigma'_{zz}$ (\unit[per-mode = symbol]{\kilo\newton\per\square\metre}) & \qty{-3.600E+4}{}            & \qty{-3.608E+4}{} \\
+                 \hspace{1em} $u$            (\unit[per-mode = symbol]{\kilo\newton\per\square\metre}) & \qty{-3.335E+4}{}            & \qty{-3.341E+4}{} \\
+                 \bottomrule
+             \end{tabularx}}
+         &
+        {\raisebox{0.0mm}
+                {\begin{tikzpicture}[baseline=(current bounding box.center)]
+                         \node[inner sep=0pt] (ch-stresses) at (0.35,0.0) {\includegraphics[width=0.925\linewidth]{\currfiledir ex1.i.png}};
+                         \node[draw,circle,fill=white,minimum size=.95cm,inner sep=0pt] at (+3.3,+2.2) {$z_{max}$};
+                         \node[draw,circle,fill=white,minimum size=.95cm,inner sep=0pt] at (+3.1,-1.6) {$z_{min}$};
+                     \end{tikzpicture}}
+            }
+        \\
+    \end{tabularx}
+\end{table}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Performance of Moose}
+    \label{ex1:moose-performance}
+    \begin{tabularx}{\textwidth}{
+            >{\hsize=0.16\hsize\linewidth=\hsize}X
+            >{\hsize=0.14\hsize\linewidth=\hsize\hspace{-5pt}}Y
+            >{\hsize=0.14\hsize\linewidth=\hsize\hspace{-5pt}}Y
+            >{\hsize=0.14\hsize\linewidth=\hsize\hspace{-5pt}}Y
+            >{\hsize=0.14\hsize\linewidth=\hsize\hspace{-5pt}}Y
+            >{\hsize=0.14\hsize\linewidth=\hsize\hspace{-5pt}}Y
+            >{\hsize=0.14\hsize\linewidth=\hsize\hspace{-5pt}}Y}
+
+        \hline
+
+        Property                                 &
+        \multicolumn{3}{c}{Solver "NEWTON"}      &
+        \multicolumn{2}{c}{Solver "PJFNK"}         \\
+
+        {}                                       &
+        1 CPU                                    &
+        3 CPU                                    &
+        5 CPU                                    &
+        1 CPU                                    &
+        3 CPU                                    &
+        5 CPU                                      \\
+
+        \hline
+
+        wall time                                &
+        \qty[per-mode = symbol]{105}{\second}    &
+        \qty[per-mode = symbol]{45}{\second}     &
+        \qty[per-mode = symbol]{32}{\second}     &
+        \qty[per-mode = symbol]{169}{\second}    &
+        \qty[per-mode = symbol]{69}{\second}     &
+        \qty[per-mode = symbol]{46}{\second}       \\
+
+        RAM                                      &
+        \qty[per-mode = symbol]{205}{\mega\byte} &
+        \qty[per-mode = symbol]{308}{\mega\byte} &
+        \qty[per-mode = symbol]{293}{\mega\byte} &
+        \qty[per-mode = symbol]{435}{\mega\byte} &
+        \qty[per-mode = symbol]{287}{\mega\byte} &
+        \qty[per-mode = symbol]{252}{\mega\byte}   \\
+
+        \hline
+    \end{tabularx}
+\end{table}
+
+% /usr/bin/time -v ./shale-opt -i models/porous_flow_block/porous_flow_block.i
+% 
+% Performance Graph:
+% --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+% |                                Section                               | Calls |   Self(s)  |   Avg(s)   |    %   | Mem(MB) |  Total(s)  |   Avg(s)   |    %   | Mem(MB) |
+% --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+% | shaleTestApp (main)                                                  |     1 |      0.007 |      0.007 |   0.00 |       4 |    167.881 |    167.881 | 100.00 |     290 |
+% |   Action::SetupMeshAction::Mesh::SetupMeshAction::act::setup_mesh    |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   Action::SetupMeshAction::Mesh::SetupMeshAction::act::set_mesh_base |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   MeshGeneratorSystem::createMeshGeneratorOrder                      |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   FEProblem::computeUserObjects                                      |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   FEProblem::computeUserObjects                                      |     3 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   FEProblem::outputStep                                              |    12 |      0.002 |      0.000 |   0.00 |       0 |      0.541 |      0.045 |   0.32 |      12 |
+% |   Transient::PicardSolve                                             |    11 |      0.010 |      0.001 |   0.01 |       0 |    166.360 |     15.124 |  99.09 |     117 |
+% |     FEProblem::computeUserObjects                                    |    88 |      0.001 |      0.000 |   0.00 |       0 |      0.001 |      0.000 |   0.00 |       0 |
+% |     FEProblem::outputStep                                            |    33 |      0.002 |      0.000 |   0.00 |       0 |      0.002 |      0.000 |   0.00 |       0 |
+% |     FEProblem::solve                                                 |    11 |     70.303 |      6.391 |  41.88 |      88 |    164.285 |     14.935 |  97.86 |     117 |
+% |       FEProblem::computeUserObjects                                  |    84 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |       FEProblem::computeResidualInternal                             |    94 |      0.002 |      0.000 |   0.00 |       0 |     32.703 |      0.348 |  19.48 |       0 |
+% |         FEProblem::computeUserObjects                                |   188 |      0.002 |      0.000 |   0.00 |       0 |      0.002 |      0.000 |   0.00 |       0 |
+% |       FEProblem::computeJacobianInternal                             |    31 |      0.001 |      0.000 |   0.00 |       0 |     61.265 |      1.976 |  36.49 |      29 |
+% |         FEProblem::computeUserObjects                                |    62 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   Transient::final                                                   |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |     FEProblem::computeUserObjects                                    |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |     FEProblem::outputStep                                            |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+% Finished Executing                                                                       [167.63 s] [  436 MB]
+%         Command being timed: "./shale-opt -i models/porous_flow_block/porous_flow_block.i"
+%         User time (seconds): 166.68
+%         System time (seconds): 1.30
+%         Percent of CPU this job got: 99%
+%         Elapsed (wall clock) time (h:mm:ss or m:ss): 2:48.05
+%         Average shared text size (kbytes): 0
+%         Average unshared data size (kbytes): 0
+%         Average stack size (kbytes): 0
+%         Average total size (kbytes): 0
+%         Maximum resident set size (kbytes): 681736
+%         Average resident set size (kbytes): 0
+%         Major (requiring I/O) page faults: 0
+%         Minor (reclaiming a frame) page faults: 65748
+%         Voluntary context switches: 1052
+%         Involuntary context switches: 187
+%         Swaps: 0
+%         File system inputs: 0
+%         File system outputs: 17984
+%         Socket messages sent: 0
+%         Socket messages received: 0
+%         Signals delivered: 0
+%         Page size (bytes): 4096
+%         Exit status: 0
+
+% /usr/bin/time -v mpiexec -n 1 ./shale-opt -i models/porous_flow_block/porous_flow_block.i
+% Performance Graph:
+% --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+% |                                Section                               | Calls |   Self(s)  |   Avg(s)   |    %   | Mem(MB) |  Total(s)  |   Avg(s)   |    %   | Mem(MB) |
+% --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+% | shaleTestApp (main)                                                  |     1 |      0.008 |      0.008 |   0.00 |       4 |    169.007 |    169.007 | 100.00 |     290 |
+% |   Action::SetupMeshAction::Mesh::SetupMeshAction::act::setup_mesh    |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   Action::SetupMeshAction::Mesh::SetupMeshAction::act::set_mesh_base |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   MeshGeneratorSystem::createMeshGeneratorOrder                      |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   FEProblem::computeUserObjects                                      |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   FEProblem::computeUserObjects                                      |     3 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   FEProblem::outputStep                                              |    12 |      0.002 |      0.000 |   0.00 |       0 |      0.535 |      0.045 |   0.32 |      13 |
+% |   Transient::PicardSolve                                             |    11 |      0.009 |      0.001 |   0.01 |       0 |    167.498 |     15.227 |  99.11 |     115 |
+% |     FEProblem::computeUserObjects                                    |    88 |      0.001 |      0.000 |   0.00 |       0 |      0.001 |      0.000 |   0.00 |       0 |
+% |     FEProblem::outputStep                                            |    33 |      0.002 |      0.000 |   0.00 |       0 |      0.002 |      0.000 |   0.00 |       0 |
+% |     FEProblem::solve                                                 |    11 |     70.670 |      6.425 |  41.82 |      88 |    165.438 |     15.040 |  97.89 |     115 |
+% |       FEProblem::computeUserObjects                                  |    84 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |       FEProblem::computeResidualInternal                             |    94 |      0.002 |      0.000 |   0.00 |       0 |     32.976 |      0.351 |  19.51 |       0 |
+% |         FEProblem::computeUserObjects                                |   188 |      0.002 |      0.000 |   0.00 |       0 |      0.002 |      0.000 |   0.00 |       0 |
+% |       FEProblem::computeJacobianInternal                             |    31 |      0.001 |      0.000 |   0.00 |       0 |     61.777 |      1.993 |  36.55 |      27 |
+% |         FEProblem::computeUserObjects                                |    62 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   Transient::final                                                   |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |     FEProblem::computeUserObjects                                    |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |     FEProblem::outputStep                                            |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+% Finished Executing                                                                       [168.76 s] [  434 MB]
+%         Command being timed: "mpiexec -n 1 ./shale-opt -i models/porous_flow_block/porous_flow_block.i"
+%         User time (seconds): 168.00
+%         System time (seconds): 1.10
+%         Percent of CPU this job got: 99%
+%         Elapsed (wall clock) time (h:mm:ss or m:ss): 2:49.16
+%         Average shared text size (kbytes): 0
+%         Average unshared data size (kbytes): 0
+%         Average stack size (kbytes): 0
+%         Average total size (kbytes): 0
+%         Maximum resident set size (kbytes): 679744
+%         Average resident set size (kbytes): 0
+%         Major (requiring I/O) page faults: 0
+%         Minor (reclaiming a frame) page faults: 65545
+%         Voluntary context switches: 1662
+%         Involuntary context switches: 296
+%         Swaps: 0
+%         File system inputs: 0
+%         File system outputs: 18000
+%         Socket messages sent: 0
+%         Socket messages received: 0
+%         Signals delivered: 0
+%         Page size (bytes): 4096
+%         Exit status: 0
+
+% /usr/bin/time -v mpiexec -n 5 ./shale-opt -i models/porous_flow_block/porous_flow_block.i
+% Performance Graph:
+% --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+% |                                Section                               | Calls |   Self(s)  |   Avg(s)   |    %   | Mem(MB) |  Total(s)  |   Avg(s)   |    %   | Mem(MB) |
+% --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+% | shaleTestApp (main)                                                  |     1 |      0.008 |      0.008 |   0.02 |       3 |     44.611 |     44.611 | 100.00 |     107 |
+% |   Action::SetupMeshAction::Mesh::SetupMeshAction::act::setup_mesh    |     1 |      0.000 |      0.000 |   0.00 |       1 |      0.000 |      0.000 |   0.00 |       1 |
+% |   Action::SetupMeshAction::Mesh::SetupMeshAction::act::set_mesh_base |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   MeshGeneratorSystem::createMeshGeneratorOrder                      |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   FEProblem::computeUserObjects                                      |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   FEProblem::computeUserObjects                                      |     3 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   FEProblem::outputStep                                              |    12 |      0.001 |      0.000 |   0.00 |       0 |      0.335 |      0.028 |   0.75 |      53 |
+% |   Transient::PicardSolve                                             |    11 |      0.006 |      0.001 |   0.01 |       0 |     43.823 |      3.984 |  98.23 |     -24 |
+% |     FEProblem::computeUserObjects                                    |    88 |      0.001 |      0.000 |   0.00 |       0 |      0.001 |      0.000 |   0.00 |       0 |
+% |     FEProblem::outputStep                                            |    33 |      0.002 |      0.000 |   0.00 |       0 |      0.002 |      0.000 |   0.00 |       0 |
+% |     FEProblem::solve                                                 |    11 |     22.674 |      2.061 |  50.83 |     -41 |     43.378 |      3.943 |  97.24 |     -24 |
+% |       FEProblem::computeUserObjects                                  |    84 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |       FEProblem::computeResidualInternal                             |    94 |      0.002 |      0.000 |   0.01 |       0 |      7.101 |      0.076 |  15.92 |       1 |
+% |         FEProblem::computeUserObjects                                |   188 |      0.001 |      0.000 |   0.00 |       0 |      0.001 |      0.000 |   0.00 |       0 |
+% |       FEProblem::computeJacobianInternal                             |    31 |      0.001 |      0.000 |   0.00 |       0 |     13.595 |      0.439 |  30.47 |      16 |
+% |         FEProblem::computeUserObjects                                |    62 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   Transient::final                                                   |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |     FEProblem::computeUserObjects                                    |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |     FEProblem::outputStep                                            |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+% Finished Executing                                                                       [ 44.41 s] [  250 MB]
+%         Command being timed: "mpiexec -n 5 ./shale-opt -i models/porous_flow_block/porous_flow_block.i"
+%         User time (seconds): 210.10
+%         System time (seconds): 13.60
+%         Percent of CPU this job got: 499%
+%         Elapsed (wall clock) time (h:mm:ss or m:ss): 0:44.76
+%         Average shared text size (kbytes): 0
+%         Average unshared data size (kbytes): 0
+%         Average stack size (kbytes): 0
+%         Average total size (kbytes): 0
+%         Maximum resident set size (kbytes): 365644
+%         Average resident set size (kbytes): 0
+%         Major (requiring I/O) page faults: 10216
+%         Minor (reclaiming a frame) page faults: 739752
+%         Voluntary context switches: 2842
+%         Involuntary context switches: 318
+%         Swaps: 0
+%         File system inputs: 0
+%         File system outputs: 17912
+%         Socket messages sent: 0
+%         Socket messages received: 0
+%         Signals delivered: 0
+%         Page size (bytes): 4096
+%         Exit status: 0
+
+% mpiexec -n 5 /usr/bin/time -v ./shale-opt -i models/porous_flow_block/porous_flow_block.i
+% Performance Graph:
+% --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+% |                                Section                               | Calls |   Self(s)  |   Avg(s)   |    %   | Mem(MB) |  Total(s)  |   Avg(s)   |    %   | Mem(MB) |
+% --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+% | shaleTestApp (main)                                                  |     1 |      0.008 |      0.008 |   0.02 |       6 |     44.850 |     44.850 | 100.00 |     107 |
+% |   Action::SetupMeshAction::Mesh::SetupMeshAction::act::setup_mesh    |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   Action::SetupMeshAction::Mesh::SetupMeshAction::act::set_mesh_base |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   MeshGeneratorSystem::createMeshGeneratorOrder                      |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   FEProblem::computeUserObjects                                      |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   FEProblem::computeUserObjects                                      |     3 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   FEProblem::outputStep                                              |    12 |      0.001 |      0.000 |   0.00 |       0 |      0.330 |      0.027 |   0.73 |      54 |
+% |   Transient::PicardSolve                                             |    11 |      0.006 |      0.001 |   0.01 |       0 |     44.075 |      4.007 |  98.27 |     -27 |
+% |     FEProblem::computeUserObjects                                    |    88 |      0.001 |      0.000 |   0.00 |       0 |      0.001 |      0.000 |   0.00 |       0 |
+% |     FEProblem::outputStep                                            |    33 |      0.001 |      0.000 |   0.00 |       0 |      0.001 |      0.000 |   0.00 |       0 |
+% |     FEProblem::solve                                                 |    11 |     22.542 |      2.049 |  50.26 |     -42 |     43.624 |      3.966 |  97.27 |     -27 |
+% |       FEProblem::computeUserObjects                                  |    84 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |       FEProblem::computeResidualInternal                             |    93 |      0.002 |      0.000 |   0.01 |       0 |      7.108 |      0.076 |  15.85 |       2 |
+% |         FEProblem::computeUserObjects                                |   186 |      0.001 |      0.000 |   0.00 |       0 |      0.001 |      0.000 |   0.00 |       0 |
+% |       FEProblem::computeJacobianInternal                             |    31 |      0.001 |      0.000 |   0.00 |       0 |     13.967 |      0.451 |  31.14 |      13 |
+% |         FEProblem::computeUserObjects                                |    62 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   Transient::final                                                   |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |     FEProblem::computeUserObjects                                    |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |     FEProblem::outputStep                                            |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+% Finished Executing                                                                       [ 44.65 s] [  256 MB]
+%         Command being timed: "./shale-opt -i models/porous_flow_block/porous_flow_block.i"
+%         User time (seconds):    Command being timed: "./shale-opt -i models/porous_flow_block/porous_flow_block.i"
+%         User time (seconds): 42.26
+%         System time (se41.90
+%         System time (seconds): 3.05
+%         Percent of CPU this job got: 99%
+%         Elapsed (wall clock) time (h:mm:ss or m:ss): 0:45.00
+%         Ave     Command being timed: "./shale-opt -i models/porous_flow_block/porous_flow_block.i"
+%         User time (seconds): 42.31
+%         Syste   Command being timed: "./shale-opt -i models/porous_flow_block/porous_flow_block.i"
+%         User time (seconds): conds): 2.72
+%         Percent of CPU this job got:rage shared text size (kbytes): 0
+%         Avem time (seconds): 2.64
+%         Percent of CPU thi 99%
+%         Elapsed (wall clock) time rage unshared data size (kbytess job got: 99%
+%         Elapsed (wall 42.23
+%         System time (seconds): 2.73
+%         Percen(h:mm:ss or m:ss): 0:45.00
+%         Ave): 0
+%         Average stack size (kbytes): 0
+% clock) time (h:mm:ss or m:ss): 0:45.00
+%         At of CPU this job got: 99%
+%         Elapsed (wall rage shared text size (kbytes): 0
+%         Av      Average total size (kbytes): 0
+%         Maximum residenverage shared text size (kbytes): 0
+%         Average uclock) time (h:mm:ss or m:ss): 0:45.00
+%         Average sharederage unshared data size (kbytes): 0
+%         Average st set size (kbytes): 347512
+%         Average resinshared data size (kbytes): 0
+%         Averag text size (kbytes): 0
+%         Average unshared tack size (kbytes): 0
+%         Average total sdent set size (kbytes): 0
+%         Major (reqe stack size (kbytes): 0
+%         Average totdata size (kbytes): 0
+%         Average stack sizize (kbytes): 0
+%         Maximum resident setuiring I/O) page faults: 1957
+%         Minor (real size (kbytes): 0
+%         Maximum residente (kbytes): 0
+%         Average total size (kbytes): size (kbytes): 384156
+%         Average resident setclaiming a frame) page faults: 151603
+%         Voluntary set size (kbytes): 339544
+%         Average resident set 0
+%         Maximum resident set size (kbytes): 332888
+%          size (kbytes): 0
+%         Major (requiring I/O) context switches: 224
+%         Involuntary con size (kbytes): 0
+%         Major (requiring IAverage resident set size (kbytes): 0
+%         Ma page faults: 2105
+%         Minor (reclaiming atext switches: 57
+%         Swaps: 0
+%         File sys/O) page faults: 1985
+%         Minor (reclaiminjor (requiring I/O) page faults: 1894
+%         Mi frame) page faults: 149211
+%         Voluntary context switches: tem inputs: 0
+%         File system outputs: 0
+%         Socket messagg a frame) page faults: 156113
+%         Voluntary context switchesnor (reclaiming a frame) page faults: 151442
+%         Voluntary context1117
+%         Involuntary context switches: 166
+%         Ses sent: 0
+%         Socket messages received: 0
+% : 277
+%         Involuntary context switches: 56
+%         S switches: 239
+%         Involuntary context switches:waps: 0
+%         File system inputs: 0
+%         File sys        Signals delivered: 0
+%         Page size (bytwaps: 0
+%         File system inputs: 0
+%         Fil 73
+%         Swaps: 0
+%         File system inputs: 0
+%         tem outputs: 17864
+%         Socket messages sentes): 4096
+%         Exit status: 0
+% e system outputs: 0
+%         Socket messagesFile system outputs: 0
+%         Socket messages: 0
+%         Socket messages received: 0
+%         Sig sent: 0
+%         Socket messages receiv sent: 0
+%         Socket messages receivednals delivered: 0
+%         Page size ed: 0
+%         Signals delivered: 0
+%         Pag: 0
+%         Signals delivered: 0
+%         Page size (bytes): 4096
+%         Exit status: 0
+% e size (bytes): 4096
+%         Exit s(bytes): 4096
+%         Exit statustatus: 0
+% : 0
+%         Command being timed: "./shale-opt -i models/porous_flow_block/porous_flow_block.i"
+%         User time (seconds): 42.17
+%         System time (seconds): 2.77
+%         Percent of CPU this job got: 99%
+%         Elapsed (wall clock) time (h:mm:ss or m:ss): 0:45.00
+%         Average shared text size (kbytes): 0
+%         Average unshared data size (kbytes): 0
+%         Average stack size (kbytes): 0
+%         Average total size (kbytes): 0
+%         Maximum resident set size (kbytes): 339276
+%         Average resident set size (kbytes): 0
+%         Major (requiring I/O) page faults: 1951
+%         Minor (reclaiming a frame) page faults: 133284
+%         Voluntary context switches: 234
+%         Involuntary context switches: 63
+%         Swaps: 0
+%         File system inputs: 0
+%         File system outputs: 0
+%         Socket messages sent: 0
+%         Socket messages received: 0
+%         Signals delivered: 0
+%         Page size (bytes): 4096
+%         Exit status: 0
+
+% mpiexec -n 5 \time -f '%M' ./shale-opt -i models/porous_flow_block/porous_flow_block.i
+% Performance Graph:
+% --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+% |                                Section                               | Calls |   Self(s)  |   Avg(s)   |    %   | Mem(MB) |  Total(s)  |   Avg(s)   |    %   | Mem(MB) |
+% --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+% | shaleTestApp (main)                                                  |     1 |      0.008 |      0.008 |   0.02 |       4 |     46.397 |     46.397 | 100.00 |     138 |
+% |   Action::SetupMeshAction::Mesh::SetupMeshAction::act::setup_mesh    |     1 |      0.001 |      0.001 |   0.00 |       0 |      0.001 |      0.001 |   0.00 |       0 |
+% |   Action::SetupMeshAction::Mesh::SetupMeshAction::act::set_mesh_base |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   MeshGeneratorSystem::createMeshGeneratorOrder                      |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   FEProblem::computeUserObjects                                      |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   FEProblem::computeUserObjects                                      |     3 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   FEProblem::outputStep                                              |    12 |      0.001 |      0.000 |   0.00 |       0 |      0.319 |      0.027 |   0.69 |      12 |
+% |   Transient::PicardSolve                                             |    11 |      0.006 |      0.001 |   0.01 |       0 |     45.631 |      4.148 |  98.35 |      48 |
+% |     FEProblem::computeUserObjects                                    |    88 |      0.001 |      0.000 |   0.00 |       0 |      0.001 |      0.000 |   0.00 |       0 |
+% |     FEProblem::outputStep                                            |    33 |      0.001 |      0.000 |   0.00 |       0 |      0.001 |      0.000 |   0.00 |       0 |
+% |     FEProblem::solve                                                 |    11 |     23.941 |      2.176 |  51.60 |      40 |     45.187 |      4.108 |  97.39 |      48 |
+% |       FEProblem::computeUserObjects                                  |    84 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |       FEProblem::computeResidualInternal                             |    96 |      0.003 |      0.000 |   0.01 |       0 |      7.328 |      0.076 |  15.79 |       2 |
+% |         FEProblem::computeUserObjects                                |   192 |      0.001 |      0.000 |   0.00 |       0 |      0.001 |      0.000 |   0.00 |       0 |
+% |       FEProblem::computeJacobianInternal                             |    31 |      0.001 |      0.000 |   0.00 |       0 |     13.910 |      0.449 |  29.98 |       6 |
+% |         FEProblem::computeUserObjects                                |    62 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   Transient::final                                                   |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |     FEProblem::computeUserObjects                                    |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |     FEProblem::outputStep                                            |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+% Finished Executing                                                                       [ 46.19 s] [  283 MB]
+% 380180
+% 340124
+% 343844
+% 319252
+% 325960
+% --> sum = 380'180 + 340'124 + 343'844 + 319'252 + 325'960 = 1'709'360
+
+% \time -f '%M' ./shale-opt -i models/porous_flow_block/porous_flow_block.i
+% Performance Graph:
+% --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+% |                                Section                               | Calls |   Self(s)  |   Avg(s)   |    %   | Mem(MB) |  Total(s)  |   Avg(s)   |    %   | Mem(MB) |
+% --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+% | shaleTestApp (main)                                                  |     1 |      0.008 |      0.008 |   0.00 |       4 |    168.959 |    168.959 | 100.00 |     290 |
+% |   Action::SetupMeshAction::Mesh::SetupMeshAction::act::setup_mesh    |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   Action::SetupMeshAction::Mesh::SetupMeshAction::act::set_mesh_base |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   MeshGeneratorSystem::createMeshGeneratorOrder                      |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   FEProblem::computeUserObjects                                      |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   FEProblem::computeUserObjects                                      |     3 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   FEProblem::outputStep                                              |    12 |      0.002 |      0.000 |   0.00 |       0 |      0.538 |      0.045 |   0.32 |      12 |
+% |   Transient::PicardSolve                                             |    11 |      0.010 |      0.001 |   0.01 |       0 |    167.440 |     15.222 |  99.10 |     115 |
+% |     FEProblem::computeUserObjects                                    |    88 |      0.001 |      0.000 |   0.00 |       0 |      0.001 |      0.000 |   0.00 |       0 |
+% |     FEProblem::outputStep                                            |    33 |      0.002 |      0.000 |   0.00 |       0 |      0.002 |      0.000 |   0.00 |       0 |
+% |     FEProblem::solve                                                 |    11 |     70.522 |      6.411 |  41.74 |      88 |    165.354 |     15.032 |  97.87 |     115 |
+% |       FEProblem::computeUserObjects                                  |    84 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |       FEProblem::computeResidualInternal                             |    94 |      0.003 |      0.000 |   0.00 |       0 |     33.103 |      0.352 |  19.59 |       0 |
+% |         FEProblem::computeUserObjects                                |   188 |      0.002 |      0.000 |   0.00 |       0 |      0.002 |      0.000 |   0.00 |       0 |
+% |       FEProblem::computeJacobianInternal                             |    31 |      0.001 |      0.000 |   0.00 |       0 |     61.714 |      1.991 |  36.53 |      27 |
+% |         FEProblem::computeUserObjects                                |    62 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |   Transient::final                                                   |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |     FEProblem::computeUserObjects                                    |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% |     FEProblem::outputStep                                            |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
+% --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+% Finished Executing                                                                       [168.71 s] [  435 MB]
+% 680816
+
+% | Measurement method                  |  N = 1     |    N = 5 | 
+% | =================================== | ========== | =========| 
+% | Performance Graph                   |    290     |      138 | 
+% | Finished Executing                  |    435     |      283 | 
+% | sum of "mpiexec -n N \time -f '%M'" |    665     |    1 669 | 
+% | "\time -f '%M' mpiexec -n N"        |    664     |      357 | 
 
 \section{Plaxis 3D}
 
-$k_f = \SI[per-mode = symbol]{1}{\metre\per\day}$
+For Plaxis, the software-default system of physical units was used (metre
+-- \unit{\metre}, days -- \unit{\day}, and kilogram -- \unit{\kilogram}).
+From this system of units stresses and pore-pressures are automaticly converted
+by Plaxis to \unit[per-mode = symbol]{\kilo\newton\per\square\metre}. Because
+of the physical unit of days (\unit{\day}) and to keep model time to numbers
+with small magnitude, a hydraulic conductivity of
+$k_f = \qty[per-mode = symbol]{1}{\metre\per\day}$ was chosen (comparable with
+a gravel) and model time was set to \qty{1}{\day}.
 
-Plaxis3D input file: \fileattachment{\currfiledir/ex1.p3dlog}{ex1.p3dlog}
+The mesh used for Plaxis3D consists of 5130 TET10 elements.
 
-(ToDo)
+Hydraulic conductivity, often used in geotechnical practice, can be calculated
+from permeability as follows:
+
+\begin{equation}
+    k_f = k \frac{\rho_w g}{\mu_w}
+\end{equation}
+with
+\begin{description}
+    \item[$k_f$] hydraulic conductivity (usually in \unit[per-mode = symbol]{\metre\per\second} or \unit[per-mode = symbol]{\metre\per\day})
+    \item[$k$] permeability (usually in \unit[per-mode = symbol]{\square\metre})
+    \item[$\rho_w$] fluid density, for water $\rho_{water} \approx \SI[per-mode = symbol]{998.21}{\kilogram\per\cubic\metre}$
+    \item[$\mu_w$] fluid dynamic viscosity, for water $\mu_{water} \approx \SI{0.9}{\milli\pascal\cdot\second}$
+\end{description}
+
+\vspace{1em}
+
+therefore, for water:
+\begin{equation}
+    \begin{split}
+        k_f & \approx k \cdot \qty{1.09E-7}{\per\metre\per\second} \\
+            & \approx k \cdot \qty{9.4176E-3}{\per\metre\per\day}
+    \end{split}
+\end{equation}
+
+The Plaxis3D commands file for this example is attached to this document by the
+name of ‘ex1.p3dlog’. \fileattachment{\currfiledir/ex1.p3dlog}{ex1.p3dlog}
+
+Selected results of this Plaxis model are summarized in \autoref{ex1:plaxis-results}.
+Performance data can be found in \autoref{ex1:plaxis-performance}.
+
+% \begin{figure}[htbp]
+%     \centering
+%     \begin{subfigure}[b]{0.45\linewidth}
+%         \includegraphics[page=1, clip, trim=1.0cm 3cm 1.5cm 1cm, width=\linewidth]{\currfiledir ex1.p3dat--Phase1--Pore-Water-Pressures.pdf}
+%         \caption{pore pressures}
+%     \end{subfigure}
+%     \begin{subfigure}[b]{0.45\linewidth}
+%         \includegraphics[page=1, clip, trim=1.0cm 3cm 1.5cm 1cm, width=\linewidth]{\currfiledir ex1.p3dat--Phase1--SigmaZZ.pdf}
+%         \caption{effective vertical stress}
+%     \end{subfigure}
+%     \caption{Plaxis 3D results}
+%     \label{fig:ex1:Plaxis3D-results}
+% \end{figure}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Selected results of Plaxis3D v2023.2.1.1079}
+    \label{ex1:plaxis-results}
+
+    \begin{tabularx}{0.972\hsize}{
+            >{\hsize=0.6\hsize\linewidth=\hsize}X
+            >{\hsize=0.4\hsize\linewidth=\hsize}X}
+        {\begin{tabularx}{1\linewidth}{
+                     >{\hsize=0.3\hsize\linewidth=\hsize}X
+                     >{\hsize=0.3\hsize\linewidth=\hsize\hspace{-5pt}}Y
+                     >{\hsize=0.3\hsize\linewidth=\hsize\hspace{-5pt}}Y}
+                 \toprule
+                 Model response                                                                        & \multicolumn{2}{c}{Location}                     \\
+                 {}                                                                                    & $z_{max}$                    & $z_{min}$         \\
+                 \midrule
+
+                 \multicolumn{3}{l}{Initial Conditions:}                                                                                                  \\
+                 \hspace{1em} $\sigma'_{zz}$ (\unit[per-mode = symbol]{\kilo\newton\per\square\metre}) & \qty{\pm0.0}{}               & \qty{-90.0}{}     \\
+                 \hspace{1em} $u$            (\unit[per-mode = symbol]{\kilo\newton\per\square\metre}) & \qty{\pm0.0}{}               & \qty{-60.0}{}     \\
+
+                 {}                                                                                    & {}                           & {}                \\
+
+                 \multicolumn{3}{l}{Boundary at $z_{max}$ lowered by \qty{1}{cm}:}                                                                        \\
+                 \hspace{1em} $\sigma'_{zz}$ (\unit[per-mode = symbol]{\kilo\newton\per\square\metre}) & \qty{-3.600E+4}{}            & \qty{-3.609E+4}{} \\
+                 \hspace{1em} $u$            (\unit[per-mode = symbol]{\kilo\newton\per\square\metre}) & \qty{-3.333E+4}{}            & \qty{-3.339E+4}{} \\
+                 \bottomrule
+                 \multicolumn{3}{l}{\makecell{Note: In Plaxis, compressive pore pressures                                                                 \\ have a negative sign.}} \\
+             \end{tabularx}}
+         &
+        {\raisebox{0.0mm}
+                {\begin{tikzpicture}[baseline=(current bounding box.center)]
+                         \node[inner sep=0pt] (ch-stresses) at (0.35,0.0) {\includegraphics[width=0.925\linewidth]{\currfiledir ex1.p3dat.jpg}};
+                         \node[draw,circle,fill=white,minimum size=.95cm,inner sep=0pt] at (+3.3,+2.2) {$z_{max}$};
+                         \node[draw,circle,fill=white,minimum size=.95cm,inner sep=0pt] at (+3.3,-1.1) {$z_{min}$};
+                     \end{tikzpicture}}
+            }
+        \\
+    \end{tabularx}
+\end{table}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Performance of Plaxis3D v2023.2.1.1079}
+    \label{ex1:plaxis-performance}
+    \begin{tabularx}{\textwidth}{
+            >{\hsize=0.16\hsize\linewidth=\hsize}X
+            >{\hsize=0.21\hsize\linewidth=\hsize\hspace{-5pt}}Y
+            >{\hsize=0.21\hsize\linewidth=\hsize\hspace{-5pt}}Y
+            >{\hsize=0.21\hsize\linewidth=\hsize\hspace{-5pt}}Y
+            >{\hsize=0.21\hsize\linewidth=\hsize\hspace{-5pt}}Y}
+
+        \hline
+
+        Property                                                 &
+        \multicolumn{2}{c}{Solver "Picos" (multicore iterative)} &
+        \multicolumn{2}{c}{Solver "Pardiso" (multicore direct)}    \\
+
+        {}                                                       &
+        1 CPU                                                    &
+        3 CPU                                                    &
+        1 CPU                                                    &
+        24 CPU                                                     \\
+
+        \hline
+
+        steps                                                    &
+        \qty[per-mode = symbol]{123}{}                           &
+        \qty[per-mode = symbol]{123}{}                           &
+        \qty[per-mode = symbol]{123}{}                           &
+        \qty[per-mode = symbol]{123}{}                             \\
+
+        wall time                                                &
+        \qty[per-mode = symbol]{518}{\second}                    &
+        \qty[per-mode = symbol]{229}{\second}                    &
+        \qty[per-mode = symbol]{282}{\second}                    &
+        \qty[per-mode = symbol]{80}{\second}                       \\
+
+        RAM                                                      &
+        \qty[per-mode = symbol]{315}{\mega\byte}                 &
+        \qty[per-mode = symbol]{355}{\mega\byte}                 &
+        \qty[per-mode = symbol]{469}{\mega\byte}                 &
+        \qty[per-mode = symbol]{519}{\mega\byte}                   \\
+
+        \hline
+    \end{tabularx}
+\end{table}
