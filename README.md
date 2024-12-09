@@ -1,9 +1,11 @@
-# geotechnical-simulations-with-moose
+# Geotechnical Simulations with Moose
 
 > [!NOTE]  
 > This document is still at an early stage of development. 
 > Some parts already have text, others exist as bullet 
-> points and the rest are just placeholders. 
+> points and the rest are just placeholders. Nevertheless, 
+> I would like to share this document with you. I am happy 
+> to receive comments and suggestions. 
 
 By enabling massively parallel multiphysics simulation the 
 open-source, finite element framework Moose
@@ -16,9 +18,9 @@ with Moose. Main focus are quasi-static simulations.
 This whitepaper ([PDF](geotechnical-simulations-with-moose.pdf)) 
 collects information and code for geotechnical simulations with 
 the software Moose. This document is primarily intended as a 
-collection of information  rather than a textbook or step-by-step 
-guide. As such, it is intended to be a ’living’ document that 
-will be continually edited and updated.
+collection of information and examples rather than a textbook or 
+step-by-step guide. As such, it is intended to be a ’living’ 
+document that will be continually edited and updated.
 
 > [!IMPORTANT]  
 > This document is published under the 
