@@ -1,12 +1,5 @@
 # This test loads a saturated block
 
-# using NEWTON and manual variable scaling (only for porepressure)
-# porepressue scaling        (-) ||  Plaxis3D  ||    1E+0    |    1E-1    |    1E-2    |   1E-3   |   1E-4   |    1E-5    |    1E-10   |    1E-15    || auto-scale ||
-# -------------------------------||------------||------------|------------|------------|----------|----------|------------|------------|-------------||------------||
-# runtime user @ number of cores ||  9m38s @ 3 ||  2m23s @ 3 |  2m37s @ 5 |  2m39s @ 5 |          |          |  1m44s @ 5 |            |  1m44s @ 5  ||  2m15s @ 3 ||
-# stress_zz              (kN/m²) || -3.600E+04 || -3.600E+04 | -3.600E+04 | -3.600E+04 | -3.6E+04 | -3.6E+04 | -3.600E+04 | -3.600E+04 | -3.600E+04  || -3.600E+04 ||
-# porepressure, excess   (kN/m²) || +3.335E+04 || +3.333E+04 | +3.332E+04 | +3.314E+04 | +3.3E+04 | +3.2E+04 | +3.046E+04 | +3.066E+04 | +3.062E+04  || +3.334E+04 ||
-
 # model units
 modelunit_length = 'm'
 modelunit_time = 's' #s = seconds, h = hours, day = days
@@ -61,17 +54,14 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
   [disp_x]
     family = LAGRANGE
     order = SECOND
-    initial_condition = 0.0
   []
   [disp_y]
     family = LAGRANGE
     order = SECOND
-    initial_condition = 0.0
   []
   [disp_z]
     family = LAGRANGE
     order = SECOND
-    initial_condition = 0.0
   []
   [porepressure]
     family = LAGRANGE
@@ -450,74 +440,35 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
   []
   [permeability]
     type = PorousFlowPermeabilityConst
-    permeability = '1E-7 0 0  0 1E-7 0  0 0 1E-7'
+    permeability = '1 0 0  0 1 0  0 0 1'
   []
 
 []
 
-# [Preconditioning]
-#   [SMP]
-#     type = SMP
-#     full = true
-#   []
-# []
 [Preconditioning]
   [SMP]
     type = SMP
     full = true
 
-    # petsc_options = '-ksp_snes_ew' #-snes_check_jacobian
-    # petsc_options_iname = '-ksp_type -pc_type -pc_hypre_type -sub_pc_type -sub_pc_factor_shift_type -sub_pc_factor_levels -ksp_gmres_restart'
-    # petsc_options_value = ' gmres     hypre    boomeramg      lu           NONZERO                   4                     301'
+    petsc_options = '-ksp_snes_ew'
 
-    # recommendation from https://mooseframework.inl.gov/modules/porous_flow/solvers.html
-    # petsc_options = '-snes_converged_reason'
-    # petsc_options_iname = '-ksp_type -pc_type -sub_pc_type -snes_max_it -sub_pc_factor_shift_type -pc_asm_overlap -snes_atol -snes_rtol '
-    # petsc_options_value = ' gmres     asm      lu           100          NONZERO                   2               1E-14      1E-12'
-
-    petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_mat_solver_package'
-    petsc_options_value = ' lu       NONZERO               mumps'
+    petsc_options_iname = '-ksp_type -pc_type -pc_hypre_type -sub_pc_type -sub_pc_factor_shift_type -sub_pc_factor_levels -ksp_gmres_restart'
+    petsc_options_value = 'gmres hypre boomeramg lu NONZERO 4 301'
   []
 []
 
 [Executioner]
   type = Transient
-  verbose = true
 
-  #automatic_scaling = true
-  #compute_scaling_once = false
-  #scaling_group_variables = 'disp_x disp_y disp_z; porepressure'
+  solve_type = 'NEWTON'
 
-  # solve_type = 'NEWTON'
-
-  solve_type = 'PJFNK'
-  petsc_options = '-snes_converged_reason'
-
-  petsc_options_iname = '-pc_type -pc_factor_mat_solver_package'
-  petsc_options_value = ' lu       mumps                       '
-
-  #petsc_options_iname = '-pc_type -pc_hypre_type -sub_pc_type -sub_pc_factor_shift_type -sub_pc_factor_levels -pc_factor_mat_solver_package -ksp_type -ksp_gmres_restart'
-  #petsc_options_value = ' hypre    boomeramg      lu           NONZERO                   4                     mumps                         gmres     301'
-
-  # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_mat_solver_type'
-  # petsc_options_value = ' lu       NONZERO               mumps'
-
-  ##DEFAULT-Values
-  ## line_search = default
-  ## l_abs_tol = 1e-50
-  ## l_tol = 1e-05
-  ## nl_abs_tol = 1e-50
-  ## nl_rel_tol = 1e-08
-
-  line_search = none
-
-  l_abs_tol = 1E-3 #1E-10 #1E-50
-  l_tol = 1E-4
+  #l_abs_tol = 1E-50
+  #l_tol = 1E-5
   l_max_its = 20
 
-  nl_abs_tol = 0.01 # 1E-10
-  #nl_rel_tol = 1E-5
-  nl_max_its = 20
+  #nl_abs_tol = 1E-50
+  #nl_rel_tol = 1E-8
+  nl_max_its = 5
 
   start_time = 0.0
   end_time = 11
@@ -536,6 +487,7 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
 
 [Outputs]
   print_linear_residuals = true
+  perf_graph = true
   exodus = true
 []
 
@@ -543,5 +495,5 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
   check_jacobian = true
 
   show_top_residuals = 0
-  # show_var_residual_norms = true
+  show_var_residual_norms = true
 []

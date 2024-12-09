@@ -46,7 +46,7 @@ determined as simulation result at the top of the block.
         \si[per-mode = symbol]{\giga\newton\per\square\metre} &
         \SI{2.2}{}                                              \\
 
-        water: viscosity $\mu_w$                              &
+        water: dynamic viscosity $\mu_w$                      &
         \si[per-mode = symbol]{\milli\pascal\cdot\second}     &
         \SI{0.9}{}                                              \\
 
@@ -160,15 +160,32 @@ and model time was set to \qty{10}{\second}.
 The mesh used for Moose consists of \qty{5184}{} TET10 elements leading to
 \qty{32980}{\DOF}.
 
-The Moose input file for this example is attached to this document by the
-name of ‘ex1.i’. \fileattachment{\currfiledir/ex1.i}{ex1.i}
+Residuals for the fluid (water) for $ \epsilon_\mathrm{f} \equiv \qty[per-mode = symbol]{10}{\pascal\per\metre} $ may be estimated as:
+\begin{equation}
+    \begin{split}
+        R_\mathrm{f} & \approx V \cdot \kappa \cdot \epsilon_\mathrm{f} \cdot \rho_\mathrm{f} / \mu_\mathrm{f}                                                                                                                                            \\
+                     & \approx (\qty{216}{\cubic\metre}) \cdot (\qty{1E-7}{\square\metre}) \cdot (\qty[per-mode = symbol]{10}{\pascal\per\metre}) \cdot (\qty[per-mode = symbol]{1000}{\kilogram\per\cubic\metre}) / (\qty{1}{\milli\pascal\cdot\second}) \\
+                     & \approx \qty{2.16E+2}{\kilogram\cdot\metre\per\second}  \hspace{3.00em} \text{\light{(in SI units)}}                                                                                                                               \\
+                     & \approx \qty{2.16E-1}{\ton\cdot\metre\per\second}       \hspace{3.09em} \text{\light{(in accordance with the selected model units)}}
+    \end{split}
+\end{equation}
 
-Selected results of this Moose model are summarized in \autoref{ex1:moose-results}.
+Leading to a scaling of the pore-pressure of $\sim \qty{1E+1}{}$
+(calculated using $ 1 / R_\mathrm{f} $).
+
+In Moose, this example was calculated and analysed separately using both the
+‘NEWTON’ solver and the ‘PJFNK’ solver. The Moose input files for this example
+are attached to this document by the name of ‘ex1-NEWTON.i’ and ‘ex1-PJFNK.i’.
+\fileattachment{\currfiledir/ex1-NEWTON.i}{ex1-NEWTON.i}
+\fileattachment{\currfiledir/ex1-PJFNK.i}{ex1-PJFNK.i}
+
+Selected results of the Moose models are summarized in \autoref{ex1:moose-results}
+(both solvers used lead to the same results within the specified precision).
 Performance data can be found in \autoref{ex1:moose-performance}.
 
 \begin{table}[htbp]
     \centering
-    \caption{Selected results of the Moose model}
+    \caption{Selected results of the Moose models \\(identical for solvers ‘NEWTON’ and ‘PJFNK’ for the shown precision)}
     \label{ex1:moose-results}
 
     \begin{tabularx}{0.972\hsize}{
