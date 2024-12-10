@@ -54,22 +54,19 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
   [disp_x]
     family = LAGRANGE
     order = SECOND
-    initial_condition = 0.0
   []
   [disp_y]
     family = LAGRANGE
     order = SECOND
-    initial_condition = 0.0
   []
   [disp_z]
     family = LAGRANGE
     order = SECOND
-    initial_condition = 0.0
   []
   [porepressure]
     family = LAGRANGE
     order = SECOND
-    scaling = 1E-1
+    scaling = 1E+1
   []
 []
 
@@ -472,21 +469,22 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
   ## line_search = default
   ## l_abs_tol = 1e-50
   ## l_tol = 1e-05
-  ## nl_abs_tol = 1e-50
+  ## nl_abs_tol = 1e-8
   ## nl_rel_tol = 1e-08
 
   line_search = none
 
-  l_abs_tol = 1E-3
-  l_tol = 1E-4
+  #l_abs_tol = 1E-3
+  #l_tol = 1E-5
   l_max_its = 20
 
-  nl_abs_tol = 0.01
-  #nl_rel_tol = 1E-8
+  nl_abs_tol = 1E-6
+  #nl_rel_tol = 1E-5
   nl_max_its = 4
 
   start_time = 0.0
   end_time = 11
+  dtmin = 1e-2
   [TimeSteppers]
     [TimeSequenceStepper1]
       type = TimeSequenceStepper
@@ -507,7 +505,7 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
 []
 
 [Debug]
-  check_jacobian = true
+  # check_jacobian = true
   show_top_residuals = 0
-  # show_var_residual_norms = true
+  show_var_residual_norms = true
 []

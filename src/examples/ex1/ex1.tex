@@ -171,7 +171,9 @@ Residuals for the fluid (water) for $ \epsilon_\mathrm{f} \equiv \qty[per-mode =
 \end{equation}
 
 Leading to a scaling of the pore-pressure of $\sim \qty{1E+1}{}$
-(calculated using $ 1 / R_\mathrm{f} $).
+(calculated using $ 1 / R_\mathrm{f} $). In fact, for this particular model
+a very small sensitivity of the resulting pore-pressure and vertical stress
+on the scaling had been found.
 
 In Moose, this example was calculated and analysed separately using both the
 ‘NEWTON’ solver and the ‘PJFNK’ solver. The Moose input files for this example
@@ -238,40 +240,179 @@ Performance data can be found in \autoref{ex1:moose-performance}.
 
         \hline
 
-        Property                                 &
-        \multicolumn{3}{c}{Solver "NEWTON"}      &
-        \multicolumn{2}{c}{Solver "PJFNK"}         \\
+        Property                              &
+        \multicolumn{3}{c}{Solver "NEWTON"}   &
+        \multicolumn{3}{c}{Solver "PJFNK"}      \\
 
-        {}                                       &
-        1 CPU                                    &
-        3 CPU                                    &
-        5 CPU                                    &
-        1 CPU                                    &
-        3 CPU                                    &
-        5 CPU                                      \\
+        {}                                    &
+        1 CPU                                 &
+        3 CPU                                 &
+        5 CPU                                 &
+        1 CPU                                 &
+        3 CPU                                 &
+        5 CPU                                   \\
 
         \hline
 
-        wall time                                &
-        \qty[per-mode = symbol]{105}{\second}    &
-        \qty[per-mode = symbol]{45}{\second}     &
-        \qty[per-mode = symbol]{32}{\second}     &
-        \qty[per-mode = symbol]{169}{\second}    &
-        \qty[per-mode = symbol]{69}{\second}     &
-        \qty[per-mode = symbol]{46}{\second}       \\
+        wall time                             &
+        \qty[per-mode = symbol]{105}{\second} &
+        \qty[per-mode = symbol]{45}{\second}  &
+        \qty[per-mode = symbol]{32}{\second}  &
+        \qty[per-mode = symbol]{169}{\second} &
+        \qty[per-mode = symbol]{69}{\second}  &
+        \qty[per-mode = symbol]{46}{\second}    \\
 
-        RAM                                      &
-        \qty[per-mode = symbol]{205}{\mega\byte} &
-        \qty[per-mode = symbol]{308}{\mega\byte} &
-        \qty[per-mode = symbol]{293}{\mega\byte} &
-        \qty[per-mode = symbol]{435}{\mega\byte} &
-        \qty[per-mode = symbol]{287}{\mega\byte} &
-        \qty[per-mode = symbol]{252}{\mega\byte}   \\
+        %RAM                                      &
+        %\qty[per-mode = symbol]{205}{\mega\byte} &
+        %\qty[per-mode = symbol]{308}{\mega\byte} &
+        %\qty[per-mode = symbol]{293}{\mega\byte} &
+        %\qty[per-mode = symbol]{435}{\mega\byte} &
+        %\qty[per-mode = symbol]{287}{\mega\byte} &
+        %\qty[per-mode = symbol]{252}{\mega\byte}   \\
 
         \hline
     \end{tabularx}
 \end{table}
 
+% ########################################################
+% ########## Dependency on variable scaling ##############
+% ########################################################
+%
+% the following table is commented out due to the fact, I do not see any
+% impact of the variable scaling (for the values tested).
+%
+% The effect of scaling the ‘porepressure’ variable is shown in
+% \autoref{ex1:tab:moose-scaling}.
+%
+% \begin{table}[htbp]
+%     \centering
+%     \caption{Effect of scaling the ‘porepressure’ variable (results at $z_{max}$)}
+%     \label{ex1:tab:moose-scaling}
+%     \begin{tabularx}{\textwidth}{
+%             >{\hsize=0.30\hsize\linewidth=\hsize}X
+%             >{\hsize=0.15\hsize\linewidth=\hsize\hspace{-5pt}}Y
+%             >{\hsize=0.15\hsize\linewidth=\hsize\hspace{-5pt}}Y
+%             >{\hsize=0.05\hsize\linewidth=\hsize\hspace{-5pt}}Y
+%             >{\hsize=0.15\hsize\linewidth=\hsize\hspace{-5pt}}Y
+%             >{\hsize=0.15\hsize\linewidth=\hsize\hspace{-5pt}}Y
+%             >{\hsize=0.05\hsize\linewidth=\hsize\hspace{-5pt}}Y}
+% 
+%         \hline
+% 
+%         Variable ‘porepressure’                                                    &
+%         \multicolumn{3}{c}{Solver "NEWTON"}                                        &
+%         \multicolumn{3}{c}{Solver "PJFNK"}                                           \\
+% 
+%         scaling                                                                    &
+%         $\sigma'_{zz}$ (\unit[per-mode = symbol]{\kilo\newton\per\square\metre})   &
+%         $u$            (\unit[per-mode = symbol]{\kilo\newton\per\square\metre})   &
+%         rem.                                                                       &
+%         $\sigma'_{zz}$ (\unit[per-mode = symbol]{\kilo\newton\per\square\metre})   &
+%         $u$            (\unit[per-mode = symbol]{\kilo\newton\per\square\metre})   &
+%         rem.                                                                         \\
+% 
+%         \hline
+% 
+%         \qty[print-zero-exponent=true, print-exponent-implicit-plus=true]{1E+05}{} &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                         &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                           \\
+% 
+%         \qty[print-zero-exponent=true, print-exponent-implicit-plus=true]{1E+02}{} &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                         &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                           \\
+% 
+%         \qty[print-zero-exponent=true, print-exponent-implicit-plus=true]{1E+01}{} &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                         &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                           \\
+% 
+%         \qty[print-zero-exponent=true, print-exponent-implicit-plus=true]{1E+00}{} &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                         &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                           \\
+% 
+%         \qty[print-zero-exponent=true, print-exponent-implicit-plus=true]{1E-01}{} &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                         &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                           \\
+% 
+%         \qty[print-zero-exponent=true, print-exponent-implicit-plus=true]{1E-02}{} &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                         &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                           \\
+% 
+%         \qty[print-zero-exponent=true, print-exponent-implicit-plus=true]{1E-03}{} &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                         &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                           \\
+% 
+%         \qty[print-zero-exponent=true, print-exponent-implicit-plus=true]{1E-04}{} &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                         &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                           \\
+% 
+%         \qty[print-zero-exponent=true, print-exponent-implicit-plus=true]{1E-05}{} &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                         &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                           \\
+% 
+%         \qty[print-zero-exponent=true, print-exponent-implicit-plus=true]{1E-10}{} &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                         &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                           \\
+% 
+%         \qty[print-zero-exponent=true, print-exponent-implicit-plus=true]{1E-15}{} &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                         &
+%         \qty[per-mode = symbol]{-3.600E+4}{}                                       &
+%         \qty[per-mode = symbol]{+3.335E+4}{}                                       &
+%         {}                                                                           \\
+% 
+%         \hline
+%     \end{tabularx}
+%     %\raggedright
+%     %(a) \texttt{-nl\_rel\_tol} = \qty{1E-6}{};
+%     %(b) \texttt{-nl\_rel\_tol} = \qty{1E-7}{};
+%     %(c) \texttt{-nl\_rel\_tol} = \qty{1E-8}{}
+% \end{table}
+
+% ########################################################
+% ################## Memory Consumption ##################
+% ########################################################
+%
 % /usr/bin/time -v ./shale-opt -i models/porous_flow_block/porous_flow_block.i
 % 
 % Performance Graph:

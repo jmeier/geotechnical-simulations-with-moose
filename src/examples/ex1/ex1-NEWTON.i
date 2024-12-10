@@ -66,7 +66,7 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
   [porepressure]
     family = LAGRANGE
     order = SECOND
-    scaling = 1E-1
+    scaling = 1E+1
   []
 []
 
@@ -440,7 +440,7 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
   []
   [permeability]
     type = PorousFlowPermeabilityConst
-    permeability = '1 0 0  0 1 0  0 0 1'
+    permeability = '1E-7 0 0  0 1E-7 0  0 0 1E-7'
   []
 
 []
@@ -451,27 +451,31 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
     full = true
 
     petsc_options = '-ksp_snes_ew'
-
     petsc_options_iname = '-ksp_type -pc_type -pc_hypre_type -sub_pc_type -sub_pc_factor_shift_type -sub_pc_factor_levels -ksp_gmres_restart'
-    petsc_options_value = 'gmres hypre boomeramg lu NONZERO 4 301'
+    petsc_options_value = ' gmres     hypre    boomeramg      lu           NONZERO                   4                     301'
+
   []
 []
 
 [Executioner]
   type = Transient
+  verbose = true
 
   solve_type = 'NEWTON'
 
-  #l_abs_tol = 1E-50
+  line_search = none
+
+  #l_abs_tol = 1E-4
   #l_tol = 1E-5
   l_max_its = 20
 
-  #nl_abs_tol = 1E-50
-  #nl_rel_tol = 1E-8
+  #nl_abs_tol = 1E-8 # 1E2   #1E-3
+  #nl_rel_tol = 1E-6 #1e-8
   nl_max_its = 5
 
   start_time = 0.0
   end_time = 11
+  dtmin = 1e-2
   [TimeSteppers]
     [TimeSequenceStepper1]
       type = TimeSequenceStepper
@@ -492,8 +496,7 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
 []
 
 [Debug]
-  check_jacobian = true
-
+  # check_jacobian = true
   show_top_residuals = 0
   show_var_residual_norms = true
 []
