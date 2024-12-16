@@ -186,6 +186,22 @@ for TRI6. In your MooseApp, the shell material for TRI6 may be included as an
 
 \subsection{Pore Pressure Boundaries}
 
+Boundary conditions for pore pressures are to be given via the \codeword{[BCs]}
+block.
+
+\importantbox{
+  When using boundary conditions in models where subdomains are to be deactivated/activated, the boundary conditions must also deactivated/activated accordingly.
+}
+
+% [BCs]
+%   [front_pfs]
+%     type = PorousFlowSink
+%     boundary = 'left right top bottom front back'
+%     variable = 'porepressure'
+%     flux_function = 0.0
+%   []
+% []
+
 (to be written)
 
 \section{Groundwater}
