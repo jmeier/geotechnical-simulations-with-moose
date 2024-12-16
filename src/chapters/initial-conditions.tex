@@ -131,3 +131,14 @@ definition of a geostatic initial stress state using two functions
 Align the model to the orientation of the initial stresses
 
 (to be written)
+
+\subsection{Checking the initial stress state}
+\label{chap:IC-check}
+
+In geotechnics, the initial state including the initial stress state should be
+in equilibrium. Therefore, in a first time step without any changes to the
+model ‘nothing’ should happen (only neglectable deformations and changes in the
+stress field).
+
+This can be checked by introducing such a time step without any changes as a
+first time step and assessing the system response (e.g. in Paraview).
