@@ -39,6 +39,16 @@ construction stages, with the use of the \codeword{[Stages]} code plugin where
 applicable. The procedure without this plugin is only mentioned in selected
 places.
 
+\section{Time steps without changes}
+\label{chap:stages-without-changes}
+
+Avoid time steps (and therefore stages) without changes to the model. Time
+steps without changes may not converge, even if a convergence was found for the
+previous time step - compared to which no changes were made (due to the
+relative error being ‘high’).
+
+\todoinline{elaborate on timesteps without changes}
+
 \section{Abrupt versus gradual changes}
 \label{chap:stages-gradual-changes}
 
