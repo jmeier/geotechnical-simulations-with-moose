@@ -13,7 +13,7 @@ to be used.
 The initial stress state of geotechnical simulations is often non-trivial. This
 is because the section of geosphere to be modelled often has a history of
 millions of years under different loading conditions, including gravity and
-tectonical processes. In addition, the Earth's surface is often non-horizontal,
+tectonic processes. In addition, the Earth's surface is often non-horizontal,
 so that stress trajectories near the surface are oriented accordingly.
 Furthermore, the initial stress state may be anisotropic with a specific
 orientation. Gravity and the initial stress state are normally taken into
@@ -29,6 +29,11 @@ account by a combination of the following elements:
         see \autoref{chap:IC-stress-state-simple} and
         \autoref{chap:IC-stress-state-anisotropic}).
 \end{itemize}
+
+\importantbox{
+  In simulations including pore water, ‘effectice stresses’ are to be used.
+  This includes the definition of the initial stress field, where also
+  effective stresses are to be given.}
 
 \subsection{Gravity}
 \label{chap:IC-stress-state-gravity}
