@@ -56,66 +56,47 @@
     \usepackage{subcaption}
 
     % colors
-    \usepackage{color}
+    \usepackage{xcolor}
     \definecolor{dkgreen}{rgb}{0,0.6,0}
     \definecolor{gray}{rgb}{0.5,0.5,0.5}
     \definecolor{mauve}{rgb}{0.58,0,0.82}
 
     % code listings
     \usepackage{listings}
-    \lstset{literate=   % improve handling of UTF8 source files
-        {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
-        {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
-        {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
-        {À}{{\`A}}1 {È}{{\`E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
-        {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
-        {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
-        {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
-        {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
-        {ã}{{\~a}}1 {ẽ}{{\~e}}1 {ĩ}{{\~i}}1 {õ}{{\~o}}1 {ũ}{{\~u}}1
-        {Ã}{{\~A}}1 {Ẽ}{{\~E}}1 {Ĩ}{{\~I}}1 {Õ}{{\~O}}1 {Ũ}{{\~U}}1
-        {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
-        {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
-        {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {Ø}{{\O}}1 {å}{{\r a}}1 {Å}{{\r A}}1
-        {€}{{\euro}}1 {£}{{\pounds}}1 {«}{{\guillemotleft}}1
-        {»}{{\guillemotright}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1 {¡}{{!`}}1 
-    }
+    \usepackage{textcomp} % for for straight single quotes (upquote=true)
     \lstdefinelanguage{Moose}{
-        morekeywords={abs,accept,alarm,atan2,bind,binmode,bless,caller,%
-                      chdir,chmod,chomp,chop,chown,chr,chroot,close,closedir,connect,%
-                      continue,cos,crypt,dbmclose,dbmopen,defined,delete,die,do,dump,%
-                      each,else,elsif,endgrent,endhostent,endnetent,endprotoent,%
-                      endpwent,endservent,eof,eval,exec,exists,exit,exp,fcntl,fileno,%
-                      flock,for,foreach,fork,format,formline,getc,getgrent,getgrgid,%
-                      getgrnam,gethostbyaddr,gethostbyname,gethostent,getlogin,%
-                      getnetbyaddr,getnetbyname,getnetent,getpeername,getpgrp,%
-                      getppid,getpriority,getprotobyname,getprotobynumber,getprotoent,%
-                      getpwent,getpwnam,getpwuid,getservbyname,getservbyport,%
-                      getservent,getsockname,getsockopt,glob,gmtime,goto,grep,hex,if,%
-                      import,index,int,ioctl,join,keys,kill,last,lc,lcfirst,length,%
-                      link,listen,local,localtime,log,lstat,m,map,mkdir,msgctl,msgget,%
-                      msgrcv,msgsnd,my,next,no,oct,open,opendir,ord,pack,package,pipe,%
-                      pop,pos,print,printf,prototype,push,q,qq,quotemeta,qw,qx,rand,%
-                      read,readdir,readlink,recv,redo,ref,rename,require,reset,return,%
-                      reverse,rewinddir,rindex,rmdir,s,scalar,seek,seekdir,select,%
-                      semctl,semget,semop,send,setgrent,sethostent,setnetent,setpgrp,%
-                      setpriority,setprotoent,setpwent,setservent,setsockopt,shift,%
-                      shmctl,shmget,shmread,shmwrite,shutdown,sin,sleep,socket,%
-                      socketpair,sort,splice,split,sprintf,sqrt,srand,stat,study,sub,%
-                      substr,symlink,syscall,sysopen,sysread,system,syswrite,tell,%
-                      telldir,tie,tied,time,times,tr,truncate,uc,ucfirst,umask,undef,%
-                      unless,unlink,unpack,unshift,untie,until,use,utime,values,vec,%
-                      wait,waitpid,wantarray,warn,while,write,y},%
         sensitive=f,%
-        morecomment=[l]\#,%
-        morestring=[b]",%
-        morestring=[b]{'},%
-        MoreSelectCharTable=%
-            \lst@ReplaceInput{\$\#}{\lst@ProcessOther\$\lst@ProcessOther\#}%
-        }[keywords,comments,strings]
+        morecomment=[l]{\#},% comments
+        morekeywords={true,false},%
+        morestring=[b]{"},% strings with double quote
+        morestring=[b]{'},% strings with single quote
+        upquote=true, % for straight single quotes (see https://tex.stackexchange.com/questions/145416/how-to-have-straight-single-quotes-in-lstlistings)
+        morecomment=[s][\color{blue}\ttfamily]{\[}{\]},% block names and block endings
+        morecomment=[s][\color{BlueViolet}\ttfamily]{\$\{}{\}},% references to variables etc. ${...}
+        literate= %{=}{{\color{blue}= }}1
+                 {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+                 {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+                 {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+                 {À}{{\`A}}1 {È}{{\`E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+                 {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+                 {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+                 {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+                 {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+                 {ã}{{\~a}}1 {ẽ}{{\~e}}1 {ĩ}{{\~i}}1 {õ}{{\~o}}1 {ũ}{{\~u}}1
+                 {Ã}{{\~A}}1 {Ẽ}{{\~E}}1 {Ĩ}{{\~I}}1 {Õ}{{\~O}}1 {Ũ}{{\~U}}1
+                 {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+                 {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+                 {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {Ø}{{\O}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+                 {€}{{\euro}}1 {£}{{\pounds}}1 {«}{{\guillemotleft}}1
+                 {»}{{\guillemotright}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1 {¡}{{!`}}1 ,%
+        alsoletter={=!},%
+        morekeywords=[2]{=,!include},%
+        keywordstyle=[2]{\color{blue}},%
+        %https://tex.stackexchange.com/questions/217505/listings-color-numbers-only-out-of-keywords
+    }[keywords,comments,strings]
 
     \lstset{frame=tb,
-        language=Python,
+        language=Moose,
         aboveskip=3mm,
         belowskip=3mm,
         showstringspaces=false,
