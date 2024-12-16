@@ -7,12 +7,12 @@ module, Moose supports three different types of
 \href{https://mooseframework.inl.gov/modules/solid_mechanics/Strains.html}{strain}
 calculation:
 \begin{itemize}
-  \item {Small Linearized Total Strain}
-  \item {Incremental Small Strains}
-  \item {Finite Large Strains}
+    \item {Small Linearized Total Strain}
+    \item {Incremental Small Strains}
+    \item {Finite Large Strains}
 \end{itemize}
 
-\begin{lstlisting}[language=perl, caption={Setting up incremental small strains within the Physics/SolidMechanics block},label={setup-incremental-small-strains}]
+\begin{lstlisting}[language=Moose, caption={Setting up incremental small strains within the Physics/SolidMechanics block},label={setup-incremental-small-strains}]
 [Physics]
   [SolidMechanics]
     [QuasiStatic]
