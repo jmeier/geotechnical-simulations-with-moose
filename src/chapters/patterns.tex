@@ -117,9 +117,9 @@ A selection of model unit combinations can be found in
     \caption{selection of model unit combinations and derived units}
     \label{tab:model-units}
     \begin{tabularx}{\textwidth}{
-            >{\hsize=0.10\hsize\linewidth=\hsize}Y
-            >{\hsize=0.10\hsize\linewidth=\hsize}Y
-            >{\hsize=0.10\hsize\linewidth=\hsize}Y
+            >{\hsize=0.09\hsize\linewidth=\hsize}Y
+            >{\hsize=0.09\hsize\linewidth=\hsize}Y
+            >{\hsize=0.09\hsize\linewidth=\hsize}Y
             |
             >{\hsize=0.20\hsize\linewidth=\hsize}Y
             >{\hsize=0.20\hsize\linewidth=\hsize}Y
@@ -326,8 +326,6 @@ scaling. Therefore, it is recommended to use manual scaling instead.
 
 % on tolerances:
 %    https://github.com/idaholab/moose/discussions/27576#discussioncomment-9354227
-%    Hello
-%    
 %    I don't usually say this but your convergence criteria are too tight
 %      nl_abs_tol = 1E-10
 %      l_abs_tol = 1e-15
@@ -335,5 +333,3 @@ scaling. Therefore, it is recommended to use manual scaling instead.
 %    numerical precision. In fact since the residual is checked by the nonlinear 
 %    solver, you don't need to converge the linear solve anywhere near as tight. 
 %    1e-3 is often enough
-%    
-%    Guillaume
