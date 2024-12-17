@@ -5,17 +5,17 @@ When a Moose model is defined as an
 \href{https://mooseframework.inl.gov/application_usage/input_syntax.html}{‘input
     file’} (usually with the file extension ‘*.i’), the size of such an input file
 can quickly grow to several hundred lines, even without the model geometry.
-Editing and troubleshooting becomes correspondingly confusing. Moose therefore
-also supports ‘partial input files’, where other input files can be called up
+Editing and troubleshooting becomes correspondingly confusing. To mitigate,
+Moose supports ‘partial input files’, where other input files can be called up
 from a ‘central’ input file. For example, the material parameters or variables
 with groups of geometrical objects could be maintained in a separate file.
 
 The recommended option is to use the \codeword{!include} keyword within the
 input file. This option is shown in \autoref{patterns-include}. Please note,
-that the neither path not filename are allowed to contain a newline character,
+that neither path nor filename are allowed to contain a newline character,
 \codeword{#} character, or \codeword{[} character.
 
-\begin{lstlisting}[language=Moose, caption={Include anpther input file},label={patterns-include}]
+\begin{lstlisting}[language=Moose, caption={Include another input file},label={patterns-include}]
 !include "path/to/file.i"
 \end{lstlisting}
 
