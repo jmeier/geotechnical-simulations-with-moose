@@ -43,7 +43,9 @@ To consider gravity, the following aspects must be included in the model:
 \begin{itemize}
   \item When compiling the MooseApp: As the effect of gravity is taken into account in
         interaction with the material density, the Moose module \codeword{MISC} must be
-        active in addition to the Moose module \codeword{SOLID_MECHANICS}.
+        active in addition to the Moose
+        \href{https://mooseframework.inl.gov/modules/solid_mechanics/}{'SolidMechanics'}
+        module.
   \item Gravity must be activated in the input file. This is done by adding a special
         kernel of the type \codeword{Gravity} as shown in
         \autoref{initial-conditions-gravity}. The direction and strength of the
