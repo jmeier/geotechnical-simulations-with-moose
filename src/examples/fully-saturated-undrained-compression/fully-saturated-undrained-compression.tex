@@ -1,13 +1,14 @@
 A one-dimensional compression test of a
-$\SI{6}{\metre} \times \SI{6}{\metre} \times \SI{6}{\metre}$ block is to be
-simulated as a variant of an Oedometer test. While the (vertical) sides are
-fixed horizontally and the bottom is fixed vertically, the top surface is
-lowered by $\SI{0.01}{\metre}=\SI{1}{\centi\metre}$. Initially, the block is
-loaded only by gravity. The soil material is assumed to be purely linear
-elastic and fully saturated with water. Material parameters are given in
-\autoref{ex1:material-parameters}. Stiffness of the material had been chosen
-in accordance with Opalinus clay (a sedimentary rock), while permeability
-should been chosen high enough to avoid significant time-dependent effects.
+$\SI{6}{\metre} \times \SI{6}{\metre} \times \SI{6}{\metre}$ fully saturated
+block is to be simulated as a variant of an Oedometer test. While the
+(vertical) sides are fixed horizontally and the bottom is fixed vertically, the
+top surface is lowered by $\SI{0.01}{\metre}=\SI{1}{\centi\metre}$. Initially,
+the block is loaded only by gravity. The soil material is assumed to be purely
+linear elastic and fully saturated with water. Material parameters are given in
+\autoref{fully-saturated-undrained-compression:material-parameters}. Stiffness
+of the material had been chosen in accordance with Opalinus clay (a sedimentary
+rock), while permeability should been chosen high enough to avoid significant
+time-dependent effects.
 
 The effective vertical stress $\sigma'_{zz}$ and pore pressure $u$ are to be
 determined as simulation result at the top of the block.
@@ -15,7 +16,7 @@ determined as simulation result at the top of the block.
 \begin{table}[htbp]
     \centering
     \caption{Material parameters}
-    \label{ex1:material-parameters}
+    \label{fully-saturated-undrained-compression:material-parameters}
     \begin{tabularx}{\textwidth}{XYY}
 
         \hline
@@ -66,10 +67,10 @@ determined as simulation result at the top of the block.
 
 For the one-dimensional deformation conditions and the linear-elastic material
 behaviour defined to this example the definition of the stiffness modulus in
-\autoref{ex1:stiffness-modulus} holds:
+\autoref{fully-saturated-undrained-compression:stiffness-modulus} holds:
 
 \begin{equation}
-    \label{ex1:stiffness-modulus}
+    \label{fully-saturated-undrained-compression:stiffness-modulus}
     E_s = \frac{\sigma'_{zz}}{\varepsilon_{zz}} = E \cdot \frac{1 - \nu}{(1 + \nu)(1 - 2 \nu)}
 \end{equation}
 with:
@@ -81,10 +82,11 @@ with:
     \item[$\nu$] Poisson's ratio
 \end{description}
 
-Using the values of \autoref{ex1:material-parameters} for the second part of
-\autoref{ex1:stiffness-modulus} leads to:
+Using the values of \autoref{fully-saturated-undrained-compression:material-parameters}
+for the second part of \autoref{fully-saturated-undrained-compression:stiffness-modulus}
+leads to:
 \begin{equation}
-    \label{ex1:stiffness-modulus-value}
+    \label{fully-saturated-undrained-compression:stiffness-modulus-value}
     \begin{split}
         E_s & = E \cdot \frac{1 - \nu}{(1 + \nu)(1 - 2 \nu)}                                                                       \\
             & = \SI{18}{\si[per-mode = symbol]{\giga\newton\per\square\metre}} \cdot \frac{1 - 0.25}{(1 + 0.25)(1 - 2 \cdot 0.25)} \\
@@ -92,11 +94,12 @@ Using the values of \autoref{ex1:material-parameters} for the second part of
     \end{split}
 \end{equation}
 
-Rearranging the first part of \autoref{ex1:stiffness-modulus} for
+Rearranging the first part of
+\autoref{fully-saturated-undrained-compression:stiffness-modulus} for
 $\sigma'_{zz}$ allows to estimate the effective stresses at the top of the
 block:
 \begin{equation}
-    \label{ex1:effective_vertical_stress}
+    \label{fully-saturated-undrained-compression:effective_vertical_stress}
     \begin{split}
         \sigma'_{zz} & = E_s \cdot \varepsilon_{zz}                                                                                                                                                                               \\
                      & = \SI{21.6}{\si[per-mode = symbol]{\giga\newton\per\square\metre}} \cdot \frac{ \SI{0.01}{\metre} \cdot \SI{6}{\metre} \cdot \SI{6}{\metre} }{ \SI{6}{\metre} \cdot  \SI{6}{\metre} \cdot  \SI{6}{\metre}} \\
@@ -106,10 +109,12 @@ block:
 
 \vspace{1em}
 
-To estimate the pore-pressure, \autoref{ex1:pore-pressure-parameter} can be used:
+To estimate the pore-pressure,
+\autoref{fully-saturated-undrained-compression:pore-pressure-parameter}
+can be used:
 
 \begin{equation}
-    \label{ex1:pore-pressure-parameter}
+    \label{fully-saturated-undrained-compression:pore-pressure-parameter}
     % source: Förster, W. (1996): Mechanische Eigenschaften Lockergesteine. Teubner Verlag. Equation 7.65 on page 142
     C = \frac{\Delta u}{\Delta \sigma_{zz}} = \frac{1}{1 + n \cdot \frac{m_w}{m_v}}
 \end{equation}
@@ -128,21 +133,21 @@ with:
 leading to:
 
 \begin{equation}
-    % \label{ex1:???}
+    % \label{fully-saturated-undrained-compression:???}
     C = \frac{1}{1 + n \cdot \frac{E_s}{K_w}} \approx 0.48\overline{076923}
 \end{equation}
 
 and due to the fact the initial stress state is Zero,
-\autoref{ex1:pore-pressure-parameter} can be rearranged to calculate the pore
-pressure $u$:
+\autoref{fully-saturated-undrained-compression:pore-pressure-parameter}
+can be rearranged to calculate the pore pressure $u$:
 
 \begin{equation}
-    % \label{ex1:???}
+    % \label{fully-saturated-undrained-compression:???}
     u = \frac{C \cdot \Delta \sigma_{zz}}{1 - C} = 3.\overline{3}\times\SI{E4}{\si[per-mode = symbol]{\kilo\newton\per\square\metre}}
 \end{equation}
 
 % \begin{equation}
-%     \label{ex1:bulk modulus}
+%     \label{fully-saturated-undrained-compression:bulk modulus}
 %     K = \frac{E}{3(1 - 2 \nu)}
 % \end{equation}
 
@@ -160,7 +165,9 @@ and model time was set to \qty{10}{\second}.
 The mesh used for Moose consists of \qty{5184}{} TET10 elements leading to
 \qty{32980}{\DOF}.
 
-Residuals for the fluid (water) for $ \epsilon_\mathrm{f} \equiv \qty[per-mode = symbol]{10}{\pascal\per\metre} $ may be estimated as:
+Residuals for the fluid (water) for
+$ \epsilon_\mathrm{f} \equiv \qty[per-mode = symbol]{10}{\pascal\per\metre} $
+may be estimated as:
 \begin{equation}
     \begin{split}
         R_\mathrm{f} & \approx V \cdot \kappa \cdot \epsilon_\mathrm{f} \cdot \rho_\mathrm{f} / \mu_\mathrm{f}                                                                                                                                            \\
@@ -177,18 +184,23 @@ on the scaling had been found.
 
 In Moose, this example was calculated and analysed separately using both the
 ‘NEWTON’ solver and the ‘PJFNK’ solver. The Moose input files for this example
-are attached to this document by the name of ‘ex1-NEWTON.i’ and ‘ex1-PJFNK.i’.
-\fileattachment{\currfiledir/ex1-NEWTON.i}{ex1-NEWTON.i}
-\fileattachment{\currfiledir/ex1-PJFNK.i}{ex1-PJFNK.i}
+are attached to this document by the name of
+‘fully-saturated-undrained-compression-NEWTON.i’ and ‘fully-saturated-undrained-compression-PJFNK.i’.
 
-Selected results of the Moose models are summarized in \autoref{ex1:moose-results}
+\fileattachment{\currfiledir/fully-saturated-undrained-compression-NEWTON.i}{fully-saturated-undrained-compression-NEWTON.i}
+
+\fileattachment{\currfiledir/fully-saturated-undrained-compression-PJFNK.i}{fully-saturated-undrained-compression-PJFNK.i}
+
+Selected results of the Moose models are summarized in
+\autoref{fully-saturated-undrained-compression:moose-results}
 (both solvers used lead to the same results within the specified precision).
-Performance data can be found in \autoref{ex1:moose-performance}.
+Performance data can be found in
+\autoref{fully-saturated-undrained-compression:moose-performance}.
 
 \begin{table}[htbp]
     \centering
     \caption{Selected results of the Moose models \\(identical for solvers ‘NEWTON’ and ‘PJFNK’ for the shown precision)}
-    \label{ex1:moose-results}
+    \label{fully-saturated-undrained-compression:moose-results}
 
     \begin{tabularx}{0.972\hsize}{
             >{\hsize=0.6\hsize\linewidth=\hsize}X
@@ -216,7 +228,7 @@ Performance data can be found in \autoref{ex1:moose-performance}.
          &
         {\raisebox{0.0mm}
                 {\begin{tikzpicture}[baseline=(current bounding box.center)]
-                         \node[inner sep=0pt] (ch-stresses) at (0.35,0.0) {\includegraphics[width=0.925\linewidth]{\currfiledir ex1.i.png}};
+                         \node[inner sep=0pt] (ch-stresses) at (0.35,0.0) {\includegraphics[width=0.925\linewidth]{\currfiledir fully-saturated-undrained-compression.i.png}};
                          \node[draw,circle,fill=white,minimum size=.95cm,inner sep=0pt] at (+3.3,+2.2) {$z_{max}$};
                          \node[draw,circle,fill=white,minimum size=.95cm,inner sep=0pt] at (+3.1,-1.6) {$z_{min}$};
                      \end{tikzpicture}}
@@ -228,7 +240,7 @@ Performance data can be found in \autoref{ex1:moose-performance}.
 \begin{table}[htbp]
     \centering
     \caption{Performance of Moose}
-    \label{ex1:moose-performance}
+    \label{fully-saturated-undrained-compression:moose-performance}
     \begin{tabularx}{\textwidth}{
             >{\hsize=0.16\hsize\linewidth=\hsize}X
             >{\hsize=0.14\hsize\linewidth=\hsize\hspace{-5pt}}Y
@@ -282,12 +294,12 @@ Performance data can be found in \autoref{ex1:moose-performance}.
 % impact of the variable scaling (for the values tested).
 %
 % The effect of scaling the ‘porepressure’ variable is shown in
-% \autoref{ex1:tab:moose-scaling}.
+% \autoref{fully-saturated-undrained-compression:tab:moose-scaling}.
 %
 % \begin{table}[htbp]
 %     \centering
 %     \caption{Effect of scaling the ‘porepressure’ variable (results at $z_{max}$)}
-%     \label{ex1:tab:moose-scaling}
+%     \label{fully-saturated-undrained-compression:tab:moose-scaling}
 %     \begin{tabularx}{\textwidth}{
 %             >{\hsize=0.30\hsize\linewidth=\hsize}X
 %             >{\hsize=0.15\hsize\linewidth=\hsize\hspace{-5pt}}Y
@@ -812,29 +824,29 @@ therefore, for water:
 \end{equation}
 
 The Plaxis3D commands file for this example is attached to this document by the
-name of ‘ex1.p3dlog’. \fileattachment{\currfiledir/ex1.p3dlog}{ex1.p3dlog}
+name of ‘fully-saturated-undrained-compression.p3dlog’. \fileattachment{\currfiledir/fully-saturated-undrained-compression.p3dlog}{fully-saturated-undrained-compression.p3dlog}
 
-Selected results of this Plaxis model are summarized in \autoref{ex1:plaxis-results}.
-Performance data can be found in \autoref{ex1:plaxis-performance}.
+Selected results of this Plaxis model are summarized in \autoref{fully-saturated-undrained-compression:plaxis-results}.
+Performance data can be found in \autoref{fully-saturated-undrained-compression:plaxis-performance}.
 
 % \begin{figure}[htbp]
 %     \centering
 %     \begin{subfigure}[b]{0.45\linewidth}
-%         \includegraphics[page=1, clip, trim=1.0cm 3cm 1.5cm 1cm, width=\linewidth]{\currfiledir ex1.p3dat--Phase1--Pore-Water-Pressures.pdf}
+%         \includegraphics[page=1, clip, trim=1.0cm 3cm 1.5cm 1cm, width=\linewidth]{\currfiledir fully-saturated-undrained-compression.p3dat--Phase1--Pore-Water-Pressures.pdf}
 %         \caption{pore pressures}
 %     \end{subfigure}
 %     \begin{subfigure}[b]{0.45\linewidth}
-%         \includegraphics[page=1, clip, trim=1.0cm 3cm 1.5cm 1cm, width=\linewidth]{\currfiledir ex1.p3dat--Phase1--SigmaZZ.pdf}
+%         \includegraphics[page=1, clip, trim=1.0cm 3cm 1.5cm 1cm, width=\linewidth]{\currfiledir fully-saturated-undrained-compression.p3dat--Phase1--SigmaZZ.pdf}
 %         \caption{effective vertical stress}
 %     \end{subfigure}
 %     \caption{Plaxis 3D results}
-%     \label{fig:ex1:Plaxis3D-results}
+%     \label{fig:fully-saturated-undrained-compression:Plaxis3D-results}
 % \end{figure}
 
 \begin{table}[htbp]
     \centering
     \caption{Selected results of Plaxis3D v2023.2.1.1079}
-    \label{ex1:plaxis-results}
+    \label{fully-saturated-undrained-compression:plaxis-results}
 
     \begin{tabularx}{0.972\hsize}{
             >{\hsize=0.6\hsize\linewidth=\hsize}X
@@ -863,7 +875,7 @@ Performance data can be found in \autoref{ex1:plaxis-performance}.
          &
         {\raisebox{0.0mm}
                 {\begin{tikzpicture}[baseline=(current bounding box.center)]
-                         \node[inner sep=0pt] (ch-stresses) at (0.35,0.0) {\includegraphics[width=0.925\linewidth]{\currfiledir ex1.p3dat.jpg}};
+                         \node[inner sep=0pt] (ch-stresses) at (0.35,0.0) {\includegraphics[width=0.925\linewidth]{\currfiledir fully-saturated-undrained-compression.p3dat.jpg}};
                          \node[draw,circle,fill=white,minimum size=.95cm,inner sep=0pt] at (+3.3,+2.2) {$z_{max}$};
                          \node[draw,circle,fill=white,minimum size=.95cm,inner sep=0pt] at (+3.3,-1.1) {$z_{min}$};
                      \end{tikzpicture}}
@@ -875,7 +887,7 @@ Performance data can be found in \autoref{ex1:plaxis-performance}.
 \begin{table}[htbp]
     \centering
     \caption{Performance of Plaxis3D v2023.2.1.1079}
-    \label{ex1:plaxis-performance}
+    \label{fully-saturated-undrained-compression:plaxis-performance}
     \begin{tabularx}{\textwidth}{
             >{\hsize=0.16\hsize\linewidth=\hsize}X
             >{\hsize=0.21\hsize\linewidth=\hsize\hspace{-5pt}}Y
