@@ -1,0 +1,135 @@
+\section{Problem statement}
+
+An initially horizontal and unloaded quadratic plate of $a = \qty{2}{\metre}
+    \times b = \qty{2}{\metre}$ with a thickness of $t = \qty{0.1}{\metre} =
+    \qty{10}{\centi\metre}$ is only held at one edge and is subjected at the
+opposite edge with a static point load of $F = \qty{100}{\kilo\newton}$
+directed upwards. The material behaviour is purely linear-elastic.
+
+The deflection of the plate at the loaded edge is to be determined as a
+simulation result.
+
+This problem is closely related to classical beam bending theory for a
+cantilever (fully fixed at one end) with a point load at the (opposite) free
+end. This conveniently provides an analytical solution
+(\autoref{bended-plate:sec:analytical-solution}) against which the numerical
+results can be checked (\autoref{bended-plate:sec:moose} and
+\autoref{bended-plate:sec:plaxis3D}). With this problem setup, the plate may be
+modelled using volume elements or shell elements.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Material parameters}
+    \label{bended-plate:material-parameters}
+    \begin{tabularx}{\textwidth}{XYY}
+
+        \hline
+
+        Property              & Physical unit                                         & Value      \\
+
+        \hline
+
+        Youngs modulus $E$    & \si[per-mode = symbol]{\kilo\newton\per\square\metre} &
+        \SI{1E6}{}                                                                                 \\
+
+        Poisson's ratio $\nu$ & -                                                     & \SI{0.3}{} \\
+
+        density $\rho$        & \si[per-mode = symbol]{\kilogram\per\cubic\metre}     & \SI{0}{}
+        \\
+
+        \hline
+    \end{tabularx}
+\end{table}
+
+\section{Analytical solution}
+\label{bended-plate:sec:analytical-solution}
+
+Neglecting geometrical non-linearity, the well-known analytical solution for
+the deflection is given in \autoref{bended-plate:analytical-solution}.
+
+\begin{equation}
+    \label{bended-plate:analytical-solution}
+    u_z = F \cdot \frac{a ^ 3}{3EI} = \qty{1.6}{\metre}
+\end{equation}
+
+\begin{samepage}
+    with:
+    \begin{description}
+        \item[$u_{z}$] vertical deflection at the point load to be estimated.
+        \item[$F$] point load (\qty{100}{\kilo\newton})
+        \item[$a$] size of the plate (\qty{2}{\metre})
+        \item[$E$] Young's modulus (\qty[per-mode = symbol]{1E6}{\kilo\newton\per\square\metre}; see \autoref{bended-plate:material-parameters})
+        \item[$I$] Second moment of area, for this geometry $I = \frac{b \cdot t^3}{12}$
+    \end{description}
+\end{samepage}
+
+\section{Moose}
+\label{bended-plate:sec:moose}
+
+In \autoref{bended-plate:moose-results} the deflection and some additional
+metrics of selected Moose models for this problem is shown.
+
+For this purely linear-elastic problem, this model was calculated and analysed
+using the ‘NEWTON’ solver. The Moose input files for this model are attached to
+this document by the name of ‘bended-plate.i’.
+
+%\fileattachment{\currfiledir/bended-plate.i}{bended-plate.i}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Resulting deflection for selected Moose models (geometrical non-linearity neglected)}
+    \label{bended-plate:moose-results}
+    \begin{tabularx}{\textwidth}{
+            >{\hsize=0.3\hsize\linewidth=\hsize}X
+            >{\hsize=0.2\hsize\linewidth=\hsize\hspace{-5pt}}Y
+            >{\hsize=0.3\hsize\linewidth=\hsize\hspace{-5pt}}Y
+            >{\hsize=0.2\hsize\linewidth=\hsize\hspace{-5pt}}Y}
+
+        \hline
+
+        Discretisation & deflection (\si{\metre}) & CPU-count / wall time
+        (\si{\second}) & RAM (MB)                                                    \\
+
+        \hline
+
+        xxxxxxx TRI6   & \qty{}{}                 & 0 / \qty{}{}          & \qty{}{} \\
+
+        xxxxxxx TET10  & \qty{}{}                 & 0 / \qty{}{}          & \qty{}{} \\
+
+        xxxxxxx TET10  & \qty{}{}                 & 0 / \qty{}{}          & \qty{}{} \\
+
+        \hline
+    \end{tabularx}
+\end{table}
+
+\section{Plaxis 3D}
+\label{bended-plate:sec:plaxis3D}
+
+\autoref{bended-plate:plaxis-results}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Resulting deflection for selected Plaxis models (geometrical non-linearity neglected)}
+    \label{bended-plate:plaxis-results}
+    \begin{tabularx}{\textwidth}{
+            >{\hsize=0.3\hsize\linewidth=\hsize}X
+            >{\hsize=0.2\hsize\linewidth=\hsize\hspace{-5pt}}Y
+            >{\hsize=0.3\hsize\linewidth=\hsize\hspace{-5pt}}Y
+            >{\hsize=0.2\hsize\linewidth=\hsize\hspace{-5pt}}Y}
+
+        \hline
+
+        Discretisation & deflection (\si{\metre}) & CPU-count / wall time
+        (\si{\second}) & RAM (MB)                                                    \\
+
+        \hline
+
+        xxxxxxx TRI6   & \qty{}{}                 & 0 / \qty{}{}          & \qty{}{} \\
+
+        xxxxxxx TET10  & \qty{}{}                 & 0 / \qty{}{}          & \qty{}{} \\
+
+        xxxxxxx TET10  & \qty{}{}                 & 0 / \qty{}{}          & \qty{}{} \\
+
+        \hline
+    \end{tabularx}
+\end{table}
