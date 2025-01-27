@@ -160,21 +160,55 @@ gravel) and model time was set to \qty{10}{\second}.
 The mesh used for Moose consists of \qty{5184}{} TET10 elements leading to
 \qty{32980}{\DOF}.
 
-Residuals for the fluid (water) for $ \epsilon_\mathrm{f} \equiv \qty[per-mode
-        = symbol]{10}{\pascal\per\metre} $ may be estimated as:
+Residuals for the fluid (water with a dynamic viscosity of $\mu_\mathrm{f}
+    \approx \qty{1}{\milli\pascal\cdot\second} $) with an accepted pressure
+gradient of $ \epsilon_\mathrm{f} \equiv \qty[per-mode =
+        symbol]{10}{\pascal\per\metre} $ may be estimated as:
 \begin{equation}
     \begin{split}
-        R_\mathrm{f} & \approx V \cdot \kappa \cdot \epsilon_\mathrm{f} \cdot \rho_\mathrm{f} / \mu_\mathrm{f}                                                                                                                                            \\
+        R_\mathrm{f} & \approx V \cdot \kappa \cdot \epsilon_\mathrm{f} \cdot \rho_\mathrm{f} / { \mu_\mathrm{f} }                                                                                                                                        \\
                      & \approx (\qty{216}{\cubic\metre}) \cdot (\qty{1E-7}{\square\metre}) \cdot (\qty[per-mode = symbol]{10}{\pascal\per\metre}) \cdot (\qty[per-mode = symbol]{1000}{\kilogram\per\cubic\metre}) / (\qty{1}{\milli\pascal\cdot\second}) \\
                      & \approx \qty{2.16E+2}{\kilogram\cdot\metre\per\second}  \hspace{3.00em} \text{\light{(in SI units)}}                                                                                                                               \\
                      & \approx \qty{2.16E-1}{\ton\cdot\metre\per\second}       \hspace{3.09em} \text{\light{(in accordance with the selected model units)}}
     \end{split}
 \end{equation}
 
-Leading to a scaling of the pore-pressure of $\sim \qty{1E+1}{}$ (calculated
-using $ 1 / R_\mathrm{f} $). In fact, for this particular model a very small
-sensitivity of the resulting pore-pressure and vertical stress on the scaling
-had been found.
+% Leading to a scaling of the pore-pressure of $\sim \qty{1E+1}{}$ (calculated
+% using $ 1 / R_\mathrm{f} $). In fact, for this particular model a very small
+% sensitivity of the resulting pore-pressure and vertical stress on the scaling
+% had been found.
+
+For this model, variable scaling was determined as follows:
+\begin{enumerate}
+    \item Variable scaling of all variables (\texttt{disp\_x}, \texttt{disp\_y},
+          \texttt{disp\_z}, and \texttt{porepressure}) is set to unity.
+    \item\label{ite:test_run_residuals} {Using
+              \texttt{Debug/show\_var\_residual\_norms = true} the residuals of the
+              individual variables are printed for a test run of the model. The residuals for
+              the first time step (Time Step 1) are:\vspace{0.1cm}
+              \begin{mdframed}[leftmargin=0.1cm,innerleftmargin=0.1cm,topline=false,rightline=false,bottomline=false]
+                  \begin{verbatim}
+|residual|_2 of individual variables:
+          disp_x:       19.4404
+          disp_y:       19.4404
+          disp_z:       110.432
+          porepressure: 7.33977e-05
+0 Nonlinear |R| = 1.138024e+02\end{verbatim}
+              \end{mdframed}}
+    \item The magnitude of the residuals in \autoref{ite:test_run_residuals} for the
+          \texttt{disp}-variables are roughly the same, while the magnitude of the
+          \texttt{porepressure} is much smaller. Therefore, without scaling, the
+          contribution to the residual of the \texttt{porepressure} would be strongly
+          underrepresented and one would need very small \texttt{abs\_norm\_tol} to make
+          sure that the hydraulic equation converges. On the other hand, this may cause
+          convergence problems for the displacement equations as they have larger
+          residuals.\newline It is therefore advisable for this model to scale the
+          \texttt{porepressure} in such a way that the associated residuals are
+          comparable with those of the \texttt{disp} variables using (while leaving
+          scaling of all \texttt{disp} variables at unity):
+          \texttt{Variables/porepressure/scaling = 1E+5}
+
+\end{enumerate}
 
 In Moose, this model was calculated and analysed separately using both the
 ‘NEWTON’ solver and the ‘PJFNK’ solver. The Moose input files for this model

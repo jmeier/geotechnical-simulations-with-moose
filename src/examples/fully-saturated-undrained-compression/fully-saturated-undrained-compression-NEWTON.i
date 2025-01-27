@@ -66,7 +66,7 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
   [porepressure]
     family = LAGRANGE
     order = SECOND
-    scaling = 1E+1
+    scaling = 1E+5
   []
 []
 

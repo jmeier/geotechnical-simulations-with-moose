@@ -3,7 +3,7 @@
 
 When a Moose model is defined as an
 \href{https://mooseframework.inl.gov/application_usage/input_syntax.html}{‘input
-    file’} (usually with the file extension ‘*.i’), the size of such an input file
+  file’} (usually with the file extension ‘*.i’), the size of such an input file
 can quickly grow to several hundred lines, even without the model geometry.
 Editing and troubleshooting becomes correspondingly confusing. To mitigate,
 Moose supports ‘partial input files’, where other input files can be called up
@@ -113,47 +113,47 @@ A selection of model unit combinations can be found in
 \autoref{tab:model-units}.
 
 \begin{table}[htbp]
-    \centering
-    \caption{selection of model unit combinations and derived units}
-    \label{tab:model-units}
-    \begin{tabularx}{\textwidth}{
-            >{\hsize=0.09\hsize\linewidth=\hsize}Y
-            >{\hsize=0.09\hsize\linewidth=\hsize}Y
-            >{\hsize=0.09\hsize\linewidth=\hsize}Y
-            |
-            >{\hsize=0.20\hsize\linewidth=\hsize}Y
-            >{\hsize=0.20\hsize\linewidth=\hsize}Y
-            >{\hsize=0.15\hsize\linewidth=\hsize}Y
-            >{\hsize=0.15\hsize\linewidth=\hsize}Y}
-        \hline
-        Length                                                                             &
-        Time                                                                               &
-        Mass                                                                               &
-        Force                                                                              &
-        Pressure                                                                           &
-        Acceleration                                                                       &
-        Density                                                                              \\
+  \centering
+  \caption{selection of model unit combinations and derived units}
+  \label{tab:model-units}
+  \begin{tabularx}{\textwidth}{
+      >{\hsize=0.09\hsize\linewidth=\hsize}Y
+      >{\hsize=0.09\hsize\linewidth=\hsize}Y
+      >{\hsize=0.09\hsize\linewidth=\hsize}Y
+      |
+      >{\hsize=0.20\hsize\linewidth=\hsize}Y
+      >{\hsize=0.20\hsize\linewidth=\hsize}Y
+      >{\hsize=0.15\hsize\linewidth=\hsize}Y
+      >{\hsize=0.15\hsize\linewidth=\hsize}Y}
+    \hline
+    Length                                                                             &
+    Time                                                                               &
+    Mass                                                                               &
+    Force                                                                              &
+    Pressure                                                                           &
+    Acceleration                                                                       &
+    Density                                                                              \\
 
-        \hline
+    \hline
 
-        \si[per-mode = symbol]{\metre}                                                     &
-        \si[per-mode = symbol]{\second}                                                    &
-        \si[per-mode = symbol]{\kilogram}                                                  &
-        \si[per-mode = symbol]{\kilogram\cdot\metre\per\second\squared} = \si{\newton}     &
-        \si[per-mode = symbol]{\newton\per\metre\squared} \light{= \si{\pascal}}           &
-        \si[per-mode = symbol]{\metre\per\second\squared}                                  &
-        \si[per-mode = symbol]{\kilogram\per\metre\cubed}                                    \\
+    \si[per-mode = symbol]{\metre}                                                     &
+    \si[per-mode = symbol]{\second}                                                    &
+    \si[per-mode = symbol]{\kilogram}                                                  &
+    \si[per-mode = symbol]{\kilogram\cdot\metre\per\second\squared} = \si{\newton}     &
+    \si[per-mode = symbol]{\newton\per\metre\squared} \light{= \si{\pascal}}           &
+    \si[per-mode = symbol]{\metre\per\second\squared}                                  &
+    \si[per-mode = symbol]{\kilogram\per\metre\cubed}                                    \\
 
-        \si[per-mode = symbol]{\metre}                                                     &
-        \si[per-mode = symbol]{\second}                                                    &
-        \si[per-mode = symbol]{\ton}                                                       &
-        \si[per-mode = symbol]{\ton\cdot\metre\per\second\squared} = \si{\kilo\newton}     &
-        \si[per-mode = symbol]{\kilo\newton\per\metre\squared} \light{= \si{\kilo\pascal}} &
-        \si[per-mode = symbol]{\metre\per\second\squared}                                  &
-        \si[per-mode = symbol]{\ton\per\metre\cubed}                                         \\
+    \si[per-mode = symbol]{\metre}                                                     &
+    \si[per-mode = symbol]{\second}                                                    &
+    \si[per-mode = symbol]{\ton}                                                       &
+    \si[per-mode = symbol]{\ton\cdot\metre\per\second\squared} = \si{\kilo\newton}     &
+    \si[per-mode = symbol]{\kilo\newton\per\metre\squared} \light{= \si{\kilo\pascal}} &
+    \si[per-mode = symbol]{\metre\per\second\squared}                                  &
+    \si[per-mode = symbol]{\ton\per\metre\cubed}                                         \\
 
-        \hline
-    \end{tabularx}
+    \hline
+  \end{tabularx}
 \end{table}
 
 \section{Moose code plugins}
@@ -176,9 +176,9 @@ plugins to be found in the following link can be used:
 Due to the fact that the finite element method will always provide approximate
 solutions, residuals will remain after each simulation step. To allow Moose to
 recognize converge, suitable convergence criteria (e.g. tolerated residuals)
-must be set. If these convergence criteria are set too small, the moose will
-appear not to converge and will need very small time steps to do anything at
-all. If set too large, Moose may converge to the wrong result.
+must be set. If these convergence criteria are set too small, moose will appear
+not to converge and will need very small time steps to do anything at all. If
+set too large, Moose may converge to the wrong result.
 
 Closely related to the selection of tolerated residuals is the scaling of
 variables. If only one physical aspect is to be modelled (e.g. mechanics), an
@@ -194,10 +194,17 @@ physical units (\autoref{chap:patterns-physical-units}).
 Large parts of this section is taken from
 \href{https://mooseframework.inl.gov/modules/porous_flow/convergence.html}{mooseframework.inl.gov}.
 
+\subsection{Nonlinear and (nested) linear solves}
+
 \subsection{Residuals}
 
 In this subsection data is collected on how to estimate the absolute residuals
-to be tolerated (e.g. \texttt{-nl\_abs\_tol}) for selected physical aspects.
+to be tolerated (e.g. \texttt{nl\_abs\_tol} of an executioner) for selected
+physical aspects.
+
+\importantbox{
+  Residuals of a variable are affected by the scaling of the variable.\newline (\autoref{patterns:variable-scaling}).
+}
 
 \subsubsection{Fluid}
 
@@ -207,33 +214,33 @@ the fluid phase can be estimated using \autoref{patterns:eq:residual-fluid},
 where beside some material constants for the fluid (density $\rho_\mathrm{f}$
 and dynamic viscosity $\mu_\mathrm{f}$) and the porosity $\kappa$, the accepted
 pressure gradient $\epsilon_\mathrm{f}$ (e.g. $\epsilon_\mathrm{f} =
-    \qty[per-mode = symbol]{1}{\newton\per\square\metre\per\metre} $) must be
+  \qty[per-mode = symbol]{1}{\newton\per\square\metre\per\metre} $) must be
 definded for a volume of interest $V$. In geotechnics, this volume of interest
 is often only a part of the full mesh.
 
 \begin{equation}
-    \label{patterns:eq:residual-fluid}
-    R_{f} \approx V \cdot \det (\kappa) \cdot \epsilon_\mathrm{f} \cdot \rho_\mathrm{f} / \mu_\mathrm{f}
+  \label{patterns:eq:residual-fluid}
+  R_{f} \approx V \cdot \det (\kappa) \cdot \epsilon_\mathrm{f} \cdot \rho_\mathrm{f} / \mu_\mathrm{f}
 \end{equation}
 with:
 \begin{description}
-    \item[$R_\mathrm{f}$] estimate of residual for the fluid
-    \item[$V$] Volume of interest (physical unit: volume, e.g \unit{\cubic\metre})
-    \item[$\kappa$] tensor of permeabilities (physical unit of the tensor items: area, e.g. \unit{\square\metre})
-    \item[$\epsilon_\mathrm{f}$] desired precision (physical unit: pressure per length, e.g. \unit[per-mode = symbol]{\pascal\per\metre} = \unit[per-mode = symbol]{\newton\per(\square\metre\cdot\metre)} )
-    \item[$\rho_\mathrm{f}$] fluid density (physical unit: mass per volume, e.g. \unit[per-mode = symbol]{\kilogram\per\cubic\metre})
-    \item[$\mu_\mathrm{f}$] fluid dynamic viscosity (physical unit: mass per length and time, e.g. \unit[per-mode = symbol]{\kilogram\per({\metre\cdot\second})} = \unit[per-mode = symbol]{\pascal\cdot\second})
+  \item[$R_\mathrm{f}$] estimate of residual for the fluid
+  \item[$V$] Volume of interest (physical unit: volume, e.g \unit{\cubic\metre})
+  \item[$\kappa$] tensor of permeabilities (physical unit of the tensor items: area, e.g. \unit{\square\metre})
+  \item[$\epsilon_\mathrm{f}$] desired precision (physical unit: pressure per length, e.g. \unit[per-mode = symbol]{\pascal\per\metre} = \unit[per-mode = symbol]{\newton\per(\square\metre\cdot\metre)} )
+  \item[$\rho_\mathrm{f}$] fluid density (physical unit: mass per volume, e.g. \unit[per-mode = symbol]{\kilogram\per\cubic\metre})
+  \item[$\mu_\mathrm{f}$] fluid dynamic viscosity (physical unit: mass per length and time, e.g. \unit[per-mode = symbol]{\kilogram\per({\metre\cdot\second})} = \unit[per-mode = symbol]{\pascal\cdot\second})
 \end{description}
 
 \vspace{1em}
 
 For water ($\rho_\mathrm{f} \approx \qty[per-mode =
-        symbol]{1000}{\kilogram\per\cubic\metre}$, $\mu_\mathrm{f} \approx
-    \qty[per-mode = symbol]{1}{\milli\pascal\per\second}$) this equation simplifies
+    symbol]{1000}{\kilogram\per\cubic\metre}$, $\mu_\mathrm{f} \approx
+  \qty[per-mode = symbol]{1}{\milli\pascal\per\second}$) this equation simplifies
 to:
 
 \begin{equation}
-    R_{water} \approx V \cdot \det (\kappa) \cdot \epsilon_\mathrm{water} \cdot \SI{E-6}{(\kilogram\cdot\second)\per(\cubic\metre\cdot\pascal)}
+  R_{water} \approx V \cdot \det (\kappa) \cdot \epsilon_\mathrm{water} \cdot \SI{E-6}{(\kilogram\cdot\second)\per(\cubic\metre\cdot\pascal)}
 \end{equation}
 
 \subsubsection{Mechanics}
@@ -246,17 +253,18 @@ an acceptable residual stress gradient $\epsilon_\mathrm{s}$ (e.g. the error
 accepted in $\nabla \sigma$).
 
 \begin{equation}
-    \label{patterns:eq:residual-solid}
-    R_{s} \approx V \cdot \left|\epsilon_\mathrm{s}\right|
+  \label{patterns:eq:residual-solid}
+  R_{s} \approx V \cdot \left|\epsilon_\mathrm{s}\right|
 \end{equation}
 with:
 \begin{description}
-    \item[$R_\mathrm{s}$] estimate of residual for the solid (physical unit: force, e.g. \unit{\newton})
-    \item[$V$] Volume of interest (physical unit: volume, e.g \unit{\cubic\metre})
-    \item[$\epsilon_\mathrm{s}$] desired precision (physical unit: pressure per length, e.g. \unit[per-mode = symbol]{\pascal\per\metre} = \unit[per-mode = symbol]{\newton\per(\square\metre\cdot\metre)} )
+  \item[$R_\mathrm{s}$] estimate of residual for the solid (physical unit: force, e.g. \unit{\newton})
+  \item[$V$] Volume of interest (physical unit: volume, e.g \unit{\cubic\metre})
+  \item[$\epsilon_\mathrm{s}$] desired precision (physical unit: pressure per length, e.g. \unit[per-mode = symbol]{\pascal\per\metre} = \unit[per-mode = symbol]{\newton\per(\square\metre\cdot\metre)} )
 \end{description}
 
 \subsection{Variable scaling}
+\label{patterns:variable-scaling}
 
 To allow efficient nonlinear and linear solves, the Jacobians of the different
 physics of a Moose model should have comparable magnitudes. Ideally, these
@@ -273,7 +281,7 @@ post-processing.
 When defining the variables, the ‘scaling’ property can be used to specify a
 manual scaling factor for each variable individually.
 \autoref{patterns-variable-scaling-code} shows a snipped of an input file with
-a scaling factor of \qty{1E-8}{} applied to the variable ‘porepressure’.
+a scaling factor of \qty{1E+5}{} applied to the variable ‘porepressure’.
 
 \begin{lstlisting}[language=Moose, caption={Variable definition with scaling on porepressure in a Moose inut file},label={patterns-variable-scaling-code}]
 [Variables]
@@ -292,10 +300,42 @@ a scaling factor of \qty{1E-8}{} applied to the variable ‘porepressure’.
     [porepressure]
         family = LAGRANGE
         order = SECOND
-        scaling = 1E-8
+        scaling = 1E+5
     []
 []
 \end{lstlisting}
+
+Manual variable scaling can be determined as follows:
+\begin{enumerate}
+  \item Variable scaling of all variables is set to unity.
+  \item\label{ite:patterns:variable-scaling:manual:test_run_residuals} {Using
+          \texttt{Debug/show\_var\_residual\_norms = true} the residuals of the
+          individual variables are printed for a test run of the model. The residuals for
+          the first time step ("Time Step 1") may look like the following example:
+          \vspace{0.1cm}\begin{mdframed}[leftmargin=0.1cm,innerleftmargin=0.1cm,topline=false,rightline=false,bottomline=false]
+            \begin{verbatim}
+|residual|_2 of individual variables:
+          disp_x:       19.4404
+          disp_y:       19.4404
+          disp_z:       110.432
+          porepressure: 7.33977e-05
+0 Nonlinear |R| = 1.138024e+02\end{verbatim}
+          \end{mdframed}}
+  \item In the example in
+        \autoref{ite:patterns:variable-scaling:manual:test_run_residuals}, the
+        magnitude of the residuals for the \texttt{disp}-variables are roughly the
+        same, while the magnitude of the \texttt{porepressure} is much smaller.
+        Therefore, without scaling, the contribution to the residual of the
+        \texttt{porepressure} would be strongly underrepresented and one would need
+        very small \texttt{abs\_norm\_tol} to make sure that the hydraulic equation
+        converges. On the other hand, this may cause convergence problems for the
+        displacement equations as they have larger residuals.\newline It is therefore
+        advisable for this model to scale the \texttt{porepressure} in such a way that
+        the associated residuals are comparable with those of the \texttt{disp}
+        variables using (while leaving scaling of all \texttt{disp} variables at
+        unity): \texttt{Variables/porepressure/scaling = 1E+5}
+
+\end{enumerate}
 
 \subsubsection{Automatic variable scaling}
 
