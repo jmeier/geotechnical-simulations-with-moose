@@ -202,6 +202,21 @@ In this subsection data is collected on how to estimate the absolute residuals
 to be tolerated (e.g. \texttt{nl\_abs\_tol} of an executioner) for selected
 physical aspects.
 
+ToDo: Using \texttt{Debug/show\_var\_residual\_norms = true} the residuals of
+the individual variables are printed.
+
+ToDo: Moose will print "Outlier Variable Residual Norms", explained
+\href{https://groups.google.com/g/moose-users/c/76wkbH-cuFo/m/OT1Z6vbrm_0J}{here}:
+\begin{quote}
+  The outliers are those variables whose square of their individual L2-norm is
+  "too far" from the square of the average norm. Right now "too far" is some
+  fixed value (currently 2.0) determined empirically by a computer scientist ;)
+  If you want to see the actually calculation of that value, it's in
+  NonlinearSystem.C. We print them because they might be too big to reliably pass
+  a tolerance check. It's sort of like a yellow flag if you see a bunch of those
+  coming out. You might try tighter tolerances or different solver options, etc .
+\end{quote}
+
 \importantbox{
   Residuals of a variable are affected by the scaling of the variable.\newline (\autoref{patterns:variable-scaling}).
 }
@@ -350,6 +365,58 @@ In the author's experience, at least for hydro-mechanically coupled models,
 automatic scaling often leads to suboptimal convergence compared to manual
 scaling. Therefore, it is recommended to use manual scaling instead.
 
+\subsection{Tolerances and their default values}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Default values for tolerances and maximum number of iterations}
+  \label{tab:tolerances}
+  \begin{tabularx}{\textwidth}{
+      >{\hsize=0.10\hsize\linewidth=\hsize}Y
+      >{\hsize=0.30\hsize\linewidth=\hsize}Y
+      >{\hsize=0.30\hsize\linewidth=\hsize}Y
+      >{\hsize=0.30\hsize\linewidth=\hsize}Y}
+    \hline
+    solve     & absolute tolerance            & relative tolerance            & maximum iterations \\
+
+    \hline
+
+    linear    & \texttt{l\_abs\_tol = 1e-50}  & \texttt{l\_tol = 1e-05}       &
+    \texttt{l\_max\_its = 10000}                                                                   \\
+
+    nonlinear & \texttt{nl\_abs\_tol = 1e-50} & \texttt{nl\_rel\_tol = 1e-08} &
+    \texttt{nl\_max\_its = 50}                                                                     \\
+
+    \hline
+  \end{tabularx}
+\end{table}
+
+Physical meaning of a (absolute) tolerance depends on the variable the
+tolerance is definded for. Solid mechanics variables (often called
+\texttt{disp\_x}, \texttt{disp\_y}, and \texttt{disp\_z}) is:
+
+$ stress \cdot strain = \unit{\kN\per\m^2} \cdot \unit{\metre\per\metre} = \frac{Energy}{Volume} = kN*m/m³ $
+
+Some collected notes on the tolerances and how to choose:
+
+\begin{itemize}
+  \item Assuming the residual close to unity, \texttt{nl\_abs\_tol} and
+        \texttt{l\_abs\_tol} should be larger than 1e-15 to be not too close to
+        numerical precision.
+  \item The linear tolerance should be looser than the nonlinear tolerance (the linear
+        tolerance should be a larger number than for the nonlinear). In fact since the
+        residual is checked by the nonlinear solver, one don't need to converge the
+        linear solve anywhere near as tight.
+  \item From experience, \texttt{l\_tol = 1e-3} is often enough.
+  \item According to
+        \href{https://petsc.org/release/manualpages/KSP/KSPConvergedDefault/}{petsc.org},
+        the default convergence algorithm reaches convergence when both (absolute and
+        relative) tolerances are satisfied and the following equation holds: \newline
+        $rnorm < \max (\texttt{rel\_tol} \cdot rnorm_0, \texttt{abs\_tol})$.
+  \item Relative tolerances are often chosen to be \SI{1}{\percent} in other
+        geotechnical finite element codes.
+\end{itemize}
+
 % https://mooseframework.inl.gov/moose/application_usage/failed_solves.html
 % convergence problems:
 
@@ -373,3 +440,7 @@ scaling. Therefore, it is recommended to use manual scaling instead.
 %    numerical precision. In fact since the residual is checked by the nonlinear 
 %    solver, you don't need to converge the linear solve anywhere near as tight. 
 %    1e-3 is often enough
+%
+%    https://github.com/idaholab/moose/discussions/26115#discussioncomment-7634493
+%    - The linear tolerance should be looser than the nonlinear tolerance; 
+%      it should be a larger number than for the nonlinear
