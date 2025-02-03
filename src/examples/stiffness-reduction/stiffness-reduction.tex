@@ -1,0 +1,123 @@
+\section{Problem statement}
+
+In the spirit of weathering, the stiffness reduction of a $\SI{1}{\metre}
+    \times \SI{1}{\metre} \times \SI{1}{\metre}$ block is to be simulated. While
+the (vertical) sides are fixed horizontally and the bottom is fixed vertically,
+the top surface loaded with a pressure of \SI[per-mode =
+    symbol]{1.0}{\kilo\newton\per\square\metre}. Initially, the block is loaded
+only by gravity. The soil material is assumed to be purely linear elastic and
+no water present. Material parameters are given in
+\autoref{stiffness-reduction:material-parameters}. The stiffness of the
+material was chosen with an arbitrary initial value of \SI[per-mode =
+    symbol]{1000}{\kilo\newton\per\square\metre} to be reduced to \SI[per-mode =
+    symbol]{500}{\kilo\newton\per\square\metre}.
+
+Vertical displacement $u_z$ is to be determined as simulation result at the top
+of the block.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Material parameters}
+    \label{stiffness-reduction:material-parameters}
+    \begin{tabularx}{\textwidth}{XYY}
+
+        \hline
+
+        Property                                     & Physical unit                & Value      \\
+
+        \hline
+
+        initial Youngs modulus $E_0$                 & \si[per-mode =
+        symbol]{\kilo\newton\per\square\metre}       & \SI{1000}{}                               \\
+
+        final Youngs modulus $E_1$                   & \si[per-mode =
+        symbol]{\kilo\newton\per\square\metre}       & \SI{500}{}                                \\
+
+        Poisson's ratio $\nu$                        & -                            & \SI{0.0}{} \\
+
+        density (weightless $\vert$ finite) $\rho_s$ & \si[per-mode =
+        symbol]{\kilogram\per\cubic\metre}           & \SI{0}{} $\vert$ \SI{2500}{}              \\
+
+        \hline
+    \end{tabularx}
+\end{table}
+
+\section{Analytical solution}
+
+In the case of $\nu = 0.0$ given here, the vertical deformation can be
+analytical determined from Hooke's law
+(\autoref{stiffness-reduction:stiffness-modulus}):
+
+\begin{equation}
+    \label{stiffness-reduction:stiffness-modulus}
+    E = \frac{\sigma_{zz}}{\varepsilon_{zz}} \rightarrow \varepsilon_{zz} = \frac{\sigma_{zz}}{E}
+\end{equation}
+
+For the weightless material this leads to:
+
+\begin{equation}
+    u_z = \frac{\sigma_{top}}{E_1} - \frac{\sigma_{top}}{E_0} = \SI{0.001}{\metre} = \SI{1}{\milli\metre}
+\end{equation}
+
+For the material with $\rho_s = \qty[per-mode
+        =symbol]{2500}{\kilogram\per\cubic\metre}$, the settlement of the upper
+boundary can be calculated as for a spring under its own weight:
+
+\begin{equation}
+    u_z = \left[ \frac{\sigma_{top}}{E_1} - \frac{\sigma_{top}}{E_0} \right] + \left[\frac{\rho_s \cdot g \cdot h}{2 \cdot E_1} - \frac{\rho_s \cdot g \cdot h}{2 \cdot E_0} \right] = \qty{1}{\milli\metre} + \qty{12.26}{\milli\metre} = \qty{13.26}{\milli\metre}
+\end{equation}
+
+\section{Numerical solution with Moose}
+
+The system of physical units for the Moose model was set to metre
+(\unit{\metre}), seconds (\unit{\second}), and tons (\unit{\ton}). Due to this,
+the physical unit for stress and pore-pressures is \unit[per-mode =
+    symbol]{\kilo\newton\per\square\metre}.
+
+The mesh used for Moose consists of \qty{8245}{} nodes forming \qty{5184}{}
+TET10 elements leading to \qty{24735}{\DOF}. Due to its pure linear-elastic
+setup, this model was calculated using the ‘NEWTON’ solver.
+
+The Moose input file for this model is attached to this document by the name of
+‘stiffness-reduction.i’.
+
+\fileattachment{\currfiledir/stiffness-reduction.i}{stiffness-reduction.i}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Selected results of the Moose models}
+    \label{fully-saturated-undrained-compression:moose-results}
+
+    \begin{tabularx}{0.972\hsize}{
+            >{\hsize=0.6\hsize\linewidth=\hsize}X
+            >{\hsize=0.4\hsize\linewidth=\hsize}X}
+        {\begin{tabularx}{1\linewidth}{
+                     >{\hsize=0.4\hsize\linewidth=\hsize}X
+                     >{\hsize=0.25\hsize\linewidth=\hsize\hspace{-5pt}}Y
+                     >{\hsize=0.25\hsize\linewidth=\hsize\hspace{-5pt}}Y}
+                 \toprule
+                 Model response                                                                                & \multicolumn{2}{c}{Material density}                                                                                   \\
+                 {}                                                                                            & \qty[per-mode = symbol]{0}{\kilo\newton\per\cubic\metre} & \qty[per-mode = symbol]{2500}{\kilo\newton\per\cubic\metre} \\
+                 \midrule
+
+                 \multicolumn{3}{l}{Initial Conditions:}                                                                                                                                                                                \\
+                 \hspace{1em} $\sigma'_{zz,z_{max}}$ (\unit[per-mode = symbol]{\kilo\newton\per\square\metre}) & \qty{\pm0.0}{}                                           & \qty{-1.0}{}                                                \\
+                 \hspace{1em} $\sigma'_{zz,z_{min}}$ (\unit[per-mode = symbol]{\kilo\newton\per\square\metre}) & \qty{\pm0.0}{}                                           & \qty{-25.53}{}                                              \\
+
+                 {}                                                                                            & {}                                                       & {}                                                          \\
+
+                 \multicolumn{3}{l}{Boundary at $z_{max}$ after stiffness reduction:}                                                                                                                                                   \\
+                 \hspace{1em} $u_z$            (\unit[per-mode = symbol]{\metre})                              & \qty{-1.034E-3}{}                                        & \qty{-13.41E-3}{}                                           \\
+                 \bottomrule
+             \end{tabularx}}
+         &
+        {\raisebox{0.0mm}
+                {\begin{tikzpicture}[baseline=(current bounding box.center)]
+                         \node[inner sep=0pt] (ch-stresses) at (0.35,0.0) {\includegraphics[width=0.925\linewidth]{\currfiledir stiffness-reduction.i.png}};
+                         \node[draw,circle,fill=white,minimum size=.95cm,inner sep=0pt] at (+3.3,+2.2) {$z_{max}$};
+                         \node[draw,circle,fill=white,minimum size=.95cm,inner sep=0pt] at (+3.1,-1.6) {$z_{min}$};
+                     \end{tikzpicture}}
+            }
+        \\
+    \end{tabularx}
+\end{table}
