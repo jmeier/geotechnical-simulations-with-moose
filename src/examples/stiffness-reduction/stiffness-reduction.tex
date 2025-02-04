@@ -57,20 +57,20 @@ simulation result.
 
 \section{Analytical solution}
 
-In the case of $\nu = 0.0$ given here, the vertical deformation $\Delta h$ can
-be analytical determined from Hooke's law
+In the case of $\nu = 0.0$ given here, the vertical deformation $\Delta h =
+    u_z$ can be analytical determined from Hooke's law
 (\autoref{stiffness-reduction:stiffness-modulus}):
 
 \begin{equation}
     \label{stiffness-reduction:stiffness-modulus}
     E = \frac{\sigma_{zz}}{\varepsilon_{zz}} \rightarrow \varepsilon_{zz}
-    = \frac{\sigma_{zz}}{E} = \frac{\Delta h}{h}
+    = \frac{\sigma_{zz}}{E} = \frac{u_z}{h}
 \end{equation}
 
 For the weightless material this leads to:
 
 \begin{equation}
-    u_z = \frac{\sigma_{top}}{E_1} - \frac{\sigma_{top}}{E_0} = \SI{0.001}{\metre} = \SI{1}{\milli\metre}
+    u_z = h \frac{\sigma_{top}}{E_1} - h \frac{\sigma_{top}}{E_0} = \SI{0.001}{\metre} = \SI{1}{\milli\metre}
 \end{equation}
 
 For the material with $\rho_s = \qty[per-mode
@@ -80,7 +80,7 @@ the settlement of the upper boundary can be calculated as for a spring under
 its own weight:
 
 \begin{equation}
-    u_z = \left[ \frac{\sigma_{top}}{E_1} - \frac{\sigma_{top}}{E_0} \right] + \left[\frac{\rho_s \cdot g \cdot h}{2 \cdot E_1} - \frac{\rho_s \cdot g \cdot h}{2 \cdot E_0} \right] = \qty{1}{\milli\metre} + \qty{12.26}{\milli\metre} = \qty{13.26}{\milli\metre}
+    u_z = \left[ h \frac{\sigma_{top}}{E_1} - h \frac{\sigma_{top}}{E_0} \right] + \left[ h \frac{\rho_s \cdot g}{2 \cdot E_1} - h \frac{\rho_s \cdot g }{2 \cdot E_0} \right] = \qty{1}{\milli\metre} + \qty{12.26}{\milli\metre} = \qty{13.26}{\milli\metre}
 \end{equation}
 
 \section{Numerical solution with Moose}
