@@ -15,6 +15,10 @@
     \usepackage[edges]{forest}
     \usetikzlibrary{decorations.pathreplacing}
 
+    % appendices
+    \usepackage[page,toc,titletoc,title]{appendix}
+    \usepackage{tocloft}
+
     % tables
     \usepackage{tabularx,array,booktabs,multirow}
     \newcolumntype{Y}{>{\centering\arraybackslash}X} % for centering tables in tabularx
@@ -114,7 +118,7 @@
         % morekeywords={function,Algorithm,algorithm, then,do},
     }
 
-    % awesomebox
+    % awesomebox (notebox, tipbox, warningbox, cautionbox, importantbox)
     \usepackage{awesomebox}
 
     % todo
@@ -249,22 +253,24 @@
 \label{chap:references}
 \input{src/chapters/references.tex}
 
-\appendix
+\begin{appendices}
 
-\chapter{Stiffness Reduction}
-\label{app:stiffness-reduction}
-\input{src/examples/stiffness-reduction/stiffness-reduction.tex}
+    \chapter{Stiffness Reduction}
+    \label{app:stiffness-reduction}
+    \input{src/examples/stiffness-reduction/stiffness-reduction.tex}
 
-\chapter{Fully Saturated Undrained Compression}
-\label{app:fully-saturated-undrained-compression}
-\input{src/examples/fully-saturated-undrained-compression/fully-saturated-undrained-compression.tex}
+    \chapter{Bended Plate}
+    \label{app:bended-plate}
+    \input{src/examples/bended-plate/bended-plate.tex}
 
-\chapter{Bended Plate}
-\label{app:bended-plate}
-\input{src/examples/bended-plate/bended-plate.tex}
+    \chapter{Fully Saturated Undrained Compression}
+    \label{app:fully-saturated-undrained-compression}
+    \input{src/examples/fully-saturated-undrained-compression/fully-saturated-undrained-compression.tex}
 
-\chapter{Bi-axial Shear Test}
-\label{app:bi-axial-shear}
-\input{src/examples/bi-axial-shear/bi-axial-shear.tex}
+    \chapter{Bi-axial Shear Test}
+    \label{app:bi-axial-shear}
+    \input{src/examples/bi-axial-shear/bi-axial-shear.tex}
+
+\end{appendices}
 
 \end{document}
