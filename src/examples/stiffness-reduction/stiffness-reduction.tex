@@ -1,19 +1,25 @@
 \section{Problem statement}
 
-In the spirit of weathering, the stiffness reduction of a $\SI{1}{\metre}
-    \times \SI{1}{\metre} \times \SI{1}{\metre}$ block is to be simulated. While
-the (vertical) sides are fixed horizontally and the bottom is fixed vertically,
-the top surface loaded with a pressure of \SI[per-mode =
-    symbol]{1.0}{\kilo\newton\per\square\metre}. Initially, the block is loaded
-only by gravity. The soil material is assumed to be purely linear elastic and
+The stiffness of materials can change over time as a result of certain
+processes. One example is the temperature rise of a rubber block, which becomes
+‘softer’ and ‘slumps down’ as a result of this temperature load. Similar
+effects may be observed as a result of weathering of geomaterials.
+
+To simulate this effect in a simplified way, the reduction of stiffness of a
+block of $\SI{1}{\metre} \times \SI{1}{\metre} \times \SI{1}{\metre}$ is to be
+simulated. While the (vertical) sides are fixed horizontally and the bottom is
+fixed vertically, the top surface loaded with a pressure of $\sigma_{top} =
+    \SI[per-mode = symbol]{1.0}{\kilo\newton\per\square\metre}$. Two variants are
+to be simulated, the first without dead load and the second with the block also
+loaded by gravity. The soil material is assumed to be purely linear-elastic and
 no water present. Material parameters are given in
 \autoref{stiffness-reduction:material-parameters}. The stiffness of the
-material was chosen with an arbitrary initial value of \SI[per-mode =
-    symbol]{1000}{\kilo\newton\per\square\metre} to be reduced to \SI[per-mode =
-    symbol]{500}{\kilo\newton\per\square\metre}.
+material was chosen with an arbitrary initial value of $E_0 = \SI[per-mode =
+        symbol]{1000}{\kilo\newton\per\square\metre}$ to be reduced to $E_1 =
+    \SI[per-mode = symbol]{500}{\kilo\newton\per\square\metre}$.
 
-Vertical displacement $u_z$ is to be determined as simulation result at the top
-of the block.
+Vertical displacement $u_z$ at the top of the block is to be determined as
+simulation result.
 
 \begin{table}[htbp]
     \centering
@@ -44,13 +50,14 @@ of the block.
 
 \section{Analytical solution}
 
-In the case of $\nu = 0.0$ given here, the vertical deformation can be
-analytical determined from Hooke's law
+In the case of $\nu = 0.0$ given here, the vertical deformation $\Delta h$ can
+be analytical determined from Hooke's law
 (\autoref{stiffness-reduction:stiffness-modulus}):
 
 \begin{equation}
     \label{stiffness-reduction:stiffness-modulus}
-    E = \frac{\sigma_{zz}}{\varepsilon_{zz}} \rightarrow \varepsilon_{zz} = \frac{\sigma_{zz}}{E}
+    E = \frac{\sigma_{zz}}{\varepsilon_{zz}} \rightarrow \varepsilon_{zz}
+    = \frac{\sigma_{zz}}{E} = \frac{\Delta h}{h}
 \end{equation}
 
 For the weightless material this leads to:
@@ -60,8 +67,10 @@ For the weightless material this leads to:
 \end{equation}
 
 For the material with $\rho_s = \qty[per-mode
-        =symbol]{2500}{\kilogram\per\cubic\metre}$, the settlement of the upper
-boundary can be calculated as for a spring under its own weight:
+        =symbol]{2500}{\kilogram\per\cubic\metre}$ also subjected to a gravitational
+acceleration of $g = \qty[per-mode = symbol]{9.81}{\metre\per\square\second}$,
+the settlement of the upper boundary can be calculated as for a spring under
+its own weight:
 
 \begin{equation}
     u_z = \left[ \frac{\sigma_{top}}{E_1} - \frac{\sigma_{top}}{E_0} \right] + \left[\frac{\rho_s \cdot g \cdot h}{2 \cdot E_1} - \frac{\rho_s \cdot g \cdot h}{2 \cdot E_0} \right] = \qty{1}{\milli\metre} + \qty{12.26}{\milli\metre} = \qty{13.26}{\milli\metre}
