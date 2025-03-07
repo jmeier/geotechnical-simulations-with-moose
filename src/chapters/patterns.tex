@@ -392,10 +392,10 @@ scaling. Therefore, it is recommended to use manual scaling instead.
 \end{table}
 
 Physical meaning of a (absolute) tolerance depends on the variable the
-tolerance is definded for. Solid mechanics variables (often called
+tolerance is definded for. Solid mechanics displacement variables (often called
 \texttt{disp\_x}, \texttt{disp\_y}, and \texttt{disp\_z}) is:
 
-$ stress \cdot strain = \unit{\kN\per\m^2} \cdot \unit{\metre\per\metre} = \frac{Energy}{Volume} = kN*m/m³ $
+$ stress \cdot strain = \unit[per-mode = symbol]{\kN\per\square\metre} \cdot \unit[per-mode = symbol]{\metre\per\metre} = \frac{Energy}{Volume} = \unit[per-mode = symbol]{\kilo\newton} \cdot \unit[per-mode = symbol]{\metre\per\cubic\metre} $
 
 Some collected notes on the tolerances and how to choose:
 
