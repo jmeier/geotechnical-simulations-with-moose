@@ -153,11 +153,11 @@ modelunit_pressure = '${raw ${modelunit_force} / ${modelunit_area}}'
 [UserObjects]
   [ts]
     type = SolidMechanicsHardeningConstant
-    value = '${units 1e6 N/m^2 -> ${modelunit_pressure} }'
+    value = '${units 1e6 kN/m^2 -> ${modelunit_pressure} }'
   []
   [cs]
     type = SolidMechanicsHardeningConstant
-    value =  '${units 1e6 N/m^2 -> ${modelunit_pressure} }'
+    value =  '${units 1e6 kN/m^2 -> ${modelunit_pressure} }'
   []
   [coh]
     type = SolidMechanicsHardeningConstant
