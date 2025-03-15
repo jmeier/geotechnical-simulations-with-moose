@@ -1,8 +1,68 @@
 \section{Problem statement}
 
+A bi-axial shear test of a homogenous material block of $\SI{1}{\metre} \times
+    \SI{1}{\metre} \times \SI{1}{\metre}$ should be modeled to test the limit load
+resulting from the Mohr-Coulomb failure criterion.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Material parameters}
+    \label{bi-axial-shear-mohr-coulomb:material-parameters}
+    \begin{tabularx}{\textwidth}{XYY}
+
+        \hline
+
+        Property                        & Physical unit                                         & Value       \\
+
+        \hline
+
+        Youngs modulus $E$              & \si[per-mode = symbol]{\kilo\newton\per\square\metre} &
+        \SI{1000}{}                                                                                           \\
+
+        Poisson's ratio $\nu$           & -                                                     & \SI{0.25}{} \\
+
+        Angle of inner friction $\phi'$ & \si[per-mode = symbol]{\degree}                       & \SI{30}{}
+        \\
+
+        Cohesion $c'$                   & \si[per-mode = symbol]{\kilo\newton\per\square\metre} & 1           \\
+
+        \hline
+    \end{tabularx}
+\end{table}
+
 \section{Analytical solution}
 
+From the yield function of the Mohr-Coulomb failure criterion shown in
+\autoref{eqn:Mohr-Coulomb-failure-criterion} the limit load of the bi-axial
+test can be derived as given in \autoref{eqn:bi-axial-test-limit-load}.
+
+\begin{equation}
+    \label{eqn:Mohr-Coulomb-failure-criterion}
+    f = \frac{\abs{\sigma'_1 - \sigma'_2}}{2} + \frac{\sigma'_1 + \sigma'_2}{2} \cdot \sin{\phi'} - c' \cdot \cos{\phi'} = 0
+\end{equation}
+
+\begin{equation}
+    \label{eqn:bi-axial-test-limit-load}
+    \sigma'_1 = \sigma'_2 \cdot \frac{1 + \sin{\phi'}}{1 - \sin{\phi'}} - 2c' \cdot \frac{\cos{\phi'}}{1 - \sin{\phi'}}
+    \approx \qty{-6.464}{\kilo\newton\per\square\metre}
+\end{equation}
+
 \section{Moose}
+
+In the corresponding Moose model of this quasi-static problem, a transient
+executioner is used. The load $\sigma'_1$ linearly with time so that at $t =
+    \qty{6.464}{\second}$ the load is $\sigma'_1 =
+    \qty{-6.464}{\kilo\newton\per\square\metre}$. Due to the ideal-plastic nature
+of the material behaviour, Moose will attempt to calculate time steps and
+iteratively reduce the time step if convergence is not achieved. Eventually the
+last converged time step should be at $t \approx \qty{6.464}{\second}$.
+
+This model was calculated using the ‘PJFNK’ solver. The time step is initially
+chosen to be \qty{0.25}{\second} and the minimum time step is limited to
+\qty{0.001}{\second}. Due to the automatic cut-back of the time steps close to
+failure, the last converged time step is at $t=\qty{6.43945}{\second}$. The
+Moose input file for this model is attached to this document by the name of
+‘bi-axial-shear.i’.
 
 \fileattachment{\currfiledir/bi-axial-shear.i}{bi-axial-shear.i}
 
