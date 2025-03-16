@@ -1,4 +1,7 @@
-## Plaxis3DInput 2023.2.1.1079
+# fully saturated undrained compression test (command file for Plaxis 3D)
+# =======================================================================
+# this file is part of github.com/jmeier/geotechnical-simulations-with-moose
+# and is published under the CC-BY-SA-4.0 license 
 _setproperties "Title" "" "Company" "" "Comments" "" "UnitForce" "kN" "UnitLength" "m" "UnitTime" "day" "WaterWeight" 10 "ReferenceTemperature" 293.15 "LiquidSpecificHeatCapacity" 4181.3 "LiquidThermalConductivity" 0.0006 "LiquidLatentHeat" 334000 "LiquidThermalExpansion" 0.00021 "LiquidTemperature" 293.15 "IceSpecificHeatCapacity" 2108 "IceThermalConductivity" 0.00222 "IceThermalExpansion" 5E-5 "VapourSpecificHeatCapacity" 1930 "VapourThermalConductivity" 2.5E-5 "VapourSpecificGasConstant" 461.5 "UseTemperatureDepWaterPropsTable" False "ModelType" "Full" "ElementType" "10-Noded"
 _initializerectangular SoilContour -3 -3 3 3
 _gotostructures
