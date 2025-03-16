@@ -1,0 +1,61 @@
+# bi-axial shear test (command file for Plaxis 3D)
+# ================================================
+# this file is part of github.com/jmeier/geotechnical-simulations-with-moose
+# and is published under the CC-BY-SA-4.0 license 
+setproperties "Title" "bi-axial shear test" "Company" "" "Comments" "" "UnitForce" "kN" "UnitLength" "m" "UnitTime" "day" "WaterWeight" 10 "ReferenceTemperature" 293.15 "LiquidSpecificHeatCapacity" 4181.3 "LiquidThermalConductivity" 0.0006 "LiquidLatentHeat" 334000 "LiquidThermalExpansion" 0.00021 "LiquidTemperature" 293.15 "IceSpecificHeatCapacity" 2108 "IceThermalConductivity" 0.00222 "IceThermalExpansion" 5E-5 "VapourSpecificHeatCapacity" 1930 "VapourThermalConductivity" 2.5E-5 "VapourSpecificGasConstant" 461.5 "UseTemperatureDepWaterPropsTable" False "ModelType" "Full" "ElementType" "10-Noded"
+initializerectangular SoilContour 0 0 1 1
+# create the geometry of the blocks
+surface 0 0 0  0 1 0  1 1 0  1 0 0
+rename surfaces[-1] "srfZMin"
+surface 0 0 1  0 1 1  1 1 1  1 0 1
+rename surfaces[-1] "srfZMax"
+surface 0 0 0  0 1 0  0 1 1  0 0 1
+rename surfaces[-1] "srfXMin"
+surface 1 0 0  1 1 0  1 1 1  1 0 1
+rename surfaces[-1] "srfXMax"
+surface 0 0 0  0 0 1  1 0 1  1 0 0
+rename surfaces[-1] "srfYMin"
+surface 0 1 0  0 1 1  1 1 1  1 1 0
+rename surfaces[-1] "srfYMax"
+combine (srfXMin srfXMax srfYMin srfYMax srfZMax srfZMin) True
+rename volumes[-1] "volBlock"
+# features
+soil volBlock
+soilmat "Name" "matMohrCoulomb" "Identification" "matMohrCoulomb" "SoilModel" "Mohr-Coulomb" "gammaUnsat" 0 "gammaSat" 0 "ERef" 1000 "nu" 0.25 "cRef" 1 "phi" 30 "TensionCutOff" False
+set volBlock.Soil.Material matMohrCoulomb
+surfload srfZMax
+set srfZMax.SurfaceLoad.sigx 0.0
+set srfZMax.SurfaceLoad.sigy 0.0
+set srfZMax.SurfaceLoad.sigz -1.0
+surfload srfXMax
+set srfXMax.SurfaceLoad.sigx -1.0
+set srfXMax.SurfaceLoad.sigy 0.0
+set srfXMax.SurfaceLoad.sigz 0.0
+surfdispl (srfXMin srfYMin srfYMax srfZMin)
+set (srfXMin.SurfaceDisplacement.Displacement_x) "Fixed"
+set (srfXMin.SurfaceDisplacement.Displacement_y) "Free"
+set (srfXMin.SurfaceDisplacement.Displacement_z) "Free"
+set (srfYMin.SurfaceDisplacement.Displacement_x) "Free"
+set (srfYMin.SurfaceDisplacement.Displacement_y) "Fixed"
+set (srfYMin.SurfaceDisplacement.Displacement_z) "Free"
+set (srfYMax.SurfaceDisplacement.Displacement_x) "Free"
+set (srfYMax.SurfaceDisplacement.Displacement_y) "Fixed"
+set (srfYMax.SurfaceDisplacement.Displacement_z) "Free"
+set (srfZMin.SurfaceDisplacement.Displacement_x) "Free"
+set (srfZMin.SurfaceDisplacement.Displacement_y) "Free"
+set (srfZMin.SurfaceDisplacement.Displacement_z) "Fixed"
+# discretisation
+gotomesh
+meshd .2
+# stages
+gotostages
+deactivate Deformations InitialPhase
+activate SurfaceLoads InitialPhase
+activate SurfaceDisplacements InitialPhase
+activate Volumes InitialPhase
+phase InitialPhase
+rename phases[-1] "Stage1"
+phase Stage1
+rename phases[-1] "Stage2"
+set SurfaceLoad_1_1.sigz Stage2 -10
+calculate
