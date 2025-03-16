@@ -1,10 +1,14 @@
 \section{Problem statement}
+\label{bended-plate:sec:problem-statement}
 
 An initially horizontal and unloaded quadratic plate of $a = \qty{2}{\metre}
     \times b = \qty{2}{\metre}$ with a thickness of $t = \qty{0.1}{\metre} =
     \qty{10}{\centi\metre}$ is only held at one edge and is subjected at the
 opposite edge with a static point load of $F = \qty{100}{\kilo\newton}$
-directed upwards. The material behaviour is purely linear-elastic.
+directed upwards. This test setup can be seen in
+\autoref{bended-plate:fig:setup}. The material behaviour is purely
+linear-elastic and the corresponding parameters can be found in
+\autoref{bended-plate:material-parameters}.
 
 The deflection of the plate at the loaded edge is to be determined as a
 simulation result.
@@ -41,6 +45,46 @@ modelled using volume elements or shell elements.
     \end{tabularx}
 \end{table}
 
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+
+        \def\Dimline[#1][#2][#3][#4]{
+            \begin{scope}[>=latex] % redef arrow for dimension lines
+                \draw let \p1=#1, \p2=#2, \n0={veclen(\x2-\x1,\y2-\y1)} in [|<->|,
+                        decoration={markings, % switch on markings
+                                mark=at position .5 with {\node[#3] at (0,0) {#4};},
+                            },
+                        postaction=decorate] #1 -- #2 ;
+            \end{scope}
+        }
+
+        % this image has been generated using Blender writing a SVG
+        % using the "Freestyle SVG Exporter". The SVG is minimized
+        % using third-party tools and finally converted to PDF using
+        % Inkscape.
+        \node[inner sep=0pt] (ch-stresses) at (0,0) {\includegraphics[width=0.4\linewidth]{\currfiledir/bended-plate.blend-min.svg.pdf}};
+
+        \node[] at (-2.8,-2.2) {x};
+        \node[] at (-2.0,-1.5) {y};
+        \node[] at (-3.7,-0.0) {z};
+
+        \node[rotate=+16] at (-2.4,+1.4) {fixed};
+
+        \node[left] at (+2.0,+0.6) {$F = \qty{100}{\kilo\newton}$};
+
+        \node[] at (+0.6,-1.4) (A) {};
+        \node[] at (+3.5,-0.0) (B) {};
+        \node[] at (+1.0,+1.0) (C) {};
+        \Dimline[($(A)+(+0.1,-0.1)$)][($(B)+(+0.1,-0.1)$)][below right][\qty{2}{\metre}];
+        \Dimline[($(C)+(-0.2,+0.6)$)][($(B)+(+0.1,+0.5)$)][above right][\qty{2}{\metre}];
+        \Dimline[($(B)+(+0.5,+0.1)$)][($(B)+(+0.5,+0.3)$)][right][\qty{0.1}{\metre}];
+
+    \end{tikzpicture}
+    \caption{Setup of the bended plate test}
+    \label{bended-plate:fig:setup}
+\end{figure}
+
 \section{Analytical solution}
 \label{bended-plate:sec:analytical-solution}
 
@@ -59,7 +103,7 @@ the deflection is given in \autoref{bended-plate:analytical-solution}.
         \item[$F$] point load (\qty{100}{\kilo\newton})
         \item[$a$] size of the plate (\qty{2}{\metre})
         \item[$E$] Young's modulus (\qty[per-mode = symbol]{1E6}{\kilo\newton\per\square\metre}; see \autoref{bended-plate:material-parameters})
-        \item[$I$] Second moment of area, for this geometry $I = \frac{b \cdot t^3}{12}$
+        \item[$I$] Second moment of area, for this geometry $I = \frac{b \cdot t^3}{12} = \frac{\qty{2}{\metre} \cdot (\qty{0.1}{\metre})^3}{12} = 0.0001\overline{6} \qty{}{\metre}^4 $
     \end{description}
 \end{samepage}
 
