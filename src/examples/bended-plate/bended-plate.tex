@@ -109,19 +109,117 @@ the deflection is given in \autoref{bended-plate:analytical-solution}.
 \section{Moose}
 \label{bended-plate:sec:moose}
 
+The discretization of the Moose models are identical to the Plaxis models in
+\autoref{bended-plate:sec:plaxis3D}. In fact, the MSH files used by the Moose
+models have been created by exporting the Plaxis discretization. Therefore,
+several modelling tricks necessary for Plaxis described in
+\autoref{bended-plate:sec:plaxis3D} are also imported to Moose even if not
+absolutely necessary (e.g. the extension of the shell elements: Moose supports
+boundary conditions for the rotation variables).
+
+Currently (begin of 2025), Moose does not offer TRI6 shell elements. To model
+this test setup the "Shell MooseApp Code Plugin" to be found in the link below
+was used.
+
+\href{https://github.com/Kavan-Khaledi/moose-codeplugin-shell}{github.com/Kavan-Khaledi/moose-codeplugin-shell}
+
 For this purely linear-elastic problem, the ‘NEWTON’ solver is used. The Moose
 input files for this model and the corresponding MSH files are attached to this
 document as a ZIP by the name of ‘bended-plate.i.zip’.
 
 \fileattachment{\currfiledir/bended-plate.i.zip}{bended-plate.i.zip}
 
+Only one input file is given for TRI and one for TET elements despite the fact
+that several discretizations have been used and all MSH files are given. To
+reduce the file size of this document, the reader is requested to adjust the
+argument pointing to the MSH file \codeword{[Mesh]/[File]/file} to the desired
+MSH file.
+
 \section{Plaxis 3D}
 \label{bended-plate:sec:plaxis3D}
+
+In order to correctly reproduce the test setup, various tricks had to be used
+in the Plaxis models. These tricks include:
+
+\begin{description}
+    \item [Shell-Elements:]{To model the fixed end of the plate, Plaxis does not
+          support prescribing zero rotation at a ‘Prescribed Line
+          Displacement’ boundary condition. Due to this shortcoming
+          an ‘extension’ of the plate on the fixed end has been
+          modelled and displacement of all nodes of this extension is
+          prescribed as zero.\\
+          On the other hand, Plaxis suppresses the rotation of all nodes
+          of shell elements that are adjacent to the model boundaries (but
+          not the displacements). In order to be able to correctly model the
+          bending of the plate due to the load, an enveloping volume was
+          modeled around the plate, but never activated in the calculation.
+          With this trick, none of the nodes of the shell elements touch the
+          model boundaries, which means that no unwanted boundary conditions
+          are generated.}
+    \item [Volume-Elements:]{Plaxis also automatically generates displacement
+          boundary conditions for solid elements that touch the model boundaries,
+          which are not useful for this model. In the Plaxis models, the
+          automatically generated boundary conditions are therefore deactivated,
+          displacement boundary conditions are generated manually for the
+          boundary surfaces and set to a suitable behavior.}
+\end{description}
 
 The Plaxis command files for this model are attached to this document as a ZIP
 by the name of ‘bended-plate.p3dlog.zip’.
 
 \fileattachment{\currfiledir/bended-plate.p3dlog.zip}{bended-plate.p3dlog.zip}
+
+Only one input file is given for TRI and one for TET elements despite the fact
+several discretizations have been used. To generate the discretizations shown
+in \autoref{bended-plate:sec:results}, the command line that generates the
+discretization with the \codeword{_meshd} command must be changed. Only the
+first argument of the \codeword{_meshd} command changes and can be taken from
+\autoref{bended-plate:tab:plaxis-meshd}.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Resulting deflection for selected Plaxis models (geometrical non-linearity neglected)}
+    \label{bended-plate:tab:plaxis-meshd}
+    \begin{tabularx}{\textwidth}{
+            >{\hsize=0.18\hsize\linewidth=\hsize}X
+            >{\hsize=0.18\hsize\linewidth=\hsize}R
+            >{\hsize=0.18\hsize\linewidth=\hsize}R
+            >{\hsize=0.46\hsize\linewidth=\hsize}Y}
+
+        \hline
+
+        %& CPU-count / wall time (\si{\second}) & RAM (MB)                                                                                             
+
+        Element Type & Element Count  & Node Count     & Mesh-Command                               \\
+
+        \hline
+
+        TRI6         & \qty{44}{}     & \qty{464}{}    & {\texttt{\textcolor{blue}{\_meshd 0.50 256
+        True 1.2 0.005}}}                                                                           \\
+
+        TRI6         & \qty{254}{}    & \qty{2364}{}   & {\texttt{\textcolor{blue}{\_meshd 0.20 256
+        True 1.2 0.005}}}                                                                           \\
+
+        TRI6         & \qty{3790}{}   & \qty{34850}{}  & {\texttt{\textcolor{blue}{\_meshd 0.05
+        256 True 1.2 0.005}}}                                                                       \\
+
+        TRI6         & \qty{23446}{}  & \qty{233452}{} & {\texttt{\textcolor{blue}{\_meshd 0.02
+        256 True 1.2 0.005}}}                                                                       \\
+
+        \hline
+
+        TET10        & \qty{462}{}    & \qty{1013}{}   & {\texttt{\textcolor{blue}{\_meshd 0.20 256
+        True 1.2 0.005}}}                                                                           \\
+
+        TET10        & \qty{3516}{}   & \qty{3516}{}   & {\texttt{\textcolor{blue}{\_meshd 0.05
+        256 True 1.2 0.005}}}                                                                       \\
+
+        TET10        & \qty{107819}{} & \qty{158749}{} & {\texttt{\textcolor{blue}{\_meshd
+        0.02 256 True 1.2 0.005}}}                                                                  \\
+
+        \hline
+    \end{tabularx}
+\end{table}
 
 \section{Results}
 \label{bended-plate:sec:results}
