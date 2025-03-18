@@ -4,13 +4,12 @@
 An initially horizontal and unloaded quadratic plate of $a = \qty{2}{\metre}
     \times b = \qty{2}{\metre}$ with a thickness of $t = \qty{0.1}{\metre} =
     \qty{10}{\centi\metre}$ is only held at one edge and is subjected at the
-opposite edge with a static point load of $F = \qty{100}{\kilo\newton}$
-directed upwards. This test setup can be seen in
-\autoref{bended-plate:fig:setup}. The material behaviour is purely
-linear-elastic and the corresponding parameters can be found in
-\autoref{bended-plate:material-parameters}.
+opposite edge with a static point load of $F = \qty{10}{\kilo\newton}$ directed
+upwards. This test setup can be seen in \autoref{bended-plate:fig:setup}. The
+material behaviour is purely linear-elastic and the corresponding parameters
+can be found in \autoref{bended-plate:material-parameters}.
 
-The deflection of the plate at the loaded edge is to be determined as a
+The deflection of the plate at the loaded point ‘A’ is to be determined as a
 simulation result.
 
 This problem is closely related to classical beam bending theory for a
@@ -71,7 +70,7 @@ modelled using volume elements or shell elements.
 
         \node[rotate=+16] at (-2.4,+1.4) {fixed};
 
-        \node[left] at (+2.0,+0.6) {$F = \qty{100}{\kilo\newton}$};
+        \node[align=right] at (+0.8,+0.3) {Point A\\$F = \qty{10}{\kilo\newton}$};
 
         \node[] at (+0.6,-1.4) (A) {};
         \node[] at (+3.5,-0.0) (B) {};
@@ -93,14 +92,14 @@ the deflection is given in \autoref{bended-plate:analytical-solution}.
 
 \begin{equation}
     \label{bended-plate:analytical-solution}
-    u_z = F \cdot \frac{a ^ 3}{3EI} = \qty{1.6}{\metre}
+    u_z = F \cdot \frac{a ^ 3}{3EI} = \qty{0.16}{\metre}
 \end{equation}
 
 \begin{samepage}
     with:
     \begin{description}
         \item[$u_{z}$] vertical deflection at the point load to be estimated.
-        \item[$F$] point load (\qty{100}{\kilo\newton})
+        \item[$F$] point load (\qty{10}{\kilo\newton})
         \item[$a$] size of the plate (\qty{2}{\metre})
         \item[$E$] Young's modulus (\qty[per-mode = symbol]{1E6}{\kilo\newton\per\square\metre}; see \autoref{bended-plate:material-parameters})
         \item[$I$] Second moment of area, for this geometry $I = \frac{b \cdot t^3}{12} = \frac{\qty{2}{\metre} \cdot (\qty{0.1}{\metre})^3}{12} = 0.0001\overline{6} \qty{}{\metre}^4 $
@@ -110,69 +109,96 @@ the deflection is given in \autoref{bended-plate:analytical-solution}.
 \section{Moose}
 \label{bended-plate:sec:moose}
 
-In \autoref{bended-plate:moose-results} the deflection and some additional
-metrics of selected Moose models for this problem is shown.
-
 For this purely linear-elastic problem, the ‘NEWTON’ solver is used. The Moose
-input files for this model are attached to this document by the name of
-‘bended-plate.i’.
+input files for this model and the corresponding MSH files are attached to this
+document as a ZIP by the name of ‘bended-plate.i.zip’.
 
-%\fileattachment{\currfiledir/bended-plate.i}{bended-plate.i}
-
-\begin{table}[htbp]
-    \centering
-    \caption{Resulting deflection for selected Moose models (geometrical non-linearity neglected)}
-    \label{bended-plate:moose-results}
-    \begin{tabularx}{\textwidth}{
-            >{\hsize=0.3\hsize\linewidth=\hsize}X
-            >{\hsize=0.2\hsize\linewidth=\hsize\hspace{-5pt}}Y
-            >{\hsize=0.3\hsize\linewidth=\hsize\hspace{-5pt}}Y
-            >{\hsize=0.2\hsize\linewidth=\hsize\hspace{-5pt}}Y}
-
-        \hline
-
-        Discretisation & deflection (\si{\metre}) & CPU-count / wall time
-        (\si{\second}) & RAM (MB)                                                    \\
-
-        \hline
-
-        xxxxxxx TRI6   & \qty{}{}                 & 0 / \qty{}{}          & \qty{}{} \\
-
-        xxxxxxx TET10  & \qty{}{}                 & 0 / \qty{}{}          & \qty{}{} \\
-
-        xxxxxxx TET10  & \qty{}{}                 & 0 / \qty{}{}          & \qty{}{} \\
-
-        \hline
-    \end{tabularx}
-\end{table}
+\fileattachment{\currfiledir/bended-plate.i.zip}{bended-plate.i.zip}
 
 \section{Plaxis 3D}
 \label{bended-plate:sec:plaxis3D}
 
-\autoref{bended-plate:plaxis-results}
+The Plaxis command files for this model are attached to this document as a ZIP
+by the name of ‘bended-plate.p3dlog.zip’.
+
+\fileattachment{\currfiledir/bended-plate.p3dlog.zip}{bended-plate.p3dlog.zip}
+
+\section{Results}
+\label{bended-plate:sec:results}
+
+The Moose and Plaxis models of this appendix use identical discretizations and
+can therefore compared directly. In fact, the MSH files have been created by
+exporting the Plaxis discretization. \autoref{bended-plate:tab:results} shows
+element count, node count, and deflection of point ‘A’ for the models using
+shell elements (TRI6) and volume elements (TET10) for different degrees of
+discretization refinement.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+
+        \node[inner sep=0pt] (tri6) at (-4.5,0) {\includegraphics[width=0.45\linewidth]{\currfiledir/bended-plate-tri6-comp.png}};
+
+        \node[inner sep=0pt] (tet10) at (+4.5,0) {\includegraphics[width=0.45\linewidth]{\currfiledir/bended-plate-tet10-comp.png}};
+
+        \node[rotate=+20] at (-7.9,+2.7) {\tiny\qty{    44}{} TRI6};
+        \node[rotate=+22] at (-7.8,+1.3) {\tiny\qty{   254}{} TRI6};
+        \node[rotate=+28] at (-7.7,+0.0) {\tiny\qty{  3790}{} TRI6};
+        \node[rotate=+31] at (-7.6,-1.2) {\tiny\qty{ 23446}{} TRI6};
+
+        \node[rotate=+22] at (+1.1,+2.2) {\tiny\qty{   462}{} TET10};
+        \node[rotate=+25] at (+1.2,+0.8) {\tiny\qty{  3516}{} TET10};
+        \node[rotate=+34] at (+0.9,-0.8) {\tiny\qty{107819}{} TET10};
+
+    \end{tikzpicture}
+    \caption{Discretization of the bended plate models (grey: initial; colored: deformed state)}
+    \label{bended-plate:fig:discretization}
+\end{figure}
 
 \begin{table}[htbp]
     \centering
     \caption{Resulting deflection for selected Plaxis models (geometrical non-linearity neglected)}
-    \label{bended-plate:plaxis-results}
+    \label{bended-plate:tab:results}
     \begin{tabularx}{\textwidth}{
-            >{\hsize=0.3\hsize\linewidth=\hsize}X
-            >{\hsize=0.2\hsize\linewidth=\hsize\hspace{-5pt}}Y
-            >{\hsize=0.3\hsize\linewidth=\hsize\hspace{-5pt}}Y
-            >{\hsize=0.2\hsize\linewidth=\hsize\hspace{-5pt}}Y}
+            >{\hsize=0.2\hsize\linewidth=\hsize}X
+            >{\hsize=0.2\hsize\linewidth=\hsize}R
+            >{\hsize=0.2\hsize\linewidth=\hsize}R
+            >{\hsize=0.2\hsize\linewidth=\hsize}Y
+            >{\hsize=0.2\hsize\linewidth=\hsize}Y}
 
         \hline
 
-        Discretisation & deflection (\si{\metre}) & CPU-count / wall time
-        (\si{\second}) & RAM (MB)                                                    \\
+        %& CPU-count / wall time (\si{\second}) & RAM (MB)                                                                                             
+
+        Element & Element        & Node           & \multicolumn{2}{c}{Deflection of Point ‘A’
+        (\si{\metre})}                                                                                                \\
+
+        Type    & Count          & Count          & Moose                                      & Plaxis               \\
 
         \hline
 
-        xxxxxxx TRI6   & \qty{}{}                 & 0 / \qty{}{}          & \qty{}{} \\
+        TRI6    & \qty{44}{}     & \qty{464}{}    & \qty{0.1646}{\metre}                       & \qty{0.1719}{\metre}
+        \\
 
-        xxxxxxx TET10  & \qty{}{}                 & 0 / \qty{}{}          & \qty{}{} \\
+        TRI6    & \qty{254}{}    & \qty{2364}{}   & \qty{0.1696}{\metre}                       & \qty{0.1712}{\metre}
+        \\ % \qty{63}{\mega\byte}
 
-        xxxxxxx TET10  & \qty{}{}                 & 0 / \qty{}{}          & \qty{}{} \\
+        TRI6    & \qty{3790}{}   & \qty{34850}{}  & \qty{0.1703}{\metre}                       &
+        \qty{0.1715}{\metre}                                                                                          \\ % \qty{276}{\mega\byte}
+
+        TRI6    & \qty{23446}{}  & \qty{233452}{} & \qty{0.1704}{\metre}                       &
+        \qty{0.1716}{\metre}                                                                                          \\ % \qty{1480}{\mega\byte}
+
+        \hline
+
+        TET10   & \qty{462}{}    & \qty{1013}{}   & \qty{0.1565}{\metre}                       &
+        \qty{0.1565}{\metre}                                                                                          \\
+
+        TET10   & \qty{3516}{}   & \qty{3516}{}   & \qty{0.1587}{\metre}                       &
+        \qty{0.1587}{\metre}                                                                                          \\
+
+        TET10   & \qty{107819}{} & \qty{158749}{} & \qty{0.1599}{\metre}                       &
+        \qty{0.1599}{\metre}                                                                                          \\
 
         \hline
     \end{tabularx}
