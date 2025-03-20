@@ -3,11 +3,12 @@
 
 An initially horizontal and unloaded quadratic plate of $a = \qty{2}{\metre}
     \times b = \qty{2}{\metre}$ with a thickness of $t = \qty{0.1}{\metre} =
-    \qty{10}{\centi\metre}$ is only held at one edge and is subjected at the
-opposite edge with a static point load of $F = \qty{10}{\kilo\newton}$ directed
-upwards. This test setup can be seen in \autoref{bended-plate:fig:setup}. The
-material behaviour is purely linear-elastic and the corresponding parameters
-can be found in \autoref{bended-plate:material-parameters}.
+    \qty{10}{\centi\metre}$ is only held at one edge and is subjected at the middle
+of the opposite edge with a static point load of $F = \qty{10}{\kilo\newton}$
+directed upwards (point ‘A’). This test setup can be seen in
+\autoref{bended-plate:fig:setup}. The material behaviour is purely
+linear-elastic and the corresponding parameters can be found in
+\autoref{bended-plate:material-parameters}.
 
 The deflection of the plate at the loaded point ‘A’ is to be determined as a
 simulation result.
@@ -54,7 +55,7 @@ modelled using volume elements or shell elements.
                         decoration={markings, % switch on markings
                                 mark=at position .5 with {\node[#3] at (0,0) {#4};},
                             },
-                        postaction=decorate] #1 -- #2 ;
+                        postaction=decorate] #1 -- #2;
             \end{scope}
         }
 
@@ -75,9 +76,9 @@ modelled using volume elements or shell elements.
         \node[] at (+0.6,-1.4) (A) {};
         \node[] at (+3.5,-0.0) (B) {};
         \node[] at (+1.0,+1.0) (C) {};
-        \Dimline[($(A)+(+0.1,-0.1)$)][($(B)+(+0.1,-0.1)$)][below right][\qty{2}{\metre}];
-        \Dimline[($(C)+(-0.2,+0.6)$)][($(B)+(+0.1,+0.5)$)][above right][\qty{2}{\metre}];
-        \Dimline[($(B)+(+0.5,+0.1)$)][($(B)+(+0.5,+0.3)$)][right][\qty{0.1}{\metre}];
+        \Dimline[($(A)+(+0.1,-0.1)$)][($(B)+(+0.1,-0.1)$)][below right][\qty{2}{\metre}]
+        \Dimline[($(C)+(-0.2,+0.6)$)][($(B)+(+0.1,+0.5)$)][above right][\qty{2}{\metre}]
+        \Dimline[($(B)+(+0.5,+0.1)$)][($(B)+(+0.5,+0.3)$)][right][\qty{0.1}{\metre}]
 
     \end{tikzpicture}
     \caption{Setup of the bended plate test}
@@ -125,15 +126,13 @@ was used.
 
 For this purely linear-elastic problem, the ‘NEWTON’ solver is used. The Moose
 input files for this model and the corresponding MSH files are attached to this
-document as a ZIP by the name of ‘bended-plate.i.zip’.
+document as a ZIP by the name of ‘bended-plate.i.zip’. Only one input file is
+given for TRI and one for TET elements despite the fact that several
+discretizations have been used and all MSH files are given. To reduce the file
+size of this document, the reader is requested to adjust the argument pointing
+to the MSH file \codeword{[Mesh]/[File]/file} to the desired MSH file.
 
 \fileattachment{\currfiledir/bended-plate.i.zip}{bended-plate.i.zip}
-
-Only one input file is given for TRI and one for TET elements despite the fact
-that several discretizations have been used and all MSH files are given. To
-reduce the file size of this document, the reader is requested to adjust the
-argument pointing to the MSH file \codeword{[Mesh]/[File]/file} to the desired
-MSH file.
 
 \section{Plaxis 3D}
 \label{bended-plate:sec:plaxis3D}
@@ -181,11 +180,11 @@ first argument of the \codeword{_meshd} command changes and can be taken from
     \caption{Resulting deflection for selected Plaxis models (geometrical non-linearity neglected)}
     \label{bended-plate:tab:plaxis-meshd}
     \begin{tabularx}{\textwidth}{
-            >{\hsize=0.07\hsize\linewidth=\hsize}X
-            >{\hsize=0.08\hsize\linewidth=\hsize}R
-            >{\hsize=0.08\hsize\linewidth=\hsize}R
-            >{\hsize=0.25\hsize\linewidth=\hsize}R
-            >{\hsize=0.45\hsize\linewidth=\hsize}Y}
+            >{\hsize=0.085\hsize\linewidth=\hsize}X
+            >{\hsize=0.090\hsize\linewidth=\hsize}R
+            >{\hsize=0.080\hsize\linewidth=\hsize}R
+            >{\hsize=0.240\hsize\linewidth=\hsize}R
+            >{\hsize=0.393\hsize\linewidth=\hsize}Y}
 
         \hline
 
@@ -235,13 +234,13 @@ first argument of the \codeword{_meshd} command changes and can be taken from
     \end{tabularx}
 \end{table}
 
-\section{Results}
-\label{bended-plate:sec:results}
+\section{Summary}
+\label{bended-plate:sec:summary}
 
 The Moose and Plaxis models of this appendix use identical discretizations and
 can therefore compared directly. In fact, the MSH files have been created by
 exporting the Plaxis discretization. \autoref{bended-plate:tab:results} shows
-element count, node count, and deflection of point ‘A’ for the models using
+element count, node count, and the deflection of point ‘A’ for the models using
 shell elements (TRI6) and volume elements (TET10) for different degrees of
 discretization refinement. Visualization of the discretization, initial and
 deformed state of the plates can be seen in
@@ -250,12 +249,12 @@ deformed state of the plates can be seen in
 Main observations are:
 
 \begin{enumerate}
-    \item The deflection of the plate agrees well with the analytical solution for all
+    \item The deflection of point ‘A’ agrees well with the analytical solution for all
           models (TRI6 and TET10).
     \item Compared to the analytical solution, the models with shell elements (TRI6)
           overestimate the deflection in both Moose and Plaxis, except for the coarsest
           model in Moose. However, the shell elements in Moose show a noticeably smaller
-          deviation.
+          deviation as the analytical solution.
     \item The deflection increases for shell elements (TRI6) with finer discretization in
           Moose, the Plaxis models show no clear trend. When using shell elements, the
           discretization should therefore not be too fine. Even the coarsest Moose model
@@ -273,12 +272,16 @@ Main observations are:
           susceptible to locking effects. The use of these TET10 elements for
           geotechnical models, even with coarser discretization, should therefore work
           well.
+\end{enumerate}
+
+The following statements can be derived from these observations:
+\begin{itemize}
     \item If plate-like components are to be modeled with TET10 elements, one element
           layer will be sufficient in most cases.
-    \item In view of these results and the fact that the DOF is significantly lower when
+    \item In view of the results and the fact that the DOF is significantly lower when
           using shell elements, the use of the investigated shell elements (TRI6) for
           plate-like structural components in geotechnical models is recommended.
-\end{enumerate}
+\end{itemize}
 
 \begin{figure}[htbp]
     \centering

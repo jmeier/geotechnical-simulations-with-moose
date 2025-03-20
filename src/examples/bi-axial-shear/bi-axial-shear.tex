@@ -199,7 +199,7 @@ With this model, Plaxis is able to load the block till
 system response can be reproduced by the model through the “arc-length control”
 option. A plot of the vertical displacement of the box upper face over
 $\sigma'_1$ can be found in
-\autoref{bi-axial-shear-mohr-coulomb::fig:plaxis-results}. The Plaxis command
+\autoref{bi-axial-shear-mohr-coulomb:fig:plaxis-results}. The Plaxis command
 script file for this model is attached to this document by the name of
 ‘bi-axial-shear.p3dlog’.
 
@@ -264,5 +264,18 @@ script file for this model is attached to this document by the name of
         \end{axis}
     \end{tikzpicture}
     \caption{Vertical displacements of the box top surface in Plaxis 3D}
-    \label{bi-axial-shear-mohr-coulomb::fig:plaxis-results}
+    \label{bi-axial-shear-mohr-coulomb:fig:plaxis-results}
 \end{figure}
+
+\section{Summary}
+\label{bi-axial-shear-mohr-coulomb:sec:summary}
+
+The bi-axial shear test modeled in this appendix allows both the verification
+of the implementation of the Mohr-Coulomb failure criterion in the respective
+simulation software and the investigation of the handling of the numerical
+instability when the limit load is reached. Both the model in Moose
+(\autoref{bi-axial-shear-mohr-coulomb:sec:moose}) and the model in Plaxis
+(\autoref{bi-axial-shear-mohr-coulomb:sec:plaxis}) achieve the limit load known
+from the analytical solution
+(\autoref{bi-axial-shear-mohr-coulomb:sec:analytical-solution}) with good
+accuracy.

@@ -1,4 +1,5 @@
 \section{Problem statement}
+\label{fully-saturated-undrained-compression:sec:problem-statement}
 
 A one-dimensional compression test of a $\SI{6}{\metre} \times \SI{6}{\metre}
     \times \SI{6}{\metre}$ fully saturated block is to be simulated as a variant of
@@ -54,6 +55,7 @@ determined as simulation result at the top of the block.
 \end{table}
 
 \section{Analytical solution}
+\label{fully-saturated-undrained-compression:sec:analytical-solution}
 
 For the one-dimensional deformation conditions and the linear-elastic material
 behaviour defined for this problem the definition of the stiffness modulus in
@@ -148,6 +150,7 @@ rearranged to calculate the pore pressure $u$:
 % \end{equation}
 
 \section{Numerical solution with Moose}
+\label{fully-saturated-undrained-compression:sec:moose}
 
 The system of physical units for the Moose model was set to metre
 (\unit{\metre}), seconds (\unit{\second}), and tons (\unit{\ton}). Due to this,
@@ -812,6 +815,7 @@ can be found in
 % | "\time -f '%M' mpiexec -n N"        |    664     |      357 | 
 
 \section{Numerical solution with Plaxis 3D}
+\label{fully-saturated-undrained-compression:sec:plaxis}
 
 For Plaxis, the software-default system of physical units was used (metre --
 \unit{\metre}, days -- \unit{\day}, and kilogram -- \unit{\kilogram}). From
@@ -950,3 +954,18 @@ data can be found in
         \hline
     \end{tabularx}
 \end{table}
+
+\section{Summary}
+\label{fully-saturated-undrained-compression:sec:summary}
+
+The test shown in this appendix is similar to the short-term conditions
+encountered when loading a stiff, low permeability rock (e.g. in the near field
+of a mined cavity). The applied load is transferred partly by the grain
+structure and partly by the pore water. This effect is shown in the analytical
+solution
+(\autoref{fully-saturated-undrained-compression:sec:analytical-solution}) and
+both numerical solutions in Moose
+(\autoref{fully-saturated-undrained-compression:sec:moose}) and Plaxis
+(\autoref{fully-saturated-undrained-compression:sec:plaxis}). For both
+numerical solutions, a good agreement of the effective vertical stress
+$\sigma'_{zz}$ and the displacement $u$ of the box top surface is found.

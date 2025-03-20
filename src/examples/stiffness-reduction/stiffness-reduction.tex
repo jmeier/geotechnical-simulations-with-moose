@@ -1,4 +1,5 @@
 \section{Problem statement}
+\label{stiffness-reduction:sec:problem-statement}
 
 The stiffness of materials can change over time as a result of certain
 processes. One example is the temperature rise of a rubber block, which becomes
@@ -56,6 +57,7 @@ simulation result.
     'stiffer' and it will 'expand'. }
 
 \section{Analytical solution}
+\label{stiffness-reduction:sec:analytical-solution}
 
 In the case of $\nu = 0.0$ given here, the vertical deformation $\Delta h =
     u_z$ can be analytical determined from Hooke's law
@@ -84,6 +86,7 @@ its own weight:
 \end{equation}
 
 \section{Numerical solution with Moose}
+\label{stiffness-reduction:sec:moose}
 
 The system of physical units for the Moose model was set to metre
 (\unit{\metre}), seconds (\unit{\second}), and tons (\unit{\ton}). Due to this,
@@ -91,8 +94,9 @@ the physical unit for stress and pore-pressures is \unit[per-mode =
     symbol]{\kilo\newton\per\square\metre}.
 
 The mesh used for Moose consists of \qty{8245}{} nodes forming \qty{5184}{}
-TET10 elements leading to \qty{24735}{\DOF}. Due to its pure linear-elastic
-setup, this model was calculated using the ‘NEWTON’ solver.
+TET10 elements leading to $\qty{8245}{} \times \qty{3}{} = \qty{24735}{\DOF}$.
+Due to its pure linear-elastic setup, this model was calculated using the
+‘NEWTON’ solver.
 
 The Moose input file for this model is attached to this document by the name of
 ‘stiffness-reduction.i’.
@@ -102,7 +106,7 @@ The Moose input file for this model is attached to this document by the name of
 \begin{table}[htbp]
     \centering
     \caption{Selected results of the Moose models}
-    \label{fully-saturated-undrained-compression:moose-results}
+    \label{stiffness-reduction:moose-results}
 
     \begin{tabularx}{0.972\hsize}{
             >{\hsize=0.6\hsize\linewidth=\hsize}X
@@ -137,3 +141,14 @@ The Moose input file for this model is attached to this document by the name of
         \\
     \end{tabularx}
 \end{table}
+
+\section{Summary}
+\label{stiffness-reduction:sec:summary}
+
+The vertical displacement of the top of material block in the Moose model used
+(\autoref{stiffness-reduction:sec:moose}) is in good agreement with the
+analytical solution (\autoref{stiffness-reduction:sec:analytical-solution}) as
+well for the variant with and the variant without a non-zero material density.
+
+It is important to note once again that, as expected, the material block is
+compressed when the material stiffness is reduced under constant load.
