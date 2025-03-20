@@ -5,7 +5,7 @@ Inspired by the Plaxis 3D Validation Manual a bi-axial shear test of a
 homogenous material block of $\SI{1}{\metre} \times \SI{1}{\metre} \times
     \SI{1}{\metre}$ should be modeled to test the limit load resulting from the
 Mohr-Coulomb failure criterion. The test setup is shown in
-\autoref{bi-axial-shear-mohr-coulomb::fig:setup}. At xmin, ymin, ymax, and zmin
+\autoref{bi-axial-shear-mohr-coulomb:fig:setup}. At xmin, ymin, ymax, and zmin
 the block is fixed perpendicular to the face. The face xmax is loaded with a
 constant (normal) pressure of $\sigma'_2 =
     \qty{1}{\kilo\newton\per\square\metre}$. The (normal) pressure $\sigma'_1$ at
@@ -78,7 +78,7 @@ given in \autoref{bi-axial-shear-mohr-coulomb:material-parameters}.
 
     \end{tikzpicture}
     \caption{Setup of the bi-axial shear test}
-    \label{bi-axial-shear-mohr-coulomb::fig:setup}
+    \label{bi-axial-shear-mohr-coulomb:fig:setup}
 \end{figure}
 
 \section{Analytical solution}
@@ -123,7 +123,7 @@ chosen to be \qty{0.25}{\second} and the minimum time step is limited to
 \qty{0.001}{\second}. Due to the automatic cut-back of the time steps close to
 failure, the last converged time step is at $t=\qty{6.43945}{\second}$. A plot
 of the vertical displacement of the box upper face over $\sigma'_1$ can be
-found in \autoref{bi-axial-shear-mohr-coulomb::fig:moose-results}. The Moose
+found in \autoref{bi-axial-shear-mohr-coulomb:fig:moose-results}. The Moose
 input file for this model is attached to this document by the name of
 ‘bi-axial-shear.i’.
 
@@ -168,7 +168,7 @@ input file for this model is attached to this document by the name of
         \end{axis}
     \end{tikzpicture}
     \caption{Vertical displacements of the box top surface in Moose}
-    \label{bi-axial-shear-mohr-coulomb::fig:moose-results}
+    \label{bi-axial-shear-mohr-coulomb:fig:moose-results}
 \end{figure}
 
 % arc-length method:
@@ -177,7 +177,7 @@ input file for this model is attached to this document by the name of
 \section{Numerical solution with Plaxis 3D}
 \label{bi-axial-shear-mohr-coulomb:sec:plaxis}
 
-The original model of the bi.axial test as described by Plaxis can be found in
+The original model of the bi-axial test as described by Plaxis can be found in
 \href{https://bentleysystems.service-now.com/community?id=kb\_article\_view&sysparm_article=KB0110017}{KB0110017}
 (PDF via
 \href{https://web.archive.org/web/20230926091632/https://communities.bentley.com/cfs-file/\_\_key/communityserver-wikis-components-files/00-00-00-05-58/PlxValidation\_2D00\_Bi\_2D00\_axial\_5F00\_compression\_5F00\_test\_5F00\_with\_5F00\_Mohr\_2D00\_Coulomb\_5F00\_model\_2D00\_2018.pdf}{archive.org}).
@@ -196,7 +196,7 @@ The discretisation used for Plaxis3D consists of 3093 TET10 elements.
 With this model, Plaxis is able to load the block till
 \qty{-6.556}{\kilo\newton\per\square\metre} and then reducing the load to
 \qty{-6.464}{\kilo\newton\per\square\metre}. This ideal-plastic part of the
-system response can be reproduced by the model through the “arc-length control”
+system response can be reproduced by the model through the ‘arc-length control’
 option. A plot of the vertical displacement of the box upper face over
 $\sigma'_1$ can be found in
 \autoref{bi-axial-shear-mohr-coulomb:fig:plaxis-results}. The Plaxis command
