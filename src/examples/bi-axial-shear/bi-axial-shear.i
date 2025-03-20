@@ -1,4 +1,6 @@
-# testing CappedMohrCoulomb with axial compressive loading under bi-axial test conditions
+# ==============================================================================================
+# ===== Testing CappedMohrCoulomb with Axial Compressive Loading under bi-axial conditions =====
+# ==============================================================================================
 # 
 # From analytical solution, the maximum pressure at the zmax-face is 6.4541 kN/m²
 #

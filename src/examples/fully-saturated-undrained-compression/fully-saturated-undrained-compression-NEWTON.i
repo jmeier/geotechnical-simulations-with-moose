@@ -1,4 +1,7 @@
-# This test loads a saturated block
+# ==================================================
+# ===== Undrained Loading of a saturated block =====
+# ==================================================
+# this model uses the NEWTON solver
 
 # model units
 modelunit_length = 'm'
@@ -465,12 +468,7 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
 
   line_search = none
 
-  #l_abs_tol = 1E-4
-  #l_tol = 1E-5
   l_max_its = 20
-
-  #nl_abs_tol = 1E-8 # 1E2   #1E-3
-  #nl_rel_tol = 1E-6 #1e-8
   nl_max_its = 5
 
   start_time = 0.0
@@ -496,7 +494,6 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
 []
 
 [Debug]
-  # check_jacobian = true
   show_top_residuals = 0
   show_var_residual_norms = true
 []

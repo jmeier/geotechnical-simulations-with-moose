@@ -1,4 +1,7 @@
-# This test loads a saturated block
+# ==================================================
+# ===== Undrained Loading of a saturated block =====
+# ==================================================
+# this model uses the PJFNK solver
 
 # model units
 modelunit_length = 'm'
@@ -465,21 +468,10 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
   petsc_options_iname = '-pc_type -pc_factor_mat_solver_package'
   petsc_options_value = ' lu       mumps                       '
 
-  ##DEFAULT-Values
-  ## line_search = default
-  ## l_abs_tol = 1e-50
-  ## l_tol = 1e-05
-  ## nl_abs_tol = 1e-8
-  ## nl_rel_tol = 1e-08
-
   line_search = none
 
-  #l_abs_tol = 1E-3
-  #l_tol = 1E-5
   l_max_its = 20
-
   nl_abs_tol = 1E-6
-  #nl_rel_tol = 1E-5
   nl_max_its = 4
 
   start_time = 0.0
@@ -505,7 +497,6 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
 []
 
 [Debug]
-  # check_jacobian = true
   show_top_residuals = 0
   show_var_residual_norms = true
 []
