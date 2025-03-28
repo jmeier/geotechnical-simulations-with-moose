@@ -71,6 +71,10 @@ file. See listing \autoref{geometry-FileMeshGenerator} for the code required in
 a Moose input file for the import of an MSH file.
 % \href{https://mooseframework.inl.gov/source/meshgenerators/FileMeshGenerator.html}{FileMeshGenerator}
 
+For debugging purposes, it is sometimes necessary to write the mesh of a Moose
+model to an ExodusII file without using other functions of Moose.
+\autoref{app:mesh-to-exodus} shows two ways to do this.
+
 \begin{lstlisting}[language=Moose, float, caption={Read mesh from a file},label={geometry-FileMeshGenerator}]
 [Mesh]
     [file]

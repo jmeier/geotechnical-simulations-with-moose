@@ -1,0 +1,48 @@
+For debugging purposes, it is sometimes necessary to write the mesh of a Moose
+model to an ExodusII file without using other functions of Moose. This appendix
+shows two ways to do this.
+
+\section{Command line option: '--mesh-only'}
+
+By adding the command line option \codeword{--mesh-only} when executing a Moose
+input file via the command line, Moose will just output an ExodusII file for
+the user to inspect. Please note, this will write an file ending with '*\_in.e'
+\emph{to the app folder} (not the folder the input file ending with '.i' file
+is located).
+
+More information may be found in the link below in subsection 'Outputting The
+Mesh':
+
+\href{https://mooseframework.inl.gov/syntax/Mesh/#187a6146-3c09-448f-af5c-6c1230daa1af}{mooseframework.inl.gov/syntax/Mesh}
+
+\section{Minimal Moose Input File}
+
+\autoref{mesh-to-exodus:lst} shows a minimal input file reading a msh file
+using a \codeword{FileMeshGenerator} and writing the model to an exodus file.
+
+\begin{lstlisting}[language=Moose, caption={Read mesh from a file and export to ExodusII},label={mesh-to-exodus:lst}]
+[Mesh]
+    [file]
+        type = FileMeshGenerator
+        file = "FILENAME.msh"
+    []
+[]
+
+[Problem]
+    solve = false
+[]
+
+[Executioner]
+    type = Steady
+[]
+
+[AuxVariables]
+    [dummy]
+        order = FIRST
+    []
+[]
+
+[Outputs]
+    exodus = true
+[]
+\end{lstlisting}
