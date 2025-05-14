@@ -2,9 +2,13 @@
 
     \newcommand{\varTitle}{Geotechnical Simulations with Moose}
     \newcommand{\varAuthor}{Jörg Meier}
-    \newcommand{\varDate}{20.03.2025}
+    \newcommand{\varDate}{14.05.2025}
 
-    % General document formatting
+    % appendices
+    \usepackage[page,toc,titletoc,title]{appendix}
+    \usepackage{tocloft}    % must be loaded before "parskip"
+
+    % general document formatting
     \usepackage[margin=0.7in]{geometry}
     \usepackage[parfill]{parskip}
     \usepackage[utf8]{inputenc}
@@ -16,17 +20,13 @@
     \usetikzlibrary{decorations.pathreplacing}
     \usetikzlibrary{calc,decorations.markings}
 
-    % appendices
-    \usepackage[page,toc,titletoc,title]{appendix}
-    \usepackage{tocloft}
-
     % tables
     \usepackage{tabularx,array,booktabs,multirow}
     \newcolumntype{Y}{>{\centering\arraybackslash}X} % for centering tables in tabularx
     \newcolumntype{R}{>{\raggedleft\arraybackslash}X} % for right-align tables in tabularx
     \usepackage{makecell}
 
-    % Related to math
+    % related to math
     \usepackage{amsmath,amssymb,amsfonts,amsthm,commath}
 
     % make links clickable
@@ -115,10 +115,23 @@
         stringstyle=\color{mauve},
         breaklines=true,
         breakatwhitespace=true,
-        tabsize=3,
+        tabsize=3, 
+        escapeinside={(*@}{@*)},
         % deletekeywords={from,in,and},
         % morekeywords={function,Algorithm,algorithm, then,do},
     }
+
+    % \lstset{
+    %     language=[Sharp]C,
+    %     basicstyle=\footnotesize\ttfamily,
+    %     showspaces=false,
+    %     showtabs=false,,
+    %     breaklines=true,
+    %     showstringspaces=false,
+    %     breakatwhitespace=true, 
+    %     escapeinside={(*@}{@*)}
+    % }
+
 
     % awesomebox (notebox, tipbox, warningbox, cautionbox, importantbox)
     \usepackage{awesomebox}
@@ -142,6 +155,9 @@
         % \typeout{Package ToDo Warning: #2}\typeout{}
         % \typeout{Package ToDo Info: #2}\typeout{}
     }
+
+    % use \todomarker in \section{...}, \subsection{...}, etc. to mark incomplete parts
+    \newcommandx{\todomarker}[0]{\texorpdfstring{\faExclamationCircle\space}{(!)\space}}
 
     \NewDocumentCommand{\codeword}{v}{%
         \texttt{\textcolor{blue}{#1}}%
@@ -203,8 +219,6 @@
 
 % awesomebox: override default box with to avoid overfull \hbox warning
 \setlength{\aweboxcontentwidth}{0.81\linewidth}
-
-\lstset{language=[Sharp]C,,basicstyle=\footnotesize\ttfamily,showspaces=false,showtabs=false,,breaklines=true,showstringspaces=false,breakatwhitespace=true, escapeinside={(*@}{@*)}}
 
 %\maketitle
 \input{src/title.tex}
