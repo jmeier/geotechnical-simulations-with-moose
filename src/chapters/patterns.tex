@@ -30,34 +30,38 @@ documented and may not be reproducible:
 \section{Physical units}
 \label{chap:patterns-physical-units}
 
-In Moose, all numerical values must be entered in a system of units which is
-consistent in itself - but which is selected by the user. Without additional
-options, the user must enter a number in the input file without a unit being
-explicitly labelled.
+Internally, almost all values in Moose are represented purely by numerical
+values, without the physical unit also being stored. Accordingly, Moose relies
+on the user to specify all numerical values in a consistent system of units in
+the input file. For instance, if ‘seconds’ has been selected as the unit of
+time and “metres” as the unit of length, all speed values must be specified in
+“metres per second”. Without any further action on the part of the user,
+neither a check nor a conversion of the units takes place.
 
 In addition, Moose - like other FE programmes - calculates internally with a
-finite precision. To avoid rounding errors and inaccuracies in the numerical
-calculation, it is therefore important that the numerical values entered are
-not too large. With a careful choice of the system of physical units, the user
-can avoid such numerical problems.
+finite accuracy. To avoid rounding errors and inaccuracies in the numerical
+calculations, it is therefore important that the numerical values entered are
+not too large. By carefully selecting and consistently applying the physical
+unit system in the input, the user can avoid such numerical problems.
 
-It is important to emphasise at this point that, in addition to the various
-material parameters, initial conditions and boundary conditions, the
-convergence criteria are also affected by the choice of physical units (see
-\autoref{chap:patterns-converge-criteria-and-scaling}).
+It should also be noted at this point that the choice of physical units
+influences other input variables, such as the convergence criteria (see
+\autoref{chap:patterns-converge-criteria-and-scaling}), as well as the various
+material parameters, initial conditions and boundary conditions. All of these
+must be entered in the system of units valid for the model.
 
-From the user's point of view, the challenge is to enter the numerical values
-in the ‘correct’ system of physical units everywhere in the input file. This
-conversion and the non-trivial verifiability is a source of error that should
-not be underestimated, particularly in the case of physical units with a time
-reference. Experience shows, that this is a frequent source of problems!
+From the user's point of view, the challenge lies in entering numerical values
+in the ‘correct’ system of physical units everywhere in the input file.
+Conversion and verifiability are sources of error that should not be
+underestimated, especially in the case of physical units with a time reference.
+Experience shows that this is a frequent source of error.
 
-To mitigate this source of error, Moose offers the
+To mitigate this, Moose offers the option of using the
 ‘\href{https://mooseframework.inl.gov/source/utils/Units.html}{MooseUnits}’
-utility. In the input file this utility allows to convert the unit ‘on the
-fly’. The input file fragment shown in
-\autoref{patterns-physical-units-example1} converts \SI{1000e3}{\kN\per\m^2}
-into \SI{}{\MN\per\m^2} and assigns the result to the variable \codeword{E}.
+tool in the input files for the explicit input and conversion of physical
+units. The input file fragment shown in
+\autoref{patterns-physical-units-example1} converts \SI{1000e3}{\kN\per\m^2} to
+\SI{}{\MN\per\m^2} and assigns the result to the variable \codeword{E}.
 
 \begin{lstlisting}[language=Moose, caption={Converting \SI{1000e3}{\kN\per\m^2} into
     \SI{}{\MN\per\m^2}},label={patterns-physical-units-example1}]
@@ -84,7 +88,7 @@ A full set of pysical units can be setup as shown in
 input file, Moose will issue an error. This can be avoided by adding fake-users
 to the variables.
 
-\begin{lstlisting}[language=Moose, caption={Set of consistent physical units in a Moose inut file},label={patterns-physical-unit-set}]
+\begin{lstlisting}[language=Moose, caption={Set of consistent physical units in a Moose input file},label={patterns-physical-unit-set}]
 # model units
 modelunit_length = 'm'
 modelunit_time = 's'    #s = seconds, h = hours, day = days
@@ -193,8 +197,12 @@ physical units (\autoref{chap:patterns-physical-units}).
 
 Large parts of this section is taken from
 \href{https://mooseframework.inl.gov/modules/porous_flow/convergence.html}{mooseframework.inl.gov}.
+and
+\href{https://mooseframework.inl.gov/modules/solid_mechanics/Convergence.html}{mooseframework.inl.gov}
 
 \subsection{Nonlinear and (nested) linear solves}
+
+(ToDo)
 
 \subsection{Residuals}
 
