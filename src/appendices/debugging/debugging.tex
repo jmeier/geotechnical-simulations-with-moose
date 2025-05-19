@@ -1,0 +1,197 @@
+Moose is a wonderful platform for writing your own kernels, materials and more.
+And as always when writing code, it must be debugged. This appendix collects
+information on different techniques supporting code debugging.
+
+As a good starting point, the Moose documentation has a page dedicated to
+debugging. It is recommended to consider this page first:
+
+\href{https://mooseframework.inl.gov/application_development/debugging.html}{mooseframework.inl.gov/application\_development/debugging.html}
+
+In any case, it is recommended to compile the Moose app in the debug module for
+troubleshooting and debugging. This can be achieved by using the command shown
+in \autoref{app-debugging-METHOD=dbg} to compile. In
+\autoref{app-debugging-METHOD=dbg} the number 8 should be replaced by the
+number of processes the compile process should use.
+
+\begin{lstlisting}[language=bash, caption={Compile in dbg-mode},label={app-debugging-METHOD=dbg}]
+METHOD=dbg make -j 8
+\end{lstlisting}
+
+After compiling, the dbg-variant may be executed as shown in
+\autoref{app-debugging-running-dbg} (again, replace the number 16 with the
+number of processes the run should use). Please note the suffix \codeword{-dbg}
+denoting the debug-variant.
+
+\begin{lstlisting}[language=bash, caption={Executing the dbg-variant of a moose-app},label={app-debugging-running-dbg}]
+time mpiexec -n 16 ./your-app-name-dbg -i ./path-to-input-file.i
+\end{lstlisting}
+
+\importantbox{
+    It is strongly recommended to use a debug exeutable for debugging. Although
+    this form of executable can require significantly more wall time for the
+    calculation, it contains additional information that is extremely helpful
+    for the debugger and the programmer.
+}
+
+\section{Debugging in VSCode}
+
+Up to the knowledge of the author, there seem to be no good solution on how to
+use the build-in debug capabilities of VSCode for Moose-Apps. Please see the
+link below.
+
+\href{https://github.com/idaholab/moose/discussions/28328}{github.com/idaholab/moose/discussions/28328}
+
+\section{Writing to ‘std::cout’ (you should avoid that)}
+
+This is an option you should avoid. One may use the \codeword{std::cout}
+function to print status data from your C++ code to the terminal output. The
+disadvantages of this approach include the fact that the Moose terminal output
+may be greatly inflated (and the information sought may not be found for this
+very reason) and that the regular source code is mixed with source code for
+debugging. Additionally, the Moose community does not accept code with this
+call. As an alternative, please consider debugging with the help of a debugger
+(e.g. see \autoref{app-debugging-gdb}).
+
+\begin{lstlisting}[language=C++, caption={Using ‘std::cout’ to print to the terminal (standard output)},label={app-debugging-cout}]
+std::cout << "CartesianLocalCoordinateSystem: '" << name() << "'\n";
+\end{lstlisting}
+
+\section{Using ‘gdb’}
+\label{app-debugging-gdb}
+
+On Linux, the debugger ‘gdb’ may be used to debug Moose-Apps on the command
+line. \autoref{app-debugging-gdb-execute} shows the command to be used to
+execute a Moose model with gdb.
+
+\begin{lstlisting}[language=bash, caption={Run gdb with a Moose model},label={app-debugging-gdb-execute}]
+gdb --args ./your-app-name-dbg -i models/path-to-input-file.i
+\end{lstlisting}
+
+After execution of ‘gdb’, several commands and options may be issued before
+running the Moose-App itself. \autoref{app-debugging-gdb-example} shows an
+example run.
+
+\begin{lstlisting}[language=bash, caption={Example run of gdb},label={app-debugging-gdb-example}]
+break libmesh_handleFPE     # Add breakpoint for 'libmesh_handleFPE'
+catch throw                 # Add breakpoint for thrown errors
+run                         # Run the program until a breakpoint or an error
+c                           # Continue the program until a breakpoint or an error
+bt                          # Print the stack trace
+p var                       # Print a Variable
+\end{lstlisting}
+
+To raise breakpoints from within your code, the technique shown in
+\autoref{app-debugging-breakpoint} may be used.
+
+\begin{lstlisting}[language=C++, caption={C++ code to create a breakpoint for debugging},label={app-debugging-breakpoint}]
+raise(SIGTRAP);             // this may need #include <signal.h>
+\end{lstlisting}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Selection of commands of ‘gdb’}
+    \label{app-debugging-tab:gdb}
+    \begin{tabularx}{\textwidth}{
+            >{\hsize=0.20\hsize\linewidth=\hsize}X
+            >{\hsize=0.80\hsize\linewidth=\hsize}X}
+        \hline
+        command          & description                                   \\
+
+        \hline
+
+        b main           &
+
+        Puts a breakpoint at the beginning of the program                \\
+
+        b                &
+
+        Puts a breakpoint at the current line                            \\
+
+        b N              &
+
+        Puts a breakpoint at line N                                      \\
+
+        b +N             &
+
+        Puts a breakpoint N lines down from the current line             \\
+
+        b fn             &
+
+        Puts a breakpoint at the beginning of function "fn"              \\
+
+        d N              &
+
+        Deletes breakpoint number N                                      \\
+
+        info break       &
+
+        list breakpoints                                                 \\
+
+        info var [regex] &
+
+        show names, types of global variables (all, or matching regex)   \\
+
+        info variables   &
+
+        list "All global and static variable names" (huge list)          \\
+
+        info locals      &
+
+        list "Local variables of current stack frame" (names and values), including
+        static variables in that function.                               \\
+
+        info args        &
+
+        list "Arguments of the current stack frame" (names and values).  \\
+
+        r                &
+
+        Runs the program until a breakpoint or error                     \\
+
+        c                &
+
+        Continues running the program until the next breakpoint or error \\
+
+        f                &
+
+        Runs until the current function is finished                      \\
+
+        s                &
+
+        Runs the next line of the program                                \\
+
+        s N              &
+
+        Runs the next N lines of the program                             \\
+
+        n                &
+
+        Like s, but it does not step into functions                      \\
+
+        u N              &
+
+        Runs until you get N lines in front of the current line          \\
+
+        p var            &
+
+        Prints the current value of the variable "var"                   \\
+
+        bt               &
+
+        Prints a stack trace                                             \\
+
+        up               &
+
+        Goes up a level in the stack                                     \\
+
+        down             &
+
+        Goes down a level in the stack                                   \\
+
+        q                &
+
+        Quits gdb                                                        \\
+
+        \hline
+    \end{tabularx}
+\end{table}
