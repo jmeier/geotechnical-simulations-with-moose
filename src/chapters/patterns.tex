@@ -1,3 +1,51 @@
+\section{Running Moose applications}
+\label{chap:patterns-running-moose}
+
+\autoref{lst:moose-app-execution} shows the command line often used to execute
+a Moose application with an specific input file. This command line uses the
+Linux \codeword{time} command to print a summary of the real-time, user CPU
+time and system CPU time spent. Furthermore, this command uses the Message
+Passing Interface (MPI) via \codeword{mpiexec} to enable parallel processing
+across multiple processes.
+
+\begin{lstlisting}[
+      language=bash, 
+      caption={Executing the dbg-variant of a moose-app},
+      label={lst:moose-app-execution},
+      escapechar=!,
+      belowskip=-0.8 \baselineskip
+    ]
+!\tikzmark{time0}!time!\tikzmark{time1}! !\tikzmark{mpiexec0}!mpiexec -n 16!\tikzmark{mpiexec1}! !\tikzmark{app0}!./your-app-name-dbg!\tikzmark{app1}! !\tikzmark{inputfile0}!-i ./path-to-input-file.i!\tikzmark{inputfile1}!
+!\vspace{8\baselineskip}!
+\end{lstlisting}%
+\begin{tikzpicture}[remember picture,overlay]
+
+  % draws a curly brace
+  \def\drawHorizontalBrace[#1][#2][#3][#4][#5][#6]{%
+    \begin{scope}[>=latex] % redef arrow for dimension lines
+      \coordinate[yshift=#1] (midpoint34) at ($(#3)!0.5!(#4)$);%
+      \coordinate[yshift=-0.3em-0.5em] (midpointBrace) at (midpoint34);%
+      \coordinate[yshift=#2] (vertEndPoint) at (midpointBrace);%
+      %\filldraw (midpointBrace) circle (3pt);
+      %\filldraw (vertEndPoint) circle (3pt);
+      \node[draw=none, fit={(#3) (#4)}, inner sep=0pt] (rectg) {};%
+      \draw [decorate,decoration={brace,amplitude=0.3em},very thick]%
+      ([yshift=#1]rectg.south east) --%
+      coordinate[right=0em, midway] (#3#4)%
+      ([yshift=#1]rectg.south west);%
+      \node[below=0.0em of vertEndPoint, anchor=north west, xshift=#5, align=left] (caption) {#6};%
+      \draw (midpointBrace) -- (vertEndPoint);%
+    \end{scope}%
+  }
+
+  %\filldraw (pic cs:time0) circle (3pt);
+  %\filldraw (pic cs:time1) circle (3pt);
+  \drawHorizontalBrace[-0.25em][-6.6\baselineskip][pic cs:time0][pic cs:time1][-1em][{Linux 'time' command: print the real-time, user CPU time and system CPU time spent.}]%
+  \drawHorizontalBrace[-0.25em][-3.4\baselineskip][pic cs:mpiexec0][pic cs:mpiexec1][-1em][{Execute using MPI to use multiple processes (parallel execution).\\The number determines the count of processes.\\This part can be omitted if only one process is to be used.}]%
+  \drawHorizontalBrace[-0.25em][-1.2\baselineskip][pic cs:app0][pic cs:app1][-1em][{Path and name of the Moose application to execute.\\The suffix denotes the variant (here 'dbg' for the debug-variant).}]%
+  \drawHorizontalBrace[-0.25em][-0.0\baselineskip][pic cs:inputfile0][pic cs:inputfile1][-4em][{Argument to the Moose application: input file}]%
+\end{tikzpicture}
+
 \section{Partial input files}
 \label{chap:patterns-partial-input-files}
 
@@ -195,7 +243,7 @@ It should also be noted that the convergence criteria (e.g. tolerated residuals
 and variable scaling) must be set in the context of the chosen system of
 physical units (\autoref{chap:patterns-physical-units}).
 
-Large parts of this section is taken from
+Large parts of this section are taken from
 \href{https://mooseframework.inl.gov/modules/porous_flow/convergence.html}{mooseframework.inl.gov}.
 and
 \href{https://mooseframework.inl.gov/modules/solid_mechanics/Convergence.html}{mooseframework.inl.gov}

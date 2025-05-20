@@ -2,7 +2,7 @@
 
     \newcommand{\varTitle}{Geotechnical Simulations with Moose}
     \newcommand{\varAuthor}{Jörg Meier}
-    \newcommand{\varDate}{19.05.2025}
+    \newcommand{\varDate}{20.05.2025}
 
     % appendices
     \usepackage[page,toc,titletoc,title]{appendix}
@@ -14,11 +14,9 @@
     \usepackage[utf8]{inputenc}
     \usepackage[]{mdframed}
     \usepackage{tikz}
-    \usetikzlibrary{shapes.geometric, arrows, arrows.meta, chains, positioning}
+    \usetikzlibrary{shapes.geometric, arrows, arrows.meta, chains, positioning, tikzmark, calc, decorations.pathreplacing, decorations.markings, fit}
     \usepackage{graphicx}
     \usepackage[edges]{forest}
-    \usetikzlibrary{decorations.pathreplacing}
-    \usetikzlibrary{calc,decorations.markings}
 
     % tables
     \usepackage{tabularx,array,booktabs,multirow}
@@ -100,6 +98,7 @@
         keywordstyle=[2]{\color{blue}},%
         %https://tex.stackexchange.com/questions/217505/listings-color-numbers-only-out-of-keywords
     }[keywords,comments,strings]
+    \usetikzmarklibrary{listings}
 
     \lstset{frame=tb,
         language=Moose,

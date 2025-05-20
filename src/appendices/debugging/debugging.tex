@@ -20,7 +20,8 @@ METHOD=dbg make -j 8
 After compiling, the dbg-variant may be executed as shown in
 \autoref{app-debugging-running-dbg} (again, replace the number 16 with the
 number of processes the run should use). Please note the suffix \codeword{-dbg}
-denoting the debug-variant.
+denoting the debug-variant. For details on this command line please see
+\autoref{chap:patterns-running-moose}.
 
 \begin{lstlisting}[language=bash, caption={Executing the dbg-variant of a moose-app},label={app-debugging-running-dbg}]
 time mpiexec -n 16 ./your-app-name-dbg -i ./path-to-input-file.i
