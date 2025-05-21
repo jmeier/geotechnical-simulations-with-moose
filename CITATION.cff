@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+title: Geotechnical Simulations with Moose
+message: 'If you use this whitepaper, please cite it as below.'
+authors:
+  - given-names: "Jörg"
+    family-names: "Meier"
+    orcid: "https://orcid.org/0000-0003-3731-5404"
+repository-code: >-
+  https://github.com/jmeier/geotechnical-simulations-with-moose
+abstract: >-
+  This whitepaper is a collection of information and code
+  for geotechnical simulations using the open source finite
+  element framework ‘Moose’.
+keywords:
+  - Geotechnics
+  - Numerical Simulation
+  - Moose
+license: CC-BY-SA-4.0
+preferred-citation:
+  type: report
+  authors:
+    - given-names: "Jörg"
+      family-names: "Meier"
+      orcid: "https://orcid.org/0000-0003-3731-5404"
+  title: Geotechnical Simulations with Moose
+  url: "https://github.com/jmeier/geotechnical-simulations-with-moose"
+  license: CC-BY-SA-4.0
+
