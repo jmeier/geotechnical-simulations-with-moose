@@ -17,4 +17,19 @@ of this document and can be found in the corresponding
 \section{\todomarker Mohr-Coulomb (linear-elastic ideal-plastic)}
 \label{chap:material-mohr-coulomb}
 
+\codeword{CappedMohrCoulombStressUpdate}
+
+Plastic internal parameters \codeword{property = plastic_internal_parameter} :
+\begin{itemize}
+      \item Parameter '0': Shear
+      \item Parameter '1': Tensile
+\end{itemize}
+
+Plastic yield functions \codeword{property = plastic_yield_function}:
+\begin{itemize}
+      \item '0' to '2': tensile
+      \item '3' to '5': compressive
+      \item '6' to '11': shear
+\end{itemize}
+
 (to be written)

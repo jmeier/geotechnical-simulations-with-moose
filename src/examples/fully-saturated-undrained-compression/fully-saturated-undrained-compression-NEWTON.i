@@ -480,11 +480,6 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
       time_sequence = '1 2 3 4 5 6 7 8 9 10 11'
     []
   []
-
-  [Quadrature]
-    type = SIMPSON
-    order = SECOND
-  []
 []
 
 [Outputs]

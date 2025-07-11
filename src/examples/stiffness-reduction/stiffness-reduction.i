@@ -6,7 +6,7 @@ modelunit_length = 'm'
 modelunit_time = 's' #s = seconds, h = hours, day = days
 modelunit_mass = 'Mg' # kg = kilograms, Mg = tons; Gg = kilotons
 
-# ===== derived units (this may be moved into a !include) ===== 
+# ===== derived units (this may be moved into a !include) =====
 modelunit_area = '${raw ${modelunit_length} ^ 2}'
 modelunit_volume = '${raw ${modelunit_length} ^ 3}'
 modelunit_force = '${raw ${modelunit_mass} * ${modelunit_length} / ${modelunit_time} ^ 2}'
@@ -17,7 +17,7 @@ modelunit_density = '${raw ${modelunit_mass} / ${modelunit_volume}}'
 # ===== Some constants =====
 gravitational_acceleration = '${units 9.81 m/s^2 -> ${modelunit_acceleration}}'
 
-material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
+material_density = '${units 0 kg/m^3 -> ${modelunit_density} }'
 
 # ===== General model setup =====
 [GlobalParams]
@@ -351,8 +351,12 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
 
   line_search = none
 
+  l_abs_tol = 1e-10
+  l_tol = 1e-8
   l_max_its = 20
-  nl_max_its = 5
+
+  nl_abs_tol = 1e-10
+  nl_max_its = 15
 
   start_time = 0.0
   end_time = 1.1
@@ -364,10 +368,6 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
     []
   []
 
-  [Quadrature]
-    type = SIMPSON
-    order = SECOND
-  []
 []
 
 [Postprocessors]

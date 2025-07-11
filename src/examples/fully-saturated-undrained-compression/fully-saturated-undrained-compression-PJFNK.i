@@ -484,10 +484,6 @@ material_density = '${units 2500 kg/m^3 -> ${modelunit_density} }'
     []
   []
 
-  [Quadrature]
-    type = SIMPSON
-    order = SECOND
-  []
 []
 
 [Outputs]
