@@ -249,6 +249,26 @@ or, using the shorter notation:
 
 (to be written)
 
+% see https://github.com/idaholab/moose/discussions/31020
+% see https://github.com/idaholab/moose/discussions/30311
+
+% from https://github.com/idaholab/moose/discussions/26319#discussioncomment-14008915
+%
+%% I need to change the pore pressure to a new value at a time. 
+%% But I can't set initial condition to a same variable twice in 
+%% a simulation with control_tags. I can see a possible method is 
+%% to restart the simulation and set initial condition again, 
+%
+% That's a fairly well supported way of doing this.
+%
+%% but is there any other easier method?
+%
+% You could write a custom predictor. Predictors are the way to 
+% modify nonlinear variables.
+% You could also use a kernel to change the equation to hit the new 
+% value. A penalty on the difference between the variable value and 
+% the target value would suffice
+
 % \begin{table}
 %   \begin{tabularx}{\textwidth}{@{}ll|YY@{}}
 %     \hline
