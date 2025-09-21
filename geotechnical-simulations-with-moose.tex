@@ -1,212 +1,279 @@
-\documentclass[12pt,a4paper]{report}
+\documentclass[12pt]{report}
 
-    \newcommand{\varTitle}{Geotechnical Simulations with Moose}
-    \newcommand{\varAuthor}{Jörg Meier}
-    \newcommand{\varDate}{20.05.2025}
+% Document encoding: UTF8
+\usepackage[utf8]{inputenc}
 
-    % appendices
-    \usepackage[page,toc,titletoc,title]{appendix}
-    \usepackage{tocloft}    % must be loaded before "parskip"
+% ifthen package
+\usepackage{ifthen}
 
-    % general document formatting
-    \usepackage[margin=0.7in]{geometry}
-    \usepackage[parfill]{parskip}
-    \usepackage[utf8]{inputenc}
-    \usepackage[]{mdframed}
-    \usepackage{tikz}
-    \usetikzlibrary{shapes.geometric, arrows, arrows.meta, chains, positioning, tikzmark, calc, decorations.pathreplacing, decorations.markings, fit}
-    \usepackage{graphicx}
-    \usepackage[edges]{forest}
+% select document language
+\newcommand{\documentlanguage}{en} % en=english, de=german
 
-    % tables
-    \usepackage{tabularx,array,booktabs,multirow}
-    \newcolumntype{Y}{>{\centering\arraybackslash}X} % for centering tables in tabularx
-    \newcolumntype{R}{>{\raggedleft\arraybackslash}X} % for right-align tables in tabularx
-    \usepackage{makecell}
+% debugging: show frames
+%\usepackage{showframe}  
 
-    % related to math
-    \usepackage{amsmath,amssymb,amsfonts,amsthm,commath}
-
-    % make links clickable
-    \usepackage[bookmarksnumbered,bookmarksopen,bookmarksdepth=2]{hyperref}
-    \hypersetup{
-        colorlinks    = true,    % Colours links instead of ugly boxes
-        urlcolor      = blue,    % Colour for external hyperlinks
-        linkcolor     = black,   % Colour of internal links
-        bookmarksopen = true,
-        citecolor     = black     % Colour of citations
-    }
-    \usepackage[nameinlink,noabbrev]{cleveref}
-
-    \newcommand*{\shortautoref}[1]{%
-        \begingroup
-        \def\sectionautorefname{sec.}%
-        \def\subsectionautorefname{sec.}%
-        \autoref{#1}%
-        \endgroup
-    }
-
-    \newcommand{\light}[1]{\textcolor{gray}{#1}}
-
-    % Other packages
-    \usepackage[inline]{enumitem}
-    \usepackage{soul}   %for highlighting text
-    % \usepackage{layouts}
-    \usepackage{fontawesome5}
-
-    % captions
-    \usepackage{caption}
-    \captionsetup{justification=raggedright,singlelinecheck=false}
-    \usepackage{subcaption}
-
-    % colors
-    \usepackage{xcolor}
-    \definecolor{dkgreen}{rgb}{0,0.6,0}
-    \definecolor{gray}{rgb}{0.5,0.5,0.5}
-    \definecolor{mauve}{rgb}{0.58,0,0.82}
-
-    % code listings
-    \usepackage{listings}
-    \usepackage{textcomp} % for for straight single quotes (upquote=true)
-    \lstdefinelanguage{Moose}{
-        sensitive=f,%
-        morecomment=[l]{\#},% comments
-        morekeywords={true,false},%
-        morestring=[b]{"},% strings with double quote
-        morestring=[b]{'},% strings with single quote
-        upquote=true, % for straight single quotes (see https://tex.stackexchange.com/questions/145416/how-to-have-straight-single-quotes-in-lstlistings)
-        morecomment=[s][\color{blue}\ttfamily]{\[}{\]},% block names and block endings
-        morecomment=[s][\color{BlueViolet}\ttfamily]{\$\{}{\}},% references to variables etc. ${...}
-        literate= %{=}{{\color{blue}= }}1
-                 {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
-                 {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
-                 {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
-                 {À}{{\`A}}1 {È}{{\`E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
-                 {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
-                 {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
-                 {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
-                 {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
-                 {ã}{{\~a}}1 {ẽ}{{\~e}}1 {ĩ}{{\~i}}1 {õ}{{\~o}}1 {ũ}{{\~u}}1
-                 {Ã}{{\~A}}1 {Ẽ}{{\~E}}1 {Ĩ}{{\~I}}1 {Õ}{{\~O}}1 {Ũ}{{\~U}}1
-                 {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
-                 {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
-                 {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {Ø}{{\O}}1 {å}{{\r a}}1 {Å}{{\r A}}1
-                 {€}{{\euro}}1 {£}{{\pounds}}1 {«}{{\guillemotleft}}1
-                 {»}{{\guillemotright}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1 {¡}{{!`}}1 ,%
-        alsoletter={=!},%
-        morekeywords=[2]{=,!include},%
-        keywordstyle=[2]{\color{blue}},%
-        %https://tex.stackexchange.com/questions/217505/listings-color-numbers-only-out-of-keywords
-    }[keywords,comments,strings]
-    \usetikzmarklibrary{listings}
-
-    \lstset{frame=tb,
-        language=Moose,
-        aboveskip=3mm,
-        belowskip=3mm,
-        showstringspaces=false,
-        columns=flexible,
-        basicstyle={\small\ttfamily},
-        numbers=none,
-        numberstyle=\tiny\color{gray},
-        keywordstyle=\color{blue},
-        commentstyle=\color{dkgreen},
-        stringstyle=\color{mauve},
-        breaklines=true,
-        breakatwhitespace=true,
-        tabsize=3, 
-        escapeinside={(*@}{@*)},
-        % deletekeywords={from,in,and},
-        % morekeywords={function,Algorithm,algorithm, then,do},
-    }
-
-    % \lstset{
-    %     language=[Sharp]C,
-    %     basicstyle=\footnotesize\ttfamily,
-    %     showspaces=false,
-    %     showtabs=false,,
-    %     breaklines=true,
-    %     showstringspaces=false,
-    %     breakatwhitespace=true, 
-    %     escapeinside={(*@}{@*)}
-    % }
-
-
-    % awesomebox (notebox, tipbox, warningbox, cautionbox, importantbox)
-    \usepackage{awesomebox}
-
-    % todo
-    \setlength {\marginparwidth }{2cm}
-    \usepackage{xargs}                      % Use more than one optional parameter in a new commands
-    \usepackage[dvipsnames]{xcolor}  % Coloured text etc.
-    \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
-    \newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
-    \newcommandx{\change}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
-    \newcommandx{\info}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
-    \newcommandx{\improvement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
-    \newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
-    \newcommandx{\todoinline}[2][1=]{
-        {\hbadness=10000 \hfuzz=\maxdimen{\todo[inline,linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}}
-        % \errmessage{#2}
-        % \GenericError{9}{#2}{0}{1}
-        % \GenericInfo{9}{#2}
-        % \PackageWarning{ToDo}{#2}
-        % \typeout{Package ToDo Warning: #2}\typeout{}
-        % \typeout{Package ToDo Info: #2}\typeout{}
-    }
-
-    % use \todomarker in \section{...}, \subsection{...}, etc. to mark incomplete parts
-    \newcommandx{\todomarker}[0]{\texorpdfstring{\faExclamationCircle\space}{(!)\space}}
-
-    \NewDocumentCommand{\codeword}{v}{%
-        \texttt{\textcolor{blue}{#1}}%
-    }
-
-    % Bulleted command: insert a single bulleted item without any margins
-    \newcommandx{\bulleted}[1]{%
-        \begin{minipage}[t]{\linewidth}
-            \begin{itemize}[nosep, leftmargin=1em, labelwidth=*,align=left]
-                \item #1
-            \end{itemize}
-        \end{minipage}
-    }
-
-    \usepackage{filemod}
-
-    \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm,
-    minimum height=1cm, text centered, draw=black]
-    \tikzstyle{process} = [rectangle, minimum width=3cm,
-    minimum height=1cm, text centered, draw=black]
-    \tikzstyle{decision} = [diamond, minimum width=3cm,
-    minimum height=1cm, text centered, draw=black]
-    \tikzstyle{arrow} = [thick, ->, >=stealth]
-
-    % diagrams
-    \usepackage{pgfplots}
-    \pgfplotsset{compat=1.18}
-
-    % physical units
-    \usepackage{siunitx}
-    \DeclareSIUnit\year{a}
-    \DeclareSIUnit\metreabovesealevel{\text{m ü.M.}}
-    \DeclareSIUnit\ton{\text{t}}
-    \DeclareSIUnit\DOF{\text{DOF}}
-
-    % attach files
-    \usepackage{currfile}
-    \usepackage{attachfile}
-
-    \newcommandx{\fileattachment}[2]{\textattachfile[color=0 0 0]{#1}{\faFile*[regular] #2}}
-
-    % comments
-    % \usepackage[opacity=0]{pdfcomment}
-    % {\pdftooltip[style = mathpopup]{ \mu_\mathrm{f} }{ dynamic viscosity of the fluid }}
+% some global variables
+\newcommand{\varTitle}{Geotechnical Simulations with Moose}
+\newcommand{\varSubtitle}{}
+\newcommand{\varAuthors}{Jörg Meier}
+\newcommand{\varSubject}{}
+\newcommand{\varCompany}{}
+\newcommand{\varKeywords}{geotechnical simulations, Moose}
+\newcommand{\varDate}{20.05.2025}
 
 \title{\varTitle}
-
-\author{\varAuthor}
-
+\author{\varAuthors}
 \date{\varDate}
+
+\ifthenelse{\equal{\varSubtitle}{}}
+{
+    \newcommand{\pdftitle}{\varTitle}
+}{
+    \newcommand{\pdftitle}{\varTitle\space-\space\varSubtitle}
+}
+
+\ifthenelse{\equal{\varCompany}{}}
+{
+    \newcommand{\pdfauthor}{\varAuthors}
+}{
+    \newcommand{\pdfauthor}{\varAuthors\space(\varCompany)}
+}
+
+\newcommand{\pdfsubject}{\varSubject}
+
+\newcommand{\pdfkeywords}{\varKeywords}
+
+% Use more than one optional parameter in new commands
+\usepackage{xargs}
+
+% paragraph formatting
+\usepackage{tocloft}    % must be loaded before "parskip"
+\usepackage[parfill]{parskip}
+
+% general document formatting
+\usepackage[
+    a4paper,
+    top=0.7in,
+    bottom=0.7in,
+    right=0.7in,
+    left=0.7in
+    ]{geometry}
+
+\ifthenelse{\equal{\documentlanguage}{de}}
+{
+    % german
+    \usepackage[T1]{fontenc}    % avoid displaced dots when copy from pdf (e.g. "m¨ochte")
+    \usepackage[ngerman]{babel} % German Language
+}{}
+
+\usepackage[]{mdframed}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows, arrows.meta, chains, positioning, tikzmark, calc, math, decorations.pathreplacing, decorations.markings, fit}
+\usepackage{graphicx}
+\usepackage[edges]{forest} % Drawing (linguistic) trees
+
+% appendices
+\usepackage[toc,page,titletoc,title]{appendix}
+\ifthenelse{\equal{\documentlanguage}{de}}
+{
+\addto\captionsngerman{\let\appendixtocname\appendixname%
+\let\appendixpagename\appendixname}
+}{}
+
+% tables
+\usepackage{tabularx,array,booktabs,makecell,multirow}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}  % for centering tables in tabularx
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X} % for right-align tables in tabularx
+
+% related to math
+\usepackage{amsmath,amssymb,amsfonts,amsthm,commath}
+
+% pdf meta data
+% make links clickable and numbered bookmarks
+\usepackage[bookmarksnumbered,bookmarksopen,bookmarksdepth=2]{hyperref}
+\hypersetup{
+    colorlinks    = true,    % Colours links instead of ugly boxes
+    urlcolor      = blue,    % Colour for external hyperlinks
+    linkcolor     = black,   % Colour of internal links
+    bookmarksopen = true,
+    citecolor     = black,   % Colour of citations
+    pdftitle      = {\pdftitle},
+    pdfauthor     = {\pdfauthor},
+    pdfsubject    = {\pdfsubject},
+    pdfkeywords   = {\pdfkeywords},
+}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\newcommand{\light}[1]{\textcolor{gray}{#1}}
+
+% Other packages
+\usepackage[inline]{enumitem}
+\usepackage{soul}   %for highlighting text
+\usepackage{float}  %for placing figures
+\usepackage{fontawesome5}
+
+% captions
+\usepackage{caption}
+\captionsetup{justification=raggedright,singlelinecheck=false}
+\usepackage{subcaption}
+
+% colors
+\usepackage[dvipsnames]{xcolor}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+% code listings
+\usepackage{textcomp} % for for straight single quotes (upquote=true)
+\usepackage{listings}
+\usetikzmarklibrary{listings}
+\lstdefinelanguage{Moose}{
+    sensitive=f,%
+    morecomment=[l]{\#},% comments
+    morekeywords={true,false},%
+    morestring=[b]{"},% strings with double quote
+    morestring=[b]{'},% strings with single quote
+    upquote=true, % for straight single quotes (see https://tex.stackexchange.com/questions/145416/how-to-have-straight-single-quotes-in-lstlistings)
+    morecomment=[s][\color{blue}\ttfamily]{\[}{\]},% block names and block endings
+    morecomment=[s][\color{BlueViolet}\ttfamily]{\$\{}{\}},% references to variables etc. ${...}
+    literate= %{=}{{\color{blue}= }}1
+              {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+              {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+              {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+              {À}{{\`A}}1 {È}{{\`E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+              {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+              {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+              {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+              {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+              {ã}{{\~a}}1 {ẽ}{{\~e}}1 {ĩ}{{\~i}}1 {õ}{{\~o}}1 {ũ}{{\~u}}1
+              {Ã}{{\~A}}1 {Ẽ}{{\~E}}1 {Ĩ}{{\~I}}1 {Õ}{{\~O}}1 {Ũ}{{\~U}}1
+              {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+              {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+              {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {Ø}{{\O}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+              {€}{{\euro}}1 {£}{{\pounds}}1 {«}{{\guillemotleft}}1
+              {»}{{\guillemotright}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1 {¡}{{!`}}1 ,%
+    alsoletter={=!},%
+    morekeywords=[2]{=,!include},%
+    keywordstyle=[2]{\color{blue}},%
+    %https://tex.stackexchange.com/questions/217505/listings-color-numbers-only-out-of-keywords
+}[keywords,comments,strings]
+
+\lstset{frame=tb,
+    language=Moose,
+    aboveskip=3mm,
+    belowskip=3mm,
+    showstringspaces=false,
+    columns=flexible,
+    basicstyle={\small\ttfamily},
+    numbers=none,
+    numberstyle=\tiny\color{gray},
+    keywordstyle=\color{blue},
+    commentstyle=\color{dkgreen},
+    stringstyle=\color{mauve},
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=3, 
+    escapeinside={(*@}{@*)},
+    % deletekeywords={from,in,and},
+    % morekeywords={function,Algorithm,algorithm, then,do},
+}
+
+\lstset{frame=tb,
+    language=Python,
+    aboveskip=3mm,
+    belowskip=3mm,
+    showstringspaces=false,
+    columns=flexible,
+    basicstyle={\small\ttfamily},
+    numbers=none,
+    numberstyle=\tiny\color{gray},
+    keywordstyle=\color{blue},
+    commentstyle=\color{dkgreen},
+    stringstyle=\color{mauve},
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=3, 
+    escapeinside={(*@}{@*)}
+}
+
+% \lstset{
+%     language=[Sharp]C,
+%     basicstyle=\footnotesize\ttfamily,
+%     showspaces=false,
+%     showtabs=false,,
+%     breaklines=true,
+%     showstringspaces=false,
+%     breakatwhitespace=true, 
+%     escapeinside={(*@}{@*)}
+% }
+
+% awesomebox (notebox, tipbox, warningbox, cautionbox, importantbox)
+\usepackage{awesomebox}
+
+% todo
+\setlength {\marginparwidth }{2cm}
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+\newcommandx{\change}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+\newcommandx{\info}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
+\newcommandx{\improvement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
+\newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
+\newcommandx{\todoinline}[2][1=]{
+    {\hbadness=10000 \hfuzz=\maxdimen{\todo[inline,linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}}
+    % \errmessage{#2}
+    % \GenericError{9}{#2}{0}{1}
+    % \GenericInfo{9}{#2}
+    % \PackageWarning{ToDo}{#2}
+    % \typeout{Package ToDo Warning: #2}\typeout{}
+    % \typeout{Package ToDo Info: #2}\typeout{}
+}
+
+% use \todomarker in \section{...}, \subsection{...}, etc. to mark incomplete parts
+\newcommandx{\todomarker}[0]{\texorpdfstring{\faExclamationCircle\space}{(!)\space}}
+
+\usepackage{filemod}
+
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black]
+\tikzstyle{arrow} = [thick, ->, >=stealth]
+\input{tex-tools/tikz-grid-with-coordinates.tex}
+
+% diagrams
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% physical units
+\usepackage{siunitx}
+\sisetup{per-mode = symbol, 
+         range-exponents = combine-bracket}
+\ifthenelse{\equal{\documentlanguage}{de}}
+{
+    % some language-specific settings for siunitx
+    \sisetup{locale = DE, 
+             group-separator = {\textrm{'}},
+             output-decimal-marker = {,}}
+}{}
+\DeclareSIUnit\year{a}
+\DeclareSIUnit\metreabovesealevel{\text{m ü.M.}}
+\DeclareSIUnit\ton{\text{t}}
+\DeclareSIUnit\DOF{\text{DOF}}
+
+% date and time (language-specific)
+\ifthenelse{\equal{\documentlanguage}{de}}
+{
+    \usepackage[datesep=., style=ddmmyyyy]{datetime2}
+}{}
+
+% attach files
+\usepackage{currfile}
+\usepackage{attachfile}
+\newcommandx{\fileattachment}[2]{\textattachfile[color=0 0 0]{#1}{\faFile*[regular] #2}}
+
+% comments
+% \usepackage[opacity=0]{pdfcomment}
+% {\pdftooltip[style = mathpopup]{ \mu_\mathrm{f} }{ dynamic viscosity of the fluid }}
+
 
 % References
 \usepackage[square,sort,comma,numbers,sectionbib]{natbib}
@@ -214,7 +281,30 @@
 \newcites{Publications}{Publications}
 % \newcites{Standards}{Standards and Recommendations}
 
-\begin{document}
+% ### document specific commands ###
+
+\NewDocumentCommand{\codeword}{v}{%
+  \texttt{\textcolor{blue}{#1}}%
+}
+
+\newcommand*{\shortautoref}[1]{%
+    \begingroup
+    \def\sectionautorefname{sec.}%
+    \def\subsectionautorefname{sec.}%
+    \autoref{#1}%
+    \endgroup
+}
+
+% document specific:  Bulleted command (insert a single bulleted item without any margins)
+\newcommandx{\bulleted}[1]{%
+    \begin{minipage}[t]{\linewidth}
+        \begin{itemize}[nosep, leftmargin=1em, labelwidth=*,align=left]
+            \item #1
+        \end{itemize}
+    \end{minipage}
+}
+
+\begin{document}%
 
 % awesomebox: override default box with to avoid overfull \hbox warning
 \setlength{\aweboxcontentwidth}{0.81\linewidth}
