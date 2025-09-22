@@ -1,54 +1,30 @@
 \documentclass[12pt]{report}
 
-% Document encoding: UTF8
-\usepackage[utf8]{inputenc}
-
-% ifthen package
-\usepackage{ifthen}
+% some initial packages
+\usepackage[utf8]{inputenc} % Document encoding: UTF8
+\usepackage{ifthen}         % ifthen package
+\usepackage{xargs}          % Use more than one optional parameter in new commands
+%\usepackage{showframe}     % debugging: show frames
 
 % select document language
 \newcommand{\documentlanguage}{en} % en=english, de=german
 
-% debugging: show frames
-%\usepackage{showframe}  
-
 % some global variables
+\newcommand{\varProjectTitle}{}
 \newcommand{\varTitle}{Geotechnical Simulations with Moose}
 \newcommand{\varSubtitle}{}
 \newcommand{\varAuthors}{Jörg Meier}
-\newcommand{\varSubject}{}
 \newcommand{\varCompany}{}
+\newcommand{\varProjectNumber}{}
+\newcommand{\varClientLong}{}
+\newcommand{\varClientShort}{}
+\newcommand{\varTitleHeading}{\varTitle}
 \newcommand{\varKeywords}{geotechnical simulations, Moose}
 \newcommand{\varDate}{20.05.2025}
 
 \title{\varTitle}
 \author{\varAuthors}
 \date{\varDate}
-
-\ifthenelse{\equal{\varSubtitle}{}}
-{
-    \newcommand{\pdftitle}{\varTitle}
-}{
-    \newcommand{\pdftitle}{\varTitle\space-\space\varSubtitle}
-}
-
-\ifthenelse{\equal{\varCompany}{}}
-{
-    \newcommand{\pdfauthor}{\varAuthors}
-}{
-    \newcommand{\pdfauthor}{\varAuthors\space(\varCompany)}
-}
-
-\newcommand{\pdfsubject}{\varSubject}
-
-\newcommand{\pdfkeywords}{\varKeywords}
-
-% Use more than one optional parameter in new commands
-\usepackage{xargs}
-
-% paragraph formatting
-\usepackage{tocloft}    % must be loaded before "parskip"
-\usepackage[parfill]{parskip}
 
 % general document formatting
 \usepackage[
@@ -66,11 +42,46 @@
     \usepackage[ngerman]{babel} % German Language
 }{}
 
-\usepackage[]{mdframed}
+% paragraph formatting
+\usepackage{tocloft}    % must be loaded before "parskip"
+\usepackage[parfill]{parskip}
+
+% graphic elements
 \usepackage{tikz}
 \usetikzlibrary{shapes.geometric, arrows, arrows.meta, chains, positioning, tikzmark, calc, math, decorations.pathreplacing, decorations.markings, fit}
-\usepackage{graphicx}
 \usepackage[edges]{forest} % Drawing (linguistic) trees
+\usepackage{mathptmx}   % Required to change font size
+\usepackage[]{mdframed}
+
+% some styles and helpers for TikZ
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black]
+\tikzstyle{arrow} = [thick, ->, >=stealth]
+\input{tex-tools/tikz-grid-with-coordinates.tex}
+
+% Header and footer
+\usepackage{fancyhdr}
+\usepackage{lastpage}   % Needed to show the last page of the document
+\fancypagestyle{main}{% Set the header for the main document
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{.01pt}
+    \fancyhead[R]{\footnotesize\fontdimen2\font=0.5ex Experenbericht RBG gTL: Gruner AG}           
+    \fancyhead[L]{\footnotesize\fontdimen2\font=0.5ex \varTitleHeading}
+    \fancyfoot[R]{Seite \thepage \hspace{1pt} von\hspace{1pt} \pageref{LastPage}}
+    \fancyfoot[L]{Fassung \today}
+    \setlength{\headheight}{27.5pt}
+    \addtolength{\topmargin}{-15.5pt}
+}
+\fancypagestyle{plain}{% Change the initial page for each chapter's header and footer
+    \renewcommand{\headrulewidth}{.01pt}
+    \fancyhead[R]{\footnotesize\fontdimen2\font=0.5ex Experenbericht RBG gTL: Gruner AG}           
+    \fancyhead[L]{\footnotesize\fontdimen2\font=0.5ex \varTitleHeading}
+    \fancyfoot[R]{Seite \thepage \hspace{1pt} von\hspace{1pt} \pageref{LastPage}}
+    \fancyfoot[L]{Fassung \today}
+    \setlength{\headheight}{27.5pt}
+    \addtolength{\topmargin}{-15.5pt}
+}
 
 % appendices
 \usepackage[toc,page,titletoc,title]{appendix}
@@ -88,8 +99,19 @@
 % related to math
 \usepackage{amsmath,amssymb,amsfonts,amsthm,commath}
 
-% pdf meta data
-% make links clickable and numbered bookmarks
+% pdf meta data, make links clickable and numbered bookmarks
+\ifthenelse{\equal{\varSubtitle}{}}
+  {
+      \newcommand{\pdftitle}{\varTitle}
+  }{
+      \newcommand{\pdftitle}{\varTitle\space-\space\varSubtitle}
+  }
+\ifthenelse{\equal{\varCompany}{}}
+  {
+      \newcommand{\pdfauthor}{\varAuthors}
+  }{
+      \newcommand{\pdfauthor}{\varAuthors\space(\varCompany)}
+  }
 \usepackage[bookmarksnumbered,bookmarksopen,bookmarksdepth=2]{hyperref}
 \hypersetup{
     colorlinks    = true,    % Colours links instead of ugly boxes
@@ -99,12 +121,10 @@
     citecolor     = black,   % Colour of citations
     pdftitle      = {\pdftitle},
     pdfauthor     = {\pdfauthor},
-    pdfsubject    = {\pdfsubject},
-    pdfkeywords   = {\pdfkeywords},
+    pdfsubject    = {\varProjectTitle},
+    pdfkeywords   = {\varKeywords},
 }
 \usepackage[nameinlink,noabbrev]{cleveref}
-
-\newcommand{\light}[1]{\textcolor{gray}{#1}}
 
 % Other packages
 \usepackage[inline]{enumitem}
@@ -114,7 +134,7 @@
 
 % captions
 \usepackage{caption}
-\captionsetup{justification=raggedright,singlelinecheck=false}
+\captionsetup{justification=raggedright, singlelinecheck=false}
 \usepackage{subcaption}
 
 % colors
@@ -231,14 +251,6 @@
 % use \todomarker in \section{...}, \subsection{...}, etc. to mark incomplete parts
 \newcommandx{\todomarker}[0]{\texorpdfstring{\faExclamationCircle\space}{(!)\space}}
 
-\usepackage{filemod}
-
-\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black]
-\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black]
-\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black]
-\tikzstyle{arrow} = [thick, ->, >=stealth]
-\input{tex-tools/tikz-grid-with-coordinates.tex}
-
 % diagrams
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
@@ -282,6 +294,8 @@
 % \newcites{Standards}{Standards and Recommendations}
 
 % ### document specific commands ###
+
+\newcommand{\light}[1]{\textcolor{gray}{#1}}
 
 \NewDocumentCommand{\codeword}{v}{%
   \texttt{\textcolor{blue}{#1}}%
